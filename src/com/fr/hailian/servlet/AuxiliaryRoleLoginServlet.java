@@ -2,22 +2,17 @@ package com.fr.hailian.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import com.fr.fs.base.entity.CustomRole;
 import com.fr.fs.base.entity.User;
-import com.fr.fs.base.entity.UserInfo;
 import com.fr.fs.control.UserControl;
-import com.fr.fs.privilege.auth.FSAuthentication;
-import com.fr.fs.privilege.base.FServicePrivilegeLoader;
-import com.fr.fs.privilege.entity.DaoFSAuthentication;
-import com.fr.fs.web.service.ServiceUtils;
-import com.fr.privilege.PrivilegeManager;
-import com.fr.privilege.session.PrivilegeInfoSessionMananger;
 /**
  * 
  * @className LoginServlet.java
@@ -49,38 +44,77 @@ public class AuxiliaryRoleLoginServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String result="";
 		System.out.println("辅助决策登陆改造开始...... ");
-		System.out.println("start");
-		System.out.println("end-----");
 		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
-        HttpServletResponse response2 = (HttpServletResponse) response;
-        HttpSession session = hrequest.getSession();
-        String username = hrequest.getParameter("name");
-        System.out.println("用户名是："+username);
-        
-        long userID = ServiceUtils.getCurrentUserID(hrequest);//req为HttpServletRequest类型,要拿到userid必须保证登录(或者但单点登陆)平台
-		boolean isAdmin = userID == PrivilegeManager.SYSADMINID; //判断是否是管理员
-		System.out.println("userID："+userID);
-		System.out.println("isAdmin："+isAdmin);
-       
-        try {
-			User user = UserControl.getInstance().getUser(userID);
-			System.out.println("user："+user);
-			if (user !=null) {
-				FSAuthentication authentication = new DaoFSAuthentication(new UserInfo(user.getId(), user.getUsername(), user.getPassword()));
-				long userid = authentication.getUserInfo().getId();
-				PrivilegeInfoSessionMananger.login(new FServicePrivilegeLoader(user.getUsername(), UserControl.getInstance().getAllSRoleNames(userid), UserControl.getInstance().getUserDP(userid)), session, response2);
-                //session
-				session.setAttribute("fr_fs_auth_key", authentication);
-                //用户注册
-                UserControl.getInstance().login(userid);
+		String name=hrequest.getParameter("name");
+		String password=hrequest.getParameter("password");
+		System.out.println("name:"+name+",password:"+password);
+		try {
+			User user = UserControl.getInstance().getUser(name,password);//获取用户对象
+			System.out.println("user:"+user);
+			if(user!=null){
+				//判断是否是超级管理员
+				long superManagerID=UserControl.getInstance().getSuperManagerID();//超级管理员ID
+				boolean isAdmin = superManagerID == user.getId(); //判断是否是管理员
+				if(isAdmin){
+					/**
+					 * 是超级管理员
+					 * step1:用户名 密码校验 这个在上面已经验证了
+					 * step2：生成登陆凭证
+					 */
+					
+				}else{
+					/**
+					 * 不是超级管理员
+					 * step1:统一身份认证userValidate 
+					 * step2:辅助决策系统权限认证
+					 * step3:生成登陆凭证
+					 */
+					//step1:统一身份认证userValidate 
+					
+					//step2:辅助决策系统权限认证
+					Set<CustomRole> roles=UserControl.getInstance().getSRoles(user.getId());//根据用户id获取该所属的所有角色
+					Iterator<CustomRole> it = roles.iterator();  
+					boolean hasRole=false;
+					while (it.hasNext()) {  
+						CustomRole role = it.next();  
+						System.out.println(role.getId());  
+						if(role.getId()==com.fr.hailian.util.Constants.AUXILIARYROLE_ID){
+							hasRole=true;
+							break;
+						}
+					};
+					if(hasRole){
+						//step3:生成登陆凭证
+						
+					}else{
+						result="该用户没有辅助决策系统权限，请联系管理员!";
+					}
+				}
+			}else{
+				result="用户名或者密码错误!返回登陆页";
 			}
-			//跳转到fs
-			response2.sendRedirect("/WebReport/ReportServer?op=fs");
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+		out.println("<HTML>");
+		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
+		out.println("  <BODY>");
+		out.print("    This is ");
+		out.print(this.getClass());
+		out.println(", 认证结果:"+result);
+		out.println("  </BODY>");
+		out.println("</HTML>");
+		out.flush();
+		out.close();
+		
+		
 	}
 
 	/**
