@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>finereport</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!-- 定义拦截器 -->
+	<filter>
+		<filter-name>FRFilter</filter-name>
+		<filter-class>com.fr.hailian.filter.FRFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>FRFilter</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<!-- 定义servlet -->
+	
+	<!-- 辅助决策登陆改造 -->
+	<servlet>
+		<servlet-name>AuxiliaryRoleLogin</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.AuxiliaryRoleLoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AuxiliaryRoleLogin</servlet-name>
+		<url-pattern>/AuxiliaryRoleLogin</url-pattern>
+	</servlet-mapping>
+	
+</web-app>
