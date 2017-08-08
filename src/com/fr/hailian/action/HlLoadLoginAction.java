@@ -51,6 +51,7 @@ public class HlLoadLoginAction extends FSLoadLoginAction {
         HttpSession session = req.getSession(true);
         boolean isTemplate = ComparatorUtils.equals(true, session.getAttribute("isTemplate"));
         PrintWriter writer = createWriter(res);
+        System.out.println("actionCMD");
         if (dealLoginInfo(req, res, username, password, isTemplate)) {
             UserInfo ui = new UserInfo(username, password, Boolean.valueOf(
                     remember));
@@ -60,6 +61,7 @@ public class HlLoadLoginAction extends FSLoadLoginAction {
             String url = (oo == null) ? getRenderedUrl() : oo.toString()
                     + "&_=" + System.currentTimeMillis();
             addServerID(session);
+            System.out.println("url:"+url);
             signOnSuccess(req, res, writer, url);
         } else {
             signOnFailure(req, writer);
