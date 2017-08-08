@@ -36,4 +36,15 @@
 		<url-pattern>/AuxiliaryRoleLogin</url-pattern>
 	</servlet-mapping>
 	
+	
+	<!-- 单点登录逻辑改造 -->
+	<servlet>
+		<servlet-name>PortalLoginServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.PortalLoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PortalLoginServlet</servlet-name>
+		<url-pattern>/PortalLoginServlet</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

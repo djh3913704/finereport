@@ -8,4 +8,5 @@ package com.fr.hailian.util;
  */
 public class Constants {
 	public static final long AUXILIARYROLE_ID = 222;//辅助决策需要的角色ID
+	public static final String DOMAIN="http://localhost:8075//WebReport/ReportServer";
 }
