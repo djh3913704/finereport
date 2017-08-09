@@ -78,10 +78,10 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 					System.out.println("user1:"+user1);
 					if(user1!=null){
 						RoleUtil.loginCMD(hrequest, response);
-						r.put("status", "success");
+						r.put("fail", false);
 						r.put("msg", "登陆成功");
 					}else{
-						r.put("status", "fail");
+						r.put("fail", true);
 						r.put("msg", "密码错误!");
 					}
 				}else{
@@ -98,21 +98,21 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 						if(RoleUtil.judgeAuxiliaryRole(user)){
 							//step3:生成登陆凭证
 							RoleUtil.loginCMD(hrequest, response);
-							r.put("status", "success");
+							r.put("fail", false);
 							r.put("msg", "登陆成功");
 						}else{
-							r.put("status", "fail");
+							r.put("fail", true);
 							r.put("msg", "该用户没有辅助决策系统权限，请联系管理员!");
 						}
 					}else{
-						r.put("status", "fail");
-						r.put("msg", "userValid认证失败!");
+						r.put("fail", true);
+						r.put("msg", "统一身份认证验证失败!");
 					}
 					
 				}
 			}else{
-				r.put("status", "fail");
-				r.put("msg", "用户名或者密码错误!返回登陆页");
+				r.put("fail", true);
+				r.put("msg", "用户名或者密码错误!");
 			}
 			
 		} catch (Exception e) {
