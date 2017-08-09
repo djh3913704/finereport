@@ -1,6 +1,7 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
 import com.fr.hailian.util.BaseServlet;
+import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.stable.Constants;
 /**
@@ -53,7 +55,7 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 
 	private void overwriteLogin(HttpServletRequest request,
 			HttpServletResponse response) {
-		String result="";
+		JSONObject r=new JSONObject();
 		System.out.println("辅助决策登陆改造开始...... ");
 		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
 		String name=hrequest.getParameter(Constants.FR_USERNAME);
@@ -76,9 +78,11 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 					System.out.println("user1:"+user1);
 					if(user1!=null){
 						RoleUtil.loginCMD(hrequest, response);
-						result="登陆成功";
+						r.put("status", "success");
+						r.put("msg", "登陆成功");
 					}else{
-						result="密码错误!";
+						r.put("status", "fail");
+						r.put("msg", "密码错误!");
 					}
 				}else{
 					/**
@@ -88,25 +92,32 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 					 * step3:生成登陆凭证
 					 */
 					//step1:统一身份认证userValidate 
-					
-					//step2:辅助决策系统权限认证
-					if(RoleUtil.judgeAuxiliaryRole(user)){
-						//step3:生成登陆凭证
-						RoleUtil.loginCMD(hrequest, response);
-						result="登陆成功";
+					Map<String,Object> userValid=PortalService.userValidate(name, password);
+					if(userValid!=null&&"1".equals(userValid.get("result"))){
+						//step2:辅助决策系统权限认证
+						if(RoleUtil.judgeAuxiliaryRole(user)){
+							//step3:生成登陆凭证
+							RoleUtil.loginCMD(hrequest, response);
+							r.put("status", "success");
+							r.put("msg", "登陆成功");
+						}else{
+							r.put("status", "fail");
+							r.put("msg", "该用户没有辅助决策系统权限，请联系管理员!");
+						}
 					}else{
-						result="该用户没有辅助决策系统权限，请联系管理员!";
+						r.put("status", "fail");
+						r.put("msg", "userValid认证失败!");
 					}
+					
 				}
 			}else{
-				result="用户名或者密码错误!返回登陆页";
+				r.put("status", "fail");
+				r.put("msg", "用户名或者密码错误!返回登陆页");
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		JSONObject r=new JSONObject();
-		r.put("msg", result);
 		responseOutWithJson(response, r);
 	}
 

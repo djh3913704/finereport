@@ -1,8 +1,6 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,12 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import com.fr.fs.base.entity.CustomRole;
-import com.fr.fs.base.entity.User;
-import com.fr.fs.control.UserControl;
-import com.fr.hailian.action.HlLoadLoginAction;
 import com.fr.hailian.util.BaseServlet;
-import com.fr.stable.Constants;
 /**
  * 
  * @className PortalLoginServlet.java
