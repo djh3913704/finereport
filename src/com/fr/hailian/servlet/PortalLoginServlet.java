@@ -59,26 +59,28 @@ public class PortalLoginServlet extends BaseServlet {
 		JSONObject r=new JSONObject();
 		System.out.println("单点登录逻辑开始...... ");
 		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
-		String token=hrequest.getParameter("token");
-		String redictUrl=hrequest.getParameter("redictUrl");
+		String token=hrequest.getParameter("Token");
+		String redictUrl=hrequest.getParameter("Target");
 		//根据token获取用户信息
-		Map<String,Object> result = PortalService.getUserInfoByToken(token, Constants.PORTAL_FROM);
-		String name = (String) result.get("name");//获取用户名，需进一步确认
-		//String name = "tom";
-		try {
-			User user = UserControl.getInstance().getByUserName(name);//获取用户对象
-			if(RoleUtil.judgeAuxiliaryRole(user)){
-				//生成登陆凭证
-				RoleUtil.loginCMD(hrequest, response);
-				r.put("fail", false);
-				r.put("msg", "单点登录成功");
-			}else{
-				r.put("fail", true);
-				r.put("msg", "该用户没有辅助决策系统权限，请联系管理员!");
+		Map<String,Object> result = PortalService.getUserInfoByToken(token, redictUrl);
+		if(result!=null&&"1".equals(result.get("Result"))){
+			String name = (String) result.get("Memo");//获取用户名，需进一步确认
+			try {
+				User user = UserControl.getInstance().getByUserName(name);//获取用户对象
+				if(user!=null&&RoleUtil.judgeAuxiliaryRole(user)){
+					//生成登陆凭证
+					RoleUtil.loginCMD(hrequest, response);
+					r.put("fail", false);
+					r.put("msg", "单点登录成功");
+				}else{
+					r.put("fail", true);
+					r.put("msg", "该用户没有辅助决策系统权限，请联系管理员!");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		
 		responseOutWithJson(response, r);
 	}
 
