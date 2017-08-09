@@ -117,7 +117,8 @@ $(function () {
                             : '?op=resource&resource=/com/fr/plugin/fresh/web/images/login/login.jpg');
                     if ($('body').length > 0) {
                         var loginImg = $('img.fs-login-img');
-                        loginImg.attr("src", url);
+                        //loginImg.attr("src", url);
+                        loginImg.attr("src","/WebReport/hailian/img/login.jpg");
                         loginImg.css({
                             "margin-left": "-" + imgOffsetX + "px",
                             "margin-top": "-" + imgOffsetY + "px",
@@ -166,7 +167,8 @@ $(function () {
                             ('?op=fr_attach&cmd=ah_image&id=' + logoImgID + '&isAdjust=true&width=72&height=72')
                             : '?op=resource&resource=/com/fr/plugin/fresh/web/images/login/logo.png');
                     if ($('body').length > 0) {
-                        $("#fs-login-logo")[0].style.background = 'url(' + url + ') no-repeat 50% 0px';
+                       // $("#fs-login-logo")[0].style.background = 'url(' + url + ') no-repeat 50% 0px';
+                    	 $("#fs-login-logo")[0].style.background = 'url(' +  "/WebReport/hailian/img/logo.png" + ') no-repeat 50% 0px';
                         $("#fs-login-logo")[0].style.backgroundSize = '72px 72px';
                     }
                 }
