@@ -9,4 +9,5 @@ package com.fr.hailian.util;
 public class Constants {
 	public static final long AUXILIARYROLE_ID = 222;//辅助决策需要的角色ID
 	public static final String PORTAL_FROM="NWH5ABF13158";//userValidate的参数FROM
+	public static final String ENCODE_RULES="hailian88888888finereport201708";//对称加密 加密规则
 }

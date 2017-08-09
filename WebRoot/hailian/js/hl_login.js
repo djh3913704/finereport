@@ -226,7 +226,9 @@ $(function () {
             return;
         }
         var domain=FR.serverURL+FR.servletURL;
+		domain="/WebReport";
         domain=domain.replace("/ReportServer","")+'/AuxiliaryRoleLogin?op=fs_load&cmd=login';
+		console.log(domain)
         //http://localhost:8075/WebReport/AuxiliaryRoleLogin?fr_username=zuo&fr_password=anginfo2015&fr_remember=false&__redirect__=true
         FR.ajax({
             //url: FR.serverURL + '/AuxiliaryRoleLogin?op=fs_load&cmd=login',
