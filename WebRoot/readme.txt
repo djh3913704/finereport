@@ -12,7 +12,7 @@
 5 启动FineReport即可
 
 
-二 改造后登陆页面：
+二 辅助决策登陆改造：
  1 地址：http://localhost:8075/WebReport/hailian/login.html
  2 登陆页配置：
 	2.1 打开决策系统http://localhost:8075/WebReport/ReportServer?op=fs，登陆
@@ -21,4 +21,14 @@
 
 三 单点登录
  1 地址
-	http://localhost:8075/WebReport/PortalLoginServlet?Token=11111&Target=https://www.hao123.com/?tn=90207880_hao_pg
+	http://localhost:8075/WebReport/PortalLoginServlet?Token=11111&Target=1111&__redirect__=true
+	参数说明：
+	Token：令牌
+	Target：目标字符串
+	__redirect__：固定参数 true表示认证成功之后直接进入系统首页
+	
+ 2 返回信息说明
+  2.1 如果单点登录成功，直接进行决策管理首页
+  2.2 如果失败，返回页面有个json格式数据，格式{"msg":"提示信息","fail":"boolean类型，true表示失败"}
+其他：辅助决策系统权限目前默认写成222（正式发布需要改，否则所有认证都会返回没有权限的提示）
+com.fr.hailian.util.Constants文件中的AUXILIARYROLE_ID

@@ -15,6 +15,7 @@ import com.fr.hailian.util.BaseServlet;
 import com.fr.hailian.util.Constants;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
+import com.fr.web.utils.WebUtils;
 /**
  * 
  * @className PortalLoginServlet.java
@@ -69,6 +70,8 @@ public class PortalLoginServlet extends BaseServlet {
 				User user = UserControl.getInstance().getByUserName(name);//获取用户对象
 				if(user!=null&&RoleUtil.judgeAuxiliaryRole(user)){
 					//生成登陆凭证
+					hrequest.setAttribute(com.fr.stable.Constants.FR_USERNAME, user.getUsername());
+					hrequest.setAttribute(com.fr.stable.Constants.FR_PASSWORD, user.getPassword());
 					RoleUtil.loginCMD(hrequest, response);
 					//response.sendRedirect(redictUrl);
 					r.put("fail", false);
