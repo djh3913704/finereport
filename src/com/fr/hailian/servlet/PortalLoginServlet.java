@@ -50,13 +50,13 @@ public class PortalLoginServlet extends BaseServlet {
 	private void overwriteLogin(HttpServletRequest request,
 			HttpServletResponse response) {
 		// TODO Auto-generated method stub
-		String result="";
+		JSONObject r=new JSONObject();
 		System.out.println("单点登录逻辑开始...... ");
 		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
 		String token=hrequest.getParameter("token");
+		String redictUrl=hrequest.getParameter("redictUrl");
 		
-		JSONObject r=new JSONObject();
-		r.put("msg", result);
+		r.put("msg", "");
 		responseOutWithJson(response, r);
 	}
 

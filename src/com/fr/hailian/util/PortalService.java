@@ -75,9 +75,14 @@ public class PortalService {
 	 * @return
 	 */
 	public static Map<String,Object> getUserInfoByToken(String token, String sysID){
+		String info = "{\"token\":\""+ token +"\",\"From\":\""+ sysID +"\"}";//格式需要在确认下
 		URL wsdlURL = SSOService.WSDL_LOCATION;
 	    SSOService ss = new SSOService(wsdlURL, SERVICE_NAME);
 	    SSOServiceSoap port = ss.getSSOServiceSoap();
+	    java.lang.String userInfo=port.getUserInfoByToken(info);
+	    if(StringUtils.isNotBlank(userInfo)){
+        	return JsonKit.json2map(userInfo);
+        }
 		return new HashMap<String, Object>();
 		
 	}
