@@ -70,8 +70,7 @@ public class PortalLoginServlet extends BaseServlet {
 				if(user!=null&&RoleUtil.judgeAuxiliaryRole(user)){
 					//生成登陆凭证
 					RoleUtil.loginCMD(hrequest, response);
-					r.put("fail", false);
-					r.put("msg", "单点登录成功");
+					response.sendRedirect(redictUrl);
 				}else{
 					r.put("fail", true);
 					r.put("msg", "该用户没有辅助决策系统权限，请联系管理员!");
@@ -79,6 +78,9 @@ public class PortalLoginServlet extends BaseServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}else{
+			r.put("fail", true);
+			r.put("msg", "根据token获取用户信息失败!");
 		}
 		
 		responseOutWithJson(response, r);
