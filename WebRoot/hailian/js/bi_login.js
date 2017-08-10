@@ -1,5 +1,5 @@
 /**
- * Created by zuoqb on 2017年8月9日11:39:28
+ * Created by 小灰灰 on 2016/6/21.
  */
 $(function () {
     var imgOffsetX, imgOffsetY, loginImgWidth, loginImgHeight, scale;
@@ -117,8 +117,7 @@ $(function () {
                             : '?op=resource&resource=/com/fr/plugin/fresh/web/images/login/login.jpg');
                     if ($('body').length > 0) {
                         var loginImg = $('img.fs-login-img');
-                        //loginImg.attr("src", url);
-                        loginImg.attr("src","/WebReport/hailian/img/login.jpg");
+                        loginImg.attr("src", url);
                         loginImg.css({
                             "margin-left": "-" + imgOffsetX + "px",
                             "margin-top": "-" + imgOffsetY + "px",
@@ -167,8 +166,7 @@ $(function () {
                             ('?op=fr_attach&cmd=ah_image&id=' + logoImgID + '&isAdjust=true&width=72&height=72')
                             : '?op=resource&resource=/com/fr/plugin/fresh/web/images/login/logo.png');
                     if ($('body').length > 0) {
-                       // $("#fs-login-logo")[0].style.background = 'url(' + url + ') no-repeat 50% 0px';
-                    	 $("#fs-login-logo")[0].style.background = 'url(' +  "/WebReport/hailian/img/logo.png" + ') no-repeat 50% 0px';
+                        $("#fs-login-logo")[0].style.background = 'url(' + url + ') no-repeat 50% 0px';
                         $("#fs-login-logo")[0].style.backgroundSize = '72px 72px';
                     }
                 }
@@ -225,28 +223,14 @@ $(function () {
             showErrorMsg($password, FR.i18nText('FS-Admin-Password_Can_Not_Be_Null'));
             return;
         }
-        var domain=FR.serverURL+FR.servletURL;
-		domain="/WebReport";
-        domain=domain.replace("/ReportServer","")+'/AuxiliaryRoleLogin?op=fs_load&cmd=login';
-		console.log(domain)
-        //http://localhost:8075/WebReport/AuxiliaryRoleLogin?fr_username=zuo&fr_password=anginfo2015&fr_remember=false&__redirect__=true
         FR.ajax({
-            //url: FR.serverURL + '/AuxiliaryRoleLogin?op=fs_load&cmd=login',
-        	/*url: domain,
+            url: FR.servletURL + '?op=fs_load&cmd=login',
             data: FR.cjkEncodeDO({
                 fr_username: encodeURIComponent(user),
                 fr_password: encodeURIComponent(pw),
                 fr_remember: $keep.hasClass('fs-login-remember-selected'),
-                __redirect__:false,
                 theme: $('#fs-login-btn').attr('expired') == 'true' || themeEditor === undefined ? "" : themeEditor.getValue()
-            }),*/
-        	 url: FR.servletURL + '?op=fs_load&cmd=login',
-             data: FR.cjkEncodeDO({
-                 fr_username: encodeURIComponent(user),
-                 fr_password: encodeURIComponent(pw),
-                 fr_remember: $keep.hasClass('fs-login-remember-selected'),
-                 theme: $('#fs-login-btn').attr('expired') == 'true' || themeEditor === undefined ? "" : themeEditor.getValue()
-             }),
+            }),
             type: 'POST',
             async: false,
             error: function () {
@@ -260,8 +244,7 @@ $(function () {
                 var signResult = FR.jsonDecode(res.responseText);
                 if (signResult.fail) {
                     //用户名和密码不匹配
-                    //showErrorMsg($username, FR.i18nText("FS-Generic-Privilege_Name_Not_Match_Password"));
-                	showErrorMsg($username, signResult.msg);
+                    showErrorMsg($username, FR.i18nText("FS-Generic-Privilege_Name_Not_Match_Password"));
                 } else if (signResult.url) {
                     window.location.href = signResult.url;
                 }
