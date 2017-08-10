@@ -1,6 +1,7 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -58,8 +59,16 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 		JSONObject r=new JSONObject();
 		System.out.println("辅助决策登陆改造开始...... ");
 		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
-		String name=hrequest.getParameter(Constants.FR_USERNAME);
-		String password=hrequest.getParameter(Constants.FR_PASSWORD);
+		String name="";
+		String password="";
+		try {
+			name = java.net.URLDecoder.decode(hrequest.getParameter(Constants.FR_USERNAME),"UTF-8");
+			password=java.net.URLDecoder.decode(hrequest.getParameter(Constants.FR_PASSWORD),"UTF-8");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		System.out.println("name:"+name+",password:"+password);
 		try {
 			User user = UserControl.getInstance().getByUserName(name);//获取用户对象

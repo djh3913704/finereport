@@ -4,15 +4,25 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 	<display-name>finereport</display-name>
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-	</welcome-file-list>
 	
+	<!-- 以下注释在发布服务时需要释放注释 -->
+	<!-- <mime-mapping>
+		<extension>msi</extension>
+		<mime-type>application/x-msi</mime-type>
+	</mime-mapping>
+
+	<servlet>
+		<servlet-name>ReportServer</servlet-name>
+		<servlet-class>com.fr.web.ReportServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ReportServer</servlet-name>
+		<url-pattern>/ReportServer</url-pattern>
+	</servlet-mapping> -->
+
+
 	<!-- 定义拦截器 -->
 	<filter>
 		<filter-name>FRFilter</filter-name>
@@ -23,9 +33,9 @@
 		<url-pattern>/index.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
-	
+
 	<!-- 定义servlet -->
-	
+
 	<!-- 辅助决策登陆改造 -->
 	<servlet>
 		<servlet-name>AuxiliaryRoleLogin</servlet-name>
@@ -35,8 +45,8 @@
 		<servlet-name>AuxiliaryRoleLogin</servlet-name>
 		<url-pattern>/AuxiliaryRoleLogin</url-pattern>
 	</servlet-mapping>
-	
-	
+
+
 	<!-- 单点登录逻辑改造 -->
 	<servlet>
 		<servlet-name>PortalLoginServlet</servlet-name>
@@ -46,5 +56,5 @@
 		<servlet-name>PortalLoginServlet</servlet-name>
 		<url-pattern>/PortalLoginServlet</url-pattern>
 	</servlet-mapping>
-	
+
 </web-app>

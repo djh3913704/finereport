@@ -232,21 +232,21 @@ $(function () {
         //http://localhost:8075/WebReport/AuxiliaryRoleLogin?fr_username=zuo&fr_password=anginfo2015&fr_remember=false&__redirect__=true
         FR.ajax({
             //url: FR.serverURL + '/AuxiliaryRoleLogin?op=fs_load&cmd=login',
-        	/*url: domain,
+        	url: domain,
             data: FR.cjkEncodeDO({
                 fr_username: encodeURIComponent(user),
                 fr_password: encodeURIComponent(pw),
                 fr_remember: $keep.hasClass('fs-login-remember-selected'),
                 __redirect__:false,
                 theme: $('#fs-login-btn').attr('expired') == 'true' || themeEditor === undefined ? "" : themeEditor.getValue()
-            }),*/
-        	 url: FR.servletURL + '?op=fs_load&cmd=login',
+            }),
+       /* 	 url: FR.servletURL + '?op=fs_load&cmd=login',
              data: FR.cjkEncodeDO({
                  fr_username: encodeURIComponent(user),
                  fr_password: encodeURIComponent(pw),
                  fr_remember: $keep.hasClass('fs-login-remember-selected'),
                  theme: $('#fs-login-btn').attr('expired') == 'true' || themeEditor === undefined ? "" : themeEditor.getValue()
-             }),
+             }),*/
             type: 'POST',
             async: false,
             error: function () {

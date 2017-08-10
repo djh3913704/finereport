@@ -6,6 +6,7 @@
 3 配置自定义的servlet文件
 	将项目中自配置的servlet路由（web.xml里面）复制到FineReport安装目录（\WebReport\WEB-INF）下，
 	我的在F:\FineReport8.0\FineReport_8.0\WebReport\WEB-INF的web.xml里面 注意xml的字符编码编码格式
+	说明：web.xml中注释在发布服务时需要释放注释
 4 将自开发的页面（项目WebRoot/hailian文件夹）复制到到FineReport安装目录（\WebReport）下，我的在
    F:\FineReport8.0\FineReport_8.0\WebReport
 
