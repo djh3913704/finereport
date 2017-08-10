@@ -56,5 +56,25 @@
 		<servlet-name>PortalLoginServlet</servlet-name>
 		<url-pattern>/PortalLoginServlet</url-pattern>
 	</servlet-mapping>
+	
+	<!-- RTX改造 -->
+	<servlet>
+		<servlet-name>RTXShareServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.RTXShareServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RTXShareServlet</servlet-name>
+		<url-pattern>/RTXShareServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- RTX集成 当用户从RTX点击收到信息时  进行免登陆校验 -->
+	<servlet>
+		<servlet-name>RTXSecurityServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.RTXSecurityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RTXSecurityServlet</servlet-name>
+		<url-pattern>/RTXSecurityServlet</url-pattern>
+	</servlet-mapping>
 
 </web-app>

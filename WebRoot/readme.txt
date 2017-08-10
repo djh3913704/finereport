@@ -20,7 +20,7 @@
 	2.2 系统管理--外观配置--登陆方式 选择“设置登录网页”，将地址改为改造后登陆页面
 	2.3 退出，配置成功
 
-三 单点登录
+三 单点登录改造
  1 地址
 	http://localhost:8075/WebReport/PortalLoginServlet?Token=11111&Target=1111&__redirect__=true
 	参数说明：
@@ -31,5 +31,29 @@
  2 返回信息说明
   2.1 如果单点登录成功，直接进行决策管理首页
   2.2 如果失败，返回页面有个json格式数据，格式{"msg":"提示信息","fail":"boolean类型，true表示失败"}
-其他：辅助决策系统权限目前默认写成222（正式发布需要改，否则所有认证都会返回没有权限的提示）
-com.fr.hailian.util.Constants文件中的AUXILIARYROLE_ID
+  
+  
+四 RTX集成
+ 1 引用方式
+  1.1 作用机理
+     设计模板时可以给控件、工具栏按钮、整个报表添加JS事件，每个事件对应一个function。
+     当报表转为html页面时会将这些function加到html的头部head。当事件被触发时如点击按钮时，或者导出打印报表时，对应的function就会被执行。
+  1.1 引入现成的js文件(如果使用RTX集成需引用\WebReport\hailian\js\hl_rxt.js)
+      如果不是 所有模板统一引用而是只要某一个页面使用，可以直接进入1.2
+      报表工程下所有模板统一引入外部js文件：服务器>服务器配置>引用JavaScript
+      相对路径引用js：相对于报表工程目录如WebReport，如WebReport\js下有引用的js文件test.js，则相对路径为js/test.js；
+      绝对路径引用js：如D:\tomcat\webapps\WebReport\WEB-INF\scripts\script.js。   
+  1.2 事件编辑界面
+    找到当前事件要添加的控件，按钮控件设置>事件编辑>添加点击事件便可看到事件编辑界面了
+    在编辑页面需要进行的操作：
+    1.2.1 如果1.1步骤没有引入hailian/js/hl_rxt.js，那在上方“引用JavaScript”先引入hl_rxt.js（注意路径问题），
+    否则直接进入下一步
+    1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：initHlRTXReportMethod();
+    1.2.3 重新启动FineReport即可
+  
+
+
+
+其他注意项：
+ 1 辅助决策系统权限目前默认写成222（正式发布需要改，否则所有认证都会返回没有权限的提示）
+ com.fr.hailian.util.Constants文件中的AUXILIARYROLE_ID

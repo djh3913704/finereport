@@ -134,8 +134,16 @@ public class SymmetricEncoder {
 	public static String createSign(String userName){
 		//拼接参数 格式 
 		long time=System.currentTimeMillis();
-		String info = "{\"userName\":\""+ userName +"\",\"encodeRules\":\""+ Constants.ENCODE_RULES+"\",\"time\":\""+ time +"\"}";
+		String info = "{\""+com.fr.stable.Constants.FR_USERNAME+"\":\""+ userName +"\",\"encodeRules\":\""+ Constants.ENCODE_RULES+"\",\"time\":\""+ time +"\"}";
 		String encode=SymmetricEncoder.AESEncode(Constants.ENCODE_RULES, info);
+		//对称加密后可能包含+号这种特殊字符  会影响解析 所以需要再次编码
+		if(StringUtils.isNotBlank(encode)){
+			try {
+				encode=java.net.URLEncoder.encode(java.net.URLEncoder.encode(encode, "UTF-8"), "UTF-8");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return encode;
 	}
 	/**
@@ -156,12 +164,20 @@ public class SymmetricEncoder {
 		if(StringUtils.isEmpty(userName)){
 			return false;
 		}
+		//对称加密后可能包含+号这种特殊字符  会影响解析 所以需要再次编码
+		if(StringUtils.isNotBlank(sign)){
+			try {
+				sign=java.net.URLDecoder.decode(sign, "UTF-8");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		//解密
 		String hlSign=SymmetricEncoder.AESDncode(Constants.ENCODE_RULES, sign);
 		Map<String,Object> map=JsonKit.json2map(hlSign);
 		if(map!=null){
 			//验证加密规则 名字是否相同
-			if(Constants.ENCODE_RULES.equals(map.get("encodeRules"))&&userName.equals(map.get("userName"))){
+			if(Constants.ENCODE_RULES.equals(map.get("encodeRules"))&&userName.equals(map.get(com.fr.stable.Constants.FR_USERNAME))){
 				Long time=Long.parseLong(map.get("time")+"");
 				Long difference = (System.currentTimeMillis() - time) /1000;//时间差,单位秒
 				if(difference<=8*60*60){
@@ -179,9 +195,9 @@ public class SymmetricEncoder {
 		System.out.println(encode);
 		String decode=SymmetricEncoder.AESDncode(Constants.ENCODE_RULES, encode);
 		System.out.println(decode);*/
-		String userName="5555";
+		String userName="admin";
 		String e=createSign(userName);
 		System.out.println(e);
-		System.out.println(checkSign(e, userName+""));
+		System.out.println(checkSign("lsvZMBgfC17fs1IVLzSS%2B4I8%2BNNxmND4jUeDaAcDLQxZgSalNiudjMmmP2BjSF21agsIeaj%2FOczv%0D%0ABVFzzaMZTI9NnbT3yHtXgUfXJoWXcl4jTFt35Fd9TqQknIsjPSHB", userName+""));
 	}
 }
