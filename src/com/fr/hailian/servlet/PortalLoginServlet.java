@@ -12,10 +12,8 @@ import org.json.JSONObject;
 import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
 import com.fr.hailian.util.BaseServlet;
-import com.fr.hailian.util.Constants;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
-import com.fr.web.utils.WebUtils;
 /**
  * 
  * @className PortalLoginServlet.java
@@ -60,10 +58,11 @@ public class PortalLoginServlet extends BaseServlet {
 		JSONObject r=new JSONObject();
 		System.out.println("单点登录逻辑开始...... ");
 		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
-		String token=hrequest.getParameter("Token");
-		String redictUrl=hrequest.getParameter("Target");
+		String token=hrequest.getParameter("Token");//样例:FEEE591E3B55320B7038E74D4E4EFE86
+		String redictUrl=hrequest.getParameter("Target");//样例:F047F50A72B04A049D8436009
 		//根据token获取用户信息
 		Map<String,Object> result = PortalService.getUserInfoByToken(token, redictUrl);
+		System.out.println("根据token获取用户信息返回："+result);
 		if(result!=null&&"1".equals(result.get("Result"))){
 			String name = (String) result.get("Memo");//获取用户名，需进一步确认
 			try {
@@ -78,7 +77,7 @@ public class PortalLoginServlet extends BaseServlet {
 					r.put("msg", "单点登录成功，Memo="+(String) result.get("Memo")+"Target:"+redictUrl);
 				}else{
 					r.put("fail", true);
-					r.put("msg", (String) result.get("Memo"));
+					r.put("msg", "该用户没有辅助决策系统权限，请联系管理员!");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -87,7 +86,6 @@ public class PortalLoginServlet extends BaseServlet {
 			r.put("fail", true);
 			r.put("msg", (String) result.get("Memo"));
 		}
-		
 		responseOutWithJson(response, r);
 	}
 

@@ -57,4 +57,18 @@ public class RoleUtil {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * 
+	 * @time   2017年8月10日 上午11:33:24
+	 * @author zuoqb
+	 * @todo   判断是否是管理员
+	 * @param  @param user
+	 * @param  @return
+	 * @return_type   boolean
+	 */
+	public static boolean isSuperAdmin(User user){
+		long superManagerID=UserControl.getInstance().getSuperManagerID();//超级管理员ID
+		boolean isAdmin = superManagerID == user.getId(); //判断是否是管理员
+		return isAdmin;
+	}
 }

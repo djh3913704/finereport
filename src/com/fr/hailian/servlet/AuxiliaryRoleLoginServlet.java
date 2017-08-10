@@ -1,7 +1,6 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -75,9 +74,7 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 			if(user!=null){
 				System.out.println("user:"+user);
 				//判断是否是超级管理员
-				long superManagerID=UserControl.getInstance().getSuperManagerID();//超级管理员ID
-				boolean isAdmin = superManagerID == user.getId(); //判断是否是管理员
-				if(isAdmin){
+				if(RoleUtil.isSuperAdmin(user)){
 					/**
 					 * 是超级管理员
 					 * step1:用户名 密码校验 这个在上面已经验证了
@@ -102,6 +99,7 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 					 */
 					//step1:统一身份认证userValidate 
 					Map<String,Object> userValid=PortalService.userValidate(name, password);
+					System.out.println("userValid:"+userValid);
 					if(userValid!=null&&"1".equals(userValid.get("result"))){
 						//step2:辅助决策系统权限认证
 						if(RoleUtil.judgeAuxiliaryRole(user)){
