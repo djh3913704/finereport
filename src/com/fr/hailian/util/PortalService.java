@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.fs.web.FSConstants;
+import com.fr.hailian.rtxWebservice.IMService;
+import com.fr.hailian.rtxWebservice.IMServiceSoap;
 import com.fr.hailian.webservice.SSOService;
 import com.fr.hailian.webservice.SSOServiceSoap;
 import com.fr.stable.StringUtils;
@@ -110,12 +112,26 @@ public class PortalService {
 	public static boolean logout(String loginName){
 	    SSOService ss = new SSOService(SSOService.WSDL_LOCATION, SERVICE_NAME);
 	    SSOServiceSoap port = ss.getSSOServiceSoap();  
-        java.lang.String _logout__return = port.logout(loginName);
+	    String info = "{\"Account\":\""+ loginName +"\",\"From\":\""+ Constants.PORTAL_FROM+"\"}";
+        java.lang.String _logout__return = port.logout(info);
         System.out.println("_logout__return:"+_logout__return);
 		return "1".equals(_logout__return);
 	}
-	public static void SendMessageToUser(){
-		
+	/**
+	 * 
+	 * @param request
+	 * @param transUrl
+	 * @param toUserIds
+	 * @return
+	 */
+	public static boolean sendMessageToUser(HttpServletRequest request,String title,String content,String transUrl,String toUserIds){
+		User user=RoleUtil.getCurrentUser(request);
+		//Object from=request.getSession().getAttribute(FSConstants.SERVER_ID);//发送消息的系统 即授权ID
+		IMService im=new IMService();
+		IMServiceSoap port=im.getIMServiceSoap();
+		java.lang.String result=port.sendMessageToUser(title, content, transUrl, user.getUsername(),
+				toUserIds, Constants.RTX_AUTH_SERVER_ID, "0", null, null, 0);
+		return "0".equals(result);
 	}
 	/**
 	 * 
@@ -165,6 +181,7 @@ public class PortalService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}*/
+		System.out.println(logout("admin"));
 	}
 
 }

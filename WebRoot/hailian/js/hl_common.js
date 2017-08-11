@@ -57,7 +57,7 @@ function initHlChangePassword(pwdInputName){
             var signResult = FR.jsonDecode(res.responseText);
 	            if (signResult.fail) {
 	          	  showErrorMsg($('[name="'+pwdInputName+'"]'), signResult.msg);
-	            } else if (signResult.msg) {
+	            } else {
                     window.location.href = signResult.msg;
                 }
       	  }
@@ -87,8 +87,8 @@ function initHlLogout(){
             if (signResult.fail) {
           	  console.log(signResult.msg);
           	  //showErrorMsg($("#"+btnId), signResult.msg);
-            } else if (signResult.msg) {
-                window.location.href = signResult.msg;
+            } else {
+                window.location.href = "/WebReport/ReportServer?op=fs";
             } 
       	  }
         }

@@ -11,4 +11,5 @@ public class Constants {
 	public static final String AUXILIARYROLE_NAME = "XBY_BI";//辅助决策需要的角色名称
 	public static final String PORTAL_FROM="NWH5ABF13158";//userValidate的参数FROM
 	public static final String ENCODE_RULES="hailian88888888finereport201708";//对称加密 加密规则
+	public static final String RTX_AUTH_SERVER_ID="Bi";//发送消息的系统 即授权ID
 }

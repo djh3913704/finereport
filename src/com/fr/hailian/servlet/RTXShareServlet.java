@@ -1,6 +1,7 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.hailian.util.BaseServlet;
+import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.hailian.util.SymmetricEncoder;
 /**
@@ -63,13 +65,19 @@ public class RTXShareServlet extends BaseServlet {
 			System.out.println("name:"+name);*/
 			if(user!=null){
 				//获取下一级审核人信息
+				String toUserIds="test001";
 				
 				//生成url地址 发送RTX信息使用
 				String sign=SymmetricEncoder.createSign(user.getId()+"");
 				String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+user.getId();
 				System.out.println(url);
-				r.put("fail", false);
-				r.put("msg", "发送RTX信息成功!");
+				if(PortalService.sendMessageToUser(request,"多级上报未处理信息提醒", "BI平台", url, toUserIds)){
+					r.put("fail", false);
+					r.put("msg", "发送RTX信息成功!");
+				}else{
+					r.put("fail", true);
+					r.put("msg", "发送RTX信息失败!");
+				};
 			}else{
 				//先登录
 				//response.sendRedirect("/WebReport/ReportServer?op=fs");
