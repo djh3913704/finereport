@@ -36,12 +36,16 @@ public class RoleUtil {
 			//根据用户id获取该所属的所有角色
 			Iterator<CustomRole> it = roles.iterator();  
 			while (it.hasNext()) {  
-				CustomRole role = it.next();  
-				System.out.println(role.getId());  
-				if(role.getId()==com.fr.hailian.util.Constants.AUXILIARYROLE_ID){
+				CustomRole role = it.next();
+				System.out.println("role id:"+role.getId()+" roleName:"+role.getRolename()+" roleDisplayName:"+role.getDisplayName());
+				if(role.getDisplayName().equals(com.fr.hailian.util.Constants.AUXILIARYROLE_NAME)){
 					hasRole=true;
 					break;
 				}
+//				if(role.getId()==com.fr.hailian.util.Constants.AUXILIARYROLE_ID){
+//					hasRole=true;
+//					break;
+//				}
 			};
 		} catch (Exception e) {
 			e.printStackTrace();

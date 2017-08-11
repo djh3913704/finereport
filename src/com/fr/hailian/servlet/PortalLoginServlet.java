@@ -67,6 +67,8 @@ public class PortalLoginServlet extends BaseServlet {
 			String name = (String) result.get("Memo");//获取用户名，需进一步确认
 			try {
 				User user = UserControl.getInstance().getByUserName(name);//获取用户对象
+//				System.out.println(user.toString());
+				
 				if(user!=null&&RoleUtil.judgeAuxiliaryRole(user)){
 					//生成登陆凭证
 					hrequest.setAttribute(com.fr.stable.Constants.FR_USERNAME, user.getUsername());
