@@ -1,6 +1,7 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,17 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
+import com.fr.fs.control.UserControl;
+import com.fr.fs.web.service.AbstractFSAuthService;
 import com.fr.hailian.util.BaseServlet;
+import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
-import com.fr.hailian.util.SymmetricEncoder;
 /**
  * 
- * @className RTXShareServlet.java
  * @time   2017年8月10日 下午3:24:44
  * @author zuoqb
- * @todo   RTX集成 多级上报提交分享后续处理
+ * @todo   注销
  */
-public class RTXShareServlet extends BaseServlet {
+public class LogoutServlet extends BaseServlet {
 
 	/**
 	 * 
@@ -29,7 +31,7 @@ public class RTXShareServlet extends BaseServlet {
 	/**
 	 * Constructor of the object.
 	 */
-	public RTXShareServlet() {
+	public LogoutServlet() {
 		super();
 	}
 
@@ -42,40 +44,38 @@ public class RTXShareServlet extends BaseServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		overwriteReport(request,response);
+		overwriteLogout(request,response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		overwriteReport(request,response);
+		overwriteLogout(request,response);
 	}
 
-	private void overwriteReport(HttpServletRequest request,
+	private void overwriteLogout(HttpServletRequest request,
 			HttpServletResponse response) {
 		JSONObject r=new JSONObject();
-		System.out.println("RTX集成 多级上报提交分享后续处理开始...... ");
 		try {
-			//用户名
 			User user =RoleUtil.getCurrentUser(request);
-			String domain=request.getParameter("domain");
-			System.out.println("userName:"+user);
-			/*String name = java.net.URLDecoder.decode(request.getParameter(Constants.FR_USERNAME),"UTF-8");
-			System.out.println("name:"+name);*/
 			if(user!=null){
-				//获取下一级审核人信息
-				
-				//生成url地址 发送RTX信息使用
-				String sign=SymmetricEncoder.createSign(user.getId()+"");
-				String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+user.getId();
-				System.out.println(url);
-				r.put("fail", false);
-				r.put("msg", "发送RTX信息成功!");
+				//step1 本地注销
+				UserControl.getInstance().logout(user.getId());
+				//认证服务系统注销
+				Map<String,Object> map=PortalService.logout(user.getUsername());
+				if("1".equals(map.get("result")+"")){
+					//去首页
+					//response.sendRedirect("/WebReport/ReportServer?op=fs");
+					r.put("fail", false);
+					r.put("msg", "/WebReport/ReportServer?op=fs");
+				}else{
+					r.put("fail", true);
+					r.put("msg", "注销失败！");
+				}
 			}else{
-				//先登录
-				//response.sendRedirect("/WebReport/ReportServer?op=fs");
 				r.put("fail", true);
-				r.put("msg", "请先登录!");
+				r.put("msg", "该用户不存在，请注册！");
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -83,7 +83,6 @@ public class RTXShareServlet extends BaseServlet {
 	}
 
 	public void init() throws ServletException {
-		//System.out.println("RTX集成 多级上报提交分享后续处理初始化...... ");
 	}
 
 }

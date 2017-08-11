@@ -20,9 +20,9 @@
 	2.2 系统管理--外观配置--登陆方式 选择“设置登录网页”，将地址改为改造后登陆页面
 	2.3 退出，配置成功
 
-三 单点登录改造
+三 单点登录改造以及将辅助决策页面集成到第三方
  1 地址
-	http://localhost:8075/WebReport/PortalLoginServlet?Token=11111&Target=1111&__redirect__=true
+	http://localhost:8075/WebReport/portalLoginServlet?Token=11111&Target=1111&__redirect__=true
 	参数说明：
 	Token：令牌
 	Target：目标字符串
@@ -38,7 +38,7 @@
   1.1 作用机理
      设计模板时可以给控件、工具栏按钮、整个报表添加JS事件，每个事件对应一个function。
      当报表转为html页面时会将这些function加到html的头部head。当事件被触发时如点击按钮时，或者导出打印报表时，对应的function就会被执行。
-  1.1 引入现成的js文件(如果使用RTX集成需引用\WebReport\hailian\js\hl_rxt.js)
+  1.1 引入现成的js文件(如果使用RTX集成需引用\WebReport\hailian\js\hl_common.js)
       如果不是 所有模板统一引用而是只要某一个页面使用，可以直接进入1.2
       报表工程下所有模板统一引入外部js文件：服务器>服务器配置>引用JavaScript
       相对路径引用js：相对于报表工程目录如WebReport，如WebReport\js下有引用的js文件test.js，则相对路径为js/test.js；
@@ -46,11 +46,33 @@
   1.2 事件编辑界面
     找到当前事件要添加的控件，按钮控件设置>事件编辑>添加点击事件便可看到事件编辑界面了
     在编辑页面需要进行的操作：
-    1.2.1 如果1.1步骤没有引入hailian/js/hl_rxt.js，那在上方“引用JavaScript”先引入hl_rxt.js（注意路径问题），
+    1.2.1 如果1.1步骤没有引入hailian/js/hl_common.js，那在上方“引用JavaScript”先引入hl_common.js（注意路径问题），
     否则直接进入下一步
-    1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：initHlRTXReportMethod();
+    1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：initHlRTXReportMethod();无参数要求。
     1.2.3 重新启动FineReport即可
   
+
+五 修改密码
+ 	1 引用方式
+   	引入js同上（\WebReport\hailian\js\hl_common.js）
+    2 事件编辑界面 
+        绑定的方法名为initHlChangePassword();
+        这个方法需要一个参数：pwdInputName-代表新密码输入框的控件名称
+    （具体名称位置：选中输入新密码的输入框--右侧选择控件“属性”--基本属性--控件名），将找到的控件名传入绑定方法即可。
+    例如：initHlChangePassword("textEditor0");textEditor0是我定义的输入框name
+    3 响应
+          修改成功，跳转决策系统首页
+          修改失败则提示错误信息
+ 
+六 注销
+    1 引用方式
+   	引入js同上（\WebReport\hailian\js\hl_common.js）
+    2 事件编辑界面 
+          绑定的方法名为initHlLogout();无参数要求。
+    3 响应
+          成功：用户退出，跳转决策系统登陆页
+          失败：目前没有提示信息，只有打印日志
+
 
 
 

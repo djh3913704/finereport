@@ -131,10 +131,10 @@ public class SymmetricEncoder {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String createSign(String userName){
+	public static String createSign(String userId){
 		//拼接参数 格式 
 		long time=System.currentTimeMillis();
-		String info = "{\""+com.fr.stable.Constants.FR_USERNAME+"\":\""+ userName +"\",\"encodeRules\":\""+ Constants.ENCODE_RULES+"\",\"time\":\""+ time +"\"}";
+		String info = "{\"userId\":\""+ userId +"\",\"encodeRules\":\""+ Constants.ENCODE_RULES+"\",\"time\":\""+ time +"\"}";
 		String encode=SymmetricEncoder.AESEncode(Constants.ENCODE_RULES, info);
 		//对称加密后可能包含+号这种特殊字符  会影响解析 所以需要再次编码
 		if(StringUtils.isNotBlank(encode)){
@@ -152,16 +152,16 @@ public class SymmetricEncoder {
 	 * @author zuoqb
 	 * @todo  校验签名合法
 	 * @param  @param sign
-	 * @param  @param userName
+	 * @param  @param userId
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean checkSign(String sign,String userName){
+	public static boolean checkSign(String sign,String userId){
 		//安全性校验
 		if(StringUtils.isEmpty(sign)){
 			return false;
 		}
-		if(StringUtils.isEmpty(userName)){
+		if(StringUtils.isEmpty(userId)){
 			return false;
 		}
 		//对称加密后可能包含+号这种特殊字符  会影响解析 所以需要再次编码
@@ -177,7 +177,7 @@ public class SymmetricEncoder {
 		Map<String,Object> map=JsonKit.json2map(hlSign);
 		if(map!=null){
 			//验证加密规则 名字是否相同
-			if(Constants.ENCODE_RULES.equals(map.get("encodeRules"))&&userName.equals(map.get(com.fr.stable.Constants.FR_USERNAME))){
+			if(Constants.ENCODE_RULES.equals(map.get("encodeRules"))&&userId.equals(map.get("userId"))){
 				Long time=Long.parseLong(map.get("time")+"");
 				Long difference = (System.currentTimeMillis() - time) /1000;//时间差,单位秒
 				if(difference<=8*60*60){

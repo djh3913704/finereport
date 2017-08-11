@@ -15,6 +15,7 @@ import com.fr.hailian.util.BaseServlet;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.hailian.util.SymmetricEncoder;
 import com.fr.stable.Constants;
+import com.fr.stable.StringUtils;
 /**
  * 
  * @className RTXShareServlet.java
@@ -59,15 +60,19 @@ public class RTXSecurityServlet extends BaseServlet {
 		System.out.println(" RTX集成 当用户从RTX点击收到信息时  进行免登陆校验处理开始...... ");
 		try {
 			//用户名
-			String userName= request.getParameter(Constants.FR_USERNAME);
+			String userId= request.getParameter("userId");
 			String sign=request.getParameter("sign");
-			System.out.println("userName="+userName+",sign="+sign);
-			User user = UserControl.getInstance().getByUserName(userName);//获取用户对象
+			System.out.println("userId="+userId+",sign="+sign);
+			User user = null;
+			if(StringUtils.isNotBlank(userId)){
+				user=UserControl.getInstance().getUser(Long.parseLong(userId));//获取用户对象
+			}
 			System.out.println(user);
 			if(user!=null){
-				if(SymmetricEncoder.checkSign(sign, userName)){
+				if(SymmetricEncoder.checkSign(sign, userId)){
 					//登陆成功   向request写入密码 让他自登陆
 					request.setAttribute(ParameterConsts.__REDIRECT__, true);
+					request.setAttribute(Constants.FR_USERNAME, user.getUsername());
 					request.setAttribute(Constants.FR_PASSWORD, user.getPassword());
 					RoleUtil.loginCMD(request, response);
 				}else{
