@@ -6,15 +6,19 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
+import com.fr.fs.web.FSConstants;
 import com.fr.fs.web.service.AbstractFSAuthService;
+import com.fr.hailian.action.HlLoadLoginAction;
 import com.fr.hailian.util.BaseServlet;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
+import com.fr.stable.Constants;
 /**
  * 
  * @time   2017年8月10日 下午3:24:44
@@ -58,12 +62,17 @@ public class LogoutServlet extends BaseServlet {
 		try {
 			User user =RoleUtil.getCurrentUser(request);
 			if(user!=null){
-				//step1 本地注销
-				UserControl.getInstance().logout(user.getId());
 				//认证服务系统注销
 				if(PortalService.logout(user.getUsername())){
-					//去首页
+					//step2 本地注销
 					UserControl.getInstance().logout(user.getId());
+					HttpSession session=request.getSession();
+					 session.removeAttribute(FSConstants.P_KEYS.PRIVILEGE_AUTHENCATION_KEY);
+			         session.removeAttribute(Constants.P.PRIVILEGE_USERNAME);
+			         session.removeAttribute(Constants.P.PRIVILEGE_AUTHORITY);
+			         session.removeAttribute(Constants.P.PRIVILEGE_DEPARTMETN_AND_POST);
+			         session.removeAttribute(Constants.P.FR_CURRENT_PRIVILEGE_LOADER);
+					//去首页
 					//response.sendRedirect("/WebReport/ReportServer?op=fs");
 					r.put("fail", false);
 					r.put("msg", "/WebReport/ReportServer?op=fs");
