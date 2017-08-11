@@ -43,7 +43,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AuxiliaryRoleLogin</servlet-name>
-		<url-pattern>/AuxiliaryRoleLogin</url-pattern>
+		<url-pattern>/auxiliaryRoleLogin</url-pattern>
 	</servlet-mapping>
 
 
@@ -54,7 +54,48 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>PortalLoginServlet</servlet-name>
-		<url-pattern>/PortalLoginServlet</url-pattern>
+		<url-pattern>/portalLoginServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- RTX改造 -->
+	<servlet>
+		<servlet-name>RTXShareServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.RTXShareServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RTXShareServlet</servlet-name>
+		<url-pattern>/rtxShareServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- RTX集成 当用户从RTX点击收到信息时  进行免登陆校验 -->
+	<servlet>
+		<servlet-name>RTXSecurityServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.RTXSecurityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RTXSecurityServlet</servlet-name>
+		<url-pattern>/rtxSecurityServlet</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- 修改密码 -->
+	<servlet>
+		<servlet-name>ChangePwdServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.ChangePwdServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ChangePwdServlet</servlet-name>
+		<url-pattern>/changePwdServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!--注销 -->
+	<servlet>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.LogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/logoutServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fr.fs.base.entity.CustomRole;
 import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
+import com.fr.fs.web.service.ServiceUtils;
 import com.fr.hailian.action.HlLoadLoginAction;
 
 /**
@@ -74,5 +75,25 @@ public class RoleUtil {
 		long superManagerID=UserControl.getInstance().getSuperManagerID();//超级管理员ID
 		boolean isAdmin = superManagerID == user.getId(); //判断是否是管理员
 		return isAdmin;
+	}
+	/**
+	 * 
+	 * @time   2017年8月11日 上午10:41:14
+	 * @author zuoqb
+	 * @todo  过去当前登录用户
+	 * @param  @param request
+	 * @param  @return
+	 * @return_type   User
+	 */
+	public static User getCurrentUser(HttpServletRequest request){
+		long userID = ServiceUtils.getCurrentUserID(request);
+		User user=null;
+		try {
+			user = UserControl.getInstance().getUser(userID);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//获取用户对象
+		return user;
 	}
 }

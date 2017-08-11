@@ -53,6 +53,7 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 		overwriteLogin(request,response);
 	}
 
+	@SuppressWarnings("unused")
 	private void overwriteLogin(HttpServletRequest request,
 			HttpServletResponse response) {
 		JSONObject r=new JSONObject();
@@ -63,14 +64,9 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 		try {
 			name = java.net.URLDecoder.decode(hrequest.getParameter(Constants.FR_USERNAME),"UTF-8");
 			password=java.net.URLDecoder.decode(hrequest.getParameter(Constants.FR_PASSWORD),"UTF-8");
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		System.out.println("name:"+name+",password:"+password);
-		try {
+			System.out.println("name:"+name+",password:"+password);
 			User user = UserControl.getInstance().getByUserName(name);//获取用户对象
+			System.out.println("pwd:"+user.getPassword());
 			if(user!=null){
 				System.out.println("user:"+user);
 				//判断是否是超级管理员

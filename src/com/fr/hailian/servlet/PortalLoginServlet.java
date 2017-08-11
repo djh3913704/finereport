@@ -60,6 +60,7 @@ public class PortalLoginServlet extends BaseServlet {
 		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
 		String token=hrequest.getParameter("Token");//样例:FEEE591E3B55320B7038E74D4E4EFE86
 		String redictUrl=hrequest.getParameter("Target");//样例:F047F50A72B04A049D8436009
+		System.out.println("Token="+token+",Target="+redictUrl);
 		//根据token获取用户信息
 		Map<String,Object> result = PortalService.getUserInfoByToken(token, redictUrl);
 		System.out.println("根据token获取用户信息返回："+result);
