@@ -49,7 +49,7 @@
     1.2.1 如果1.1步骤没有引入hailian/js/hl_common.js，那在上方“引用JavaScript”先引入hl_common.js（注意路径问题），
     否则直接进入下一步
     1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：initHlRTXReportMethod();无参数要求。
-    1.2.3 重新启动FineReport即可
+   
   
 
 五 修改密码

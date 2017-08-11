@@ -93,14 +93,12 @@ public class PortalService {
 	 * @param newPasswd 新密码
 	 * @return “-1”：账号不正确；“-2”：原密码错误 “0”：修改失败；“1”：修改成功
 	 */
-	public static Map<String,Object> changePassword(String loginName,String oldPasswd,String newPasswd){
+	public static String changePassword(String loginName,String oldPasswd,String newPasswd){
 	    SSOService ss = new SSOService(SSOService.WSDL_LOCATION, SERVICE_NAME);
 	    SSOServiceSoap port = ss.getSSOServiceSoap();  
         java.lang.String _changePassword__return = port.changePassword(loginName, oldPasswd, newPasswd);
-        if(StringUtils.isNotBlank(_changePassword__return)){
-        	return JsonKit.json2map(_changePassword__return);
-        }
-		return new HashMap<String, Object>();
+        System.out.println("_changePassword__return:"+_changePassword__return);
+		return _changePassword__return;
 		
 	}
 	
@@ -109,14 +107,12 @@ public class PortalService {
 	 * @param loginName 用户名
 	 * @return “0”：失败；“1”：成功
 	 */
-	public static Map<String,Object> logout(String loginName){
+	public static boolean logout(String loginName){
 	    SSOService ss = new SSOService(SSOService.WSDL_LOCATION, SERVICE_NAME);
 	    SSOServiceSoap port = ss.getSSOServiceSoap();  
         java.lang.String _logout__return = port.logout(loginName);
-        if(StringUtils.isNotBlank(_logout__return)){
-        	return JsonKit.json2map(_logout__return);
-        }
-		return new HashMap<String, Object>();
+        System.out.println("_logout__return:"+_logout__return);
+		return "1".equals(_logout__return);
 	}
 	public static void SendMessageToUser(){
 		

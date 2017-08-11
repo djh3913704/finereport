@@ -70,7 +70,6 @@ public class ChangePwdServlet extends BaseServlet {
 					if(isSuccess){
 						//去首页
 						//response.sendRedirect("/WebReport/ReportServer?op=fs");
-						UserControl.getInstance().logout(user.getId());
 						r.put("fail", false);
 						r.put("msg", "/WebReport/ReportServer?op=fs");
 					}else{
@@ -79,8 +78,7 @@ public class ChangePwdServlet extends BaseServlet {
 					}
 				}else{
 					//不是超级管理员 “-1”：账号不正确；“-2”：原密码错误 “0”：修改失败；“1”：修改成功
-					Map<String,Object> map=PortalService.changePassword(user.getUsername(), oldPasswd, newPasswd);
-					switch (map.get("result")+"") {
+					switch (PortalService.changePassword(user.getUsername(), oldPasswd, newPasswd)) {
 					case "-1":
 						r.put("fail", true);
 						r.put("msg", "账号不正确");
@@ -97,11 +95,13 @@ public class ChangePwdServlet extends BaseServlet {
 						r.put("fail", false);
 						r.put("msg", "修改成功 ");
 						//去首页
-						UserControl.getInstance().logout(user.getId());
+						//UserControl.getInstance().logout(user.getId());
 						r.put("fail", false);
 						r.put("msg", "/WebReport/ReportServer?op=fs");
 						break;
 					default:
+						r.put("fail", true);
+						r.put("msg", "服务器异常!");
 						break;
 					}
 				};

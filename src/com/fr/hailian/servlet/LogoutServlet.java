@@ -61,8 +61,7 @@ public class LogoutServlet extends BaseServlet {
 				//step1 本地注销
 				UserControl.getInstance().logout(user.getId());
 				//认证服务系统注销
-				Map<String,Object> map=PortalService.logout(user.getUsername());
-				if("1".equals(map.get("result")+"")){
+				if(PortalService.logout(user.getUsername())){
 					//去首页
 					//response.sendRedirect("/WebReport/ReportServer?op=fs");
 					r.put("fail", false);
