@@ -48,7 +48,10 @@
     在编辑页面需要进行的操作：
     1.2.1 如果1.1步骤没有引入hailian/js/hl_common.js，那在上方“引用JavaScript”先引入hl_common.js（注意路径问题），
     否则直接进入下一步
-    1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：initHlRTXReportMethod();无参数要求。
+    1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：var result=initHlRTXReportMethod();无参数要求。
+    1.2.3 返回结果
+          成功：发送RTX信息
+          失败 返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}
    
   
 
@@ -57,21 +60,23 @@
    	引入js同上（\WebReport\hailian\js\hl_common.js）
     2 事件编辑界面 
         绑定的方法名为initHlChangePassword();
-        这个方法需要一个参数：pwdInputName-代表新密码输入框的控件名称
+        这个方法需要两个参数：
+        oldpwdInputName-代表老密码输入框的控件名称
+        newpwdInputName-代表新密码输入框的控件名称
     （具体名称位置：选中输入新密码的输入框--右侧选择控件“属性”--基本属性--控件名），将找到的控件名传入绑定方法即可。
-    例如：initHlChangePassword("textEditor0");textEditor0是我定义的输入框name
+    例如：var result=initHlChangePassword("textEditor11","textEditor0");textEditor11,textEditor0是我定义的输入框name
     3 响应
           修改成功，跳转决策系统首页
-          修改失败则提示错误信息
+          修改失败返回错误提示信息result 格式：{fail: true, msg: "原密码错误 "}
  
 六 注销
     1 引用方式
    	引入js同上（\WebReport\hailian\js\hl_common.js）
     2 事件编辑界面 
-          绑定的方法名为initHlLogout();无参数要求。
+          绑定的方法名为var result=initHlLogout();无参数要求。
     3 响应
           成功：用户退出，跳转决策系统登陆页
-          失败：目前没有提示信息，只有打印日志
+           修改失败返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}
 
 
 

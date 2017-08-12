@@ -61,50 +61,55 @@ public class ChangePwdServlet extends BaseServlet {
 			//用户名
 			User user =RoleUtil.getCurrentUser(request);
 			if(user!=null){
-				String oldPasswd=user.getPassword();
+				String oldPasswd=java.net.URLDecoder.decode(request.getParameter("oldPassword"),"UTF-8");
 				String newPasswd= java.net.URLDecoder.decode(request.getParameter(Constants.FR_PASSWORD),"UTF-8");
 				System.out.println("newPasswd="+newPasswd);
-				if(RoleUtil.isSuperAdmin(user)){
-					//登本地修改
-					boolean isSuccess=UserControl.getInstance().updatePassword(user.getId(), oldPasswd, newPasswd);
-					if(isSuccess){
-						//去首页
-						//response.sendRedirect("/WebReport/ReportServer?op=fs");
-						r.put("fail", false);
-						r.put("msg", "/WebReport/ReportServer?op=fs");
+				if(user.getPassword().equals(oldPasswd)){
+					if(RoleUtil.isSuperAdmin(user)){
+						//登本地修改
+						boolean isSuccess=UserControl.getInstance().updatePassword(user.getId(), oldPasswd, newPasswd);
+						if(isSuccess){
+							//去首页
+							//response.sendRedirect("/WebReport/ReportServer?op=fs");
+							r.put("fail", false);
+							r.put("msg", "/WebReport/ReportServer?op=fs");
+						}else{
+							r.put("fail", true);
+							r.put("msg", "管理员密码修改失败，请重试！");
+						}
 					}else{
-						r.put("fail", true);
-						r.put("msg", "管理员密码修改失败，请重试！");
-					}
+						//不是超级管理员 “-1”：账号不正确；“-2”：原密码错误 “0”：修改失败；“1”：修改成功
+						switch (PortalService.changePassword(user.getUsername(), oldPasswd, newPasswd)) {
+						case "-1":
+							r.put("fail", true);
+							r.put("msg", "账号不正确");
+							break;
+						case "-2":
+							r.put("fail", true);
+							r.put("msg", "原密码错误 ");
+							break;
+						case "0":
+							r.put("fail", true);
+							r.put("msg", "修改失败");
+							break;
+						case "1":
+							r.put("fail", false);
+							r.put("msg", "修改成功 ");
+							//去首页
+							//UserControl.getInstance().logout(user.getId());
+							r.put("fail", false);
+							r.put("msg", "/WebReport/ReportServer?op=fs");
+							break;
+						default:
+							r.put("fail", true);
+							r.put("msg", "服务器异常!");
+							break;
+						}
+					};
 				}else{
-					//不是超级管理员 “-1”：账号不正确；“-2”：原密码错误 “0”：修改失败；“1”：修改成功
-					switch (PortalService.changePassword(user.getUsername(), oldPasswd, newPasswd)) {
-					case "-1":
-						r.put("fail", true);
-						r.put("msg", "账号不正确");
-						break;
-					case "-2":
-						r.put("fail", true);
-						r.put("msg", "原密码错误 ");
-						break;
-					case "0":
-						r.put("fail", true);
-						r.put("msg", "修改失败");
-						break;
-					case "1":
-						r.put("fail", false);
-						r.put("msg", "修改成功 ");
-						//去首页
-						//UserControl.getInstance().logout(user.getId());
-						r.put("fail", false);
-						r.put("msg", "/WebReport/ReportServer?op=fs");
-						break;
-					default:
-						r.put("fail", true);
-						r.put("msg", "服务器异常!");
-						break;
-					}
-				};
+					r.put("fail", true);
+					r.put("msg", "原密码错误 ");
+				}
 			}else{
 				r.put("fail", true);
 				r.put("msg", "该用户不存在，请注册！");

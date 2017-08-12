@@ -5,6 +5,7 @@
  * RTX集成相关方法 多级上报
  */
 function initHlRTXReportMethod(){
+	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
 	  //domain="/WebReport";
 	  var url=domain.replace("/ReportServer","");
@@ -18,51 +19,73 @@ function initHlRTXReportMethod(){
           type: 'POST',
           async: false,
           error: function () {
-              FR.Msg.toast("Error!");
+              result.fail=true;
+        	  result.msg="服务器异常！";
           },
           complete: function (res, status) {
         	  if (res.responseText != "") {
               var signResult = FR.jsonDecode(res.responseText);
 	              if (signResult.fail) {
-	            	  console.log(signResult.msg);
+	            	  result.fail=true;
+	            	  result.msg=signResult.msg;
 	              } 
         	  }
           }
       });
+	  return result;
 };
 
 /*
  * 修改密码
- * pwdInputName:新密码控件名字
+ * oldpwdInputName:老密码控件名字
+ * newpwdInputName:新密码控件名字
+ *   修改成功，跳转决策系统首页
+          修改失败返回错误提示信息 格式：{fail: true, msg: "原密码错误 "}
  */
-function initHlChangePassword(pwdInputName){
-	  pwdInputName=pwdInputName.toUpperCase();
+function initHlChangePassword(oldpwdInputName,newpwdInputName){
+	  var result=new Object();
+	  oldpwdInputName=oldpwdInputName.toUpperCase();
+	  newpwdInputName=newpwdInputName.toUpperCase();
 	  var domain=FR.serverURL+FR.servletURL;
 	  domain="/WebReport";
       domain=domain.replace("/ReportServer","")+'/changePwdServlet';
-      var newPassword=$('[name="'+pwdInputName+'"]').val();
-	  console.log(domain+"--"+newPassword);
+      var oldPassword=$('[name="'+oldpwdInputName+'"]').val();
+      var newPassword=$('[name="'+newpwdInputName+'"]').val();
+      if(oldPassword==""){
+    	  result.fail=true;
+    	  result.msg="请输入原密码！";
+    	  return result;
+      }
+      if(newPassword==""){
+    	  result.fail=true;
+    	  result.msg="请输入新密码！";
+    	  return result;
+      }
 	  FR.ajax({
     	  url: domain,
           data: FR.cjkEncodeDO({
         	fr_password: encodeURIComponent(newPassword),
+        	oldPassword:encodeURIComponent(oldPassword)
         }),
         type: 'POST',
         async: false,
         error: function () {
-            FR.Msg.toast("Error!");
+        	 result.fail=true;
+       	     result.msg="服务器异常！";
         },
         complete: function (res, status) {
       	  if (res.responseText != "") {
             var signResult = FR.jsonDecode(res.responseText);
 	            if (signResult.fail) {
-	          	  showErrorMsg($('[name="'+pwdInputName+'"]'), signResult.msg);
+	            	result.fail=true;
+	          	    result.msg=signResult.msg;
 	            } else {
                     window.location.href = signResult.msg;
                 }
       	  }
         }
     });
+	return result;
 };
 
 
@@ -70,35 +93,29 @@ function initHlChangePassword(pwdInputName){
  * 注销
  */
 function initHlLogout(){
+	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
 	  domain="/WebReport";
       domain=domain.replace("/ReportServer","")+'/logoutServlet';
-	  console.log(domain);
 	  FR.ajax({
     	  url: domain,
         type: 'POST',
         async: false,
         error: function () {
-            FR.Msg.toast("Error!");
+        	result.fail=true;
+      	    result.msg="服务器异常！";
         },
         complete: function (res, status) {
       	  if (res.responseText != "") {
             var signResult = FR.jsonDecode(res.responseText);
             if (signResult.fail) {
-          	  console.log(signResult.msg);
-          	  //showErrorMsg($("#"+btnId), signResult.msg);
+            	result.fail=true;
+          	    result.msg=signResult.msg;
             } else {
                 window.location.href = "/WebReport/ReportServer?op=fs";
             } 
       	  }
         }
     });
-};
-function showErrorMsg ($pos, msg) {
-	var $mask = $('<div class="fs-login-errmask"/>');
-    $mask.hide().insertAfter($pos).text(msg);
-    $mask.click(function () {
-        $(this).fadeOut();
-        $pos.select();
-    }).fadeIn();
+	return result;
 };
