@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.Endpoint;
 
 import com.fr.fs.base.entity.User;
 import com.fr.fs.base.entity.UserInfo;
@@ -18,6 +19,7 @@ import com.fr.fs.control.UserControl;
 import com.fr.fs.privilege.auth.FSAuthentication;
 import com.fr.fs.privilege.base.FServicePrivilegeLoader;
 import com.fr.fs.privilege.entity.DaoFSAuthentication;
+import com.fr.hailian.wsdl.HaveDoneWebService;
 import com.fr.privilege.session.PrivilegeInfoSessionMananger;
 /**
  * 
@@ -68,7 +70,6 @@ public class FRFilter implements Filter {
 	}
 
 	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
 		System.out.println("拦截器例子初始化.....");
 
 	}

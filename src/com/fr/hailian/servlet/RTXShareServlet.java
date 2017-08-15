@@ -1,7 +1,6 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
-import com.fr.hailian.util.BaseServlet;
+import com.fr.hailian.core.BaseServlet;
+import com.fr.hailian.util.DESSymmetricEncoder;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
-import com.fr.hailian.util.SymmetricEncoder;
 /**
  * 
  * @className RTXShareServlet.java
@@ -68,7 +67,7 @@ public class RTXShareServlet extends BaseServlet {
 				String toUserIds="test001";
 				
 				//生成url地址 发送RTX信息使用
-				String sign=SymmetricEncoder.createSign(user.getId()+"");
+				String sign=DESSymmetricEncoder.createSign(user.getId()+"");
 				String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+user.getId();
 				System.out.println(url);
 				if(PortalService.sendMessageToUser(request,"多级上报未处理信息提醒", "BI平台", url, toUserIds)){

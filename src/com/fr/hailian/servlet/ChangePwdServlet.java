@@ -13,7 +13,7 @@ import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
 import com.fr.fs.web.service.AbstractFSAuthService;
 import com.fr.fs.web.service.ServiceUtils;
-import com.fr.hailian.util.BaseServlet;
+import com.fr.hailian.core.BaseServlet;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.stable.Constants;

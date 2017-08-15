@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
-import com.fr.hailian.util.BaseServlet;
+import com.fr.hailian.core.BaseServlet;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
 /**

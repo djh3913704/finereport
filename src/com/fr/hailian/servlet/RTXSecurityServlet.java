@@ -11,9 +11,9 @@ import org.json.JSONObject;
 import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
 import com.fr.general.web.ParameterConsts;
-import com.fr.hailian.util.BaseServlet;
+import com.fr.hailian.core.BaseServlet;
+import com.fr.hailian.util.DESSymmetricEncoder;
 import com.fr.hailian.util.RoleUtil;
-import com.fr.hailian.util.SymmetricEncoder;
 import com.fr.stable.Constants;
 import com.fr.stable.StringUtils;
 /**
@@ -67,9 +67,8 @@ public class RTXSecurityServlet extends BaseServlet {
 			if(StringUtils.isNotBlank(userId)){
 				user=UserControl.getInstance().getUser(Long.parseLong(userId));//获取用户对象
 			}
-			System.out.println(user);
 			if(user!=null){
-				if(SymmetricEncoder.checkSign(sign, userId)){
+				if(DESSymmetricEncoder.checkSign(sign, userId)){
 					//登陆成功   向request写入密码 让他自登陆
 					request.setAttribute(ParameterConsts.__REDIRECT__, true);
 					request.setAttribute(Constants.FR_USERNAME, user.getUsername());

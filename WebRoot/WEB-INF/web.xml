@@ -24,6 +24,7 @@
 
 
 	<!-- 定义拦截器 -->
+	
 	<filter>
 		<filter-name>FRFilter</filter-name>
 		<filter-class>com.fr.hailian.filter.FRFilter</filter-class>
@@ -31,6 +32,17 @@
 	<filter-mapping>
 		<filter-name>FRFilter</filter-name>
 		<url-pattern>/index.jsp</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<!-- WebService注入类 -->
+	<filter>
+		<filter-name>WebServiceFilter</filter-name>
+		<filter-class>com.fr.hailian.filter.WebServiceFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>WebServiceFilter</filter-name>
+		<url-pattern>/webservice</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 
@@ -96,6 +108,27 @@
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/logoutServlet</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!--导入人员 机构信息 -->
+	<servlet>
+		<servlet-name>ImportInfoServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.ImportInfoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImportInfoServlet</servlet-name>
+		<url-pattern>/importInfoServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 通过form表单导入信息 -->
+	<servlet>
+		<servlet-name>ImportByFormServlet</servlet-name>
+		<servlet-class>com.fr.hailian.servlet.ImportByFormServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImportByFormServlet</servlet-name>
+		<url-pattern>/importByFormServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>

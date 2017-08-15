@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
-import com.fr.hailian.util.BaseServlet;
+import com.fr.hailian.core.BaseServlet;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.stable.Constants;
@@ -125,7 +125,6 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 	}
 
 	public void init() throws ServletException {
-		System.out.println("辅助决策登陆改造初始化...... ");
 	}
 
 }

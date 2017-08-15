@@ -10,10 +10,11 @@ import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.fs.web.FSConstants;
-import com.fr.hailian.rtxWebservice.IMService;
-import com.fr.hailian.rtxWebservice.IMServiceSoap;
-import com.fr.hailian.webservice.SSOService;
-import com.fr.hailian.webservice.SSOServiceSoap;
+import com.fr.hailian.core.Constants;
+import com.fr.hailian.rtxWebService.IMService;
+import com.fr.hailian.rtxWebService.IMServiceSoap;
+import com.fr.hailian.ssoWebService.SSOService;
+import com.fr.hailian.ssoWebService.SSOServiceSoap;
 import com.fr.stable.StringUtils;
 
 public class PortalService {

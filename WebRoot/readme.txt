@@ -79,8 +79,44 @@
            修改失败返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}
 
 
+七 导入人员信息
+   方式一：js引用
+   1 引用方式
+   	引入js同上（\WebReport\hailian\js\hl_common.js）
+    2 事件编辑界面 
+          绑定的方法名为var result=importUserInfo(filePath);需要一个参数 filePath:文件路径。
+          比如    importUserInfo(" D:\\test.xlsx")
+    3 响应
+          成功：导入数据库，并返还信息
+          失败返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}
+   方式二：访问页面操作
+   http://localhost:8075/WebReport/importInfo.html
 
 
-其他注意项：
+强调：其他注意项 
+发布程序前需要修改基本配置com.fr.hailian.core.Constants文件中：
  1 辅助决策系统权限目前默认写成222（正式发布需要改，否则所有认证都会返回没有权限的提示）
- com.fr.hailian.util.Constants文件中的AUXILIARYROLE_ID
+ com.fr.hailian.core.Constants文件中的AUXILIARYROLE_ID
+ 2 数据库配置改成正式
+ 
+ 
+ 项目组织结构：
+  	--src                                                 后台代码部分
+	  	   --com.fr.hailian.action						  	对FineAPI的重写包
+	  	   --com.fr.hailian.core							核心包，目前存有数据库操作服务
+	  	   --com.fr.hailian.excel							操作excel工具包
+	  	   --com.fr.hailian.filter							项目拦截器 ：全局拦截 发布wsdl
+	  	   --com.fr.hailian.model							实体类
+	  	   --com.fr.hailian.rtxWebService					RTX集成引用的webservice接口
+	  	   --com.fr.hailian.service							操作数据库service
+	  	   --com.fr.hailian.util							系统常用工具栏
+	  	   --com.fr.hailian.wsdl							对外提供的WebService接口
+	  --WebRoot											          前端页面 css  js以及项目配置文件 jar包
+	  	   --hailian										自定义开发文件
+	  	     --css											自定义样式
+	  	     --img											自定义图片
+	  	     --js											自定义js
+	  	   --WEB-INF
+	  	     --lib											项目引用jar
+	  	     --web.xml										项目配置文件
+	  	   --readme.txt										项目结构 部署说明
