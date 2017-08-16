@@ -136,7 +136,7 @@ public class DataBaseToolService {
     }
 
     // 鎵瑰鐞嗘墽琛屾暟鎹簱璇彞
-    public static void excuteBySqlBatch(List<String> sqls) throws SQLException {
+    public static void excuteBySqlBatch(List<String> sqls) throws Exception {
         Connection conn = null;
         Statement state = null;
         try {
@@ -149,6 +149,7 @@ public class DataBaseToolService {
             state.executeBatch();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("执行错误！");
         } finally {
 
             if (null != state) {

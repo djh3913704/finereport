@@ -12,15 +12,19 @@
     <meta name="keywords" content="FineReport,Web Reporting Tool">
 </head>
 <body>
-<form id='myupload' action='XXXXXXXXXXXX' method='post' enctype='multipart/form-data'>
+<form id='myupload' action='/WebReport/importByFormServlet' method='post' enctype='multipart/form-data'>
 <div class="demo">
 <div class="btn">
     <span>添加附件</span>
     <input id="fileupload" type="file" name="file1">
 </div>
-<div class="progress">
-    <span class="bar"></span><span class="percent">0%</span>
+<div>
+<label><input name="type" type="radio" value="0" checked/>人员信息 </label> 
+<label><input name="type" type="radio" value="1" />组织机构 </label> 
 </div>
+<!-- <div class="progress">
+    <span class="bar"></span><span class="percent">0%</span>
+</div> -->
 <!-- 显示已上传的文件名 -->
 <div class="files"></div>
 <!-- 显示已上传的图片-->
@@ -28,7 +32,8 @@
 </div>
 <input type="submit" onclick="gosubmit2()"/>
 </form>
-<script type="text/javascript" src="jquery-form.js"></script>
+<script type="text/javascript" src="/WebReport/hailian/js/jquery-2.2.4.js"></script>
+<script type="text/javascript" src="/WebReport/hailian/js/jquery-form.js"></script>
 <script type="text/javascript">
     var bar = $('.bar');//进度条
     var percent = $('.percent');//获取上传百分比
@@ -55,7 +60,7 @@
             },
             success:function(data){//图片上传成功时
                 //获取服务器端返回的文件数据
-                alert(data.name+","+data.pic+","+data.size);                
+               // alert(data);                
             },
             error:function(xhr){
                 btn.html(上传失败);
@@ -65,7 +70,5 @@
         });
     }
 </script>
-<script type="text/javascript" src="/WebReport/hailian/js/jquery-form.js"></script>
-<script type="text/javascript" src="/WebReport/hailian/js/hl_common.js"></script>
 </body>
 </html>

@@ -27,9 +27,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <label><input name="type" type="radio" value="0" checked/>人员信息 </label> 
 <label><input name="type" type="radio" value="1" />组织机构 </label> 
 </div>
-<div class="progress">
+<!-- <div class="progress">
     <span class="bar"></span><span class="percent">0%</span>
-</div>
+</div> -->
 <!-- 显示已上传的文件名 -->
 <div class="files"></div>
 <!-- 显示已上传的图片-->

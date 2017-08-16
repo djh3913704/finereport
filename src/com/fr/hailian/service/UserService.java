@@ -12,7 +12,6 @@ import com.fr.hailian.core.Constants;
 import com.fr.hailian.core.DataBaseToolService;
 import com.fr.hailian.excel.ImportExcel;
 import com.fr.hailian.model.UserModel;
-import com.fr.stable.StringUtils;
 
 /**
  * 
@@ -52,16 +51,38 @@ public class UserService {
 	 * 
 	 * @time   2017年8月14日 上午10:35:21
 	 * @author zuoqb
-	 * @todo   根据工号判断是否存在
+	 * @todo   根据是否存在:ID用户名都相同
 	 * @param  @param userNum
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean ifExistsUser(String userNum){
-		if(StringUtils.isBlank(userNum)){
+	public static boolean ifExistsUser(UserModel user){
+		if(user==null){
 			return false;
 		}
-		String sql="select * from fr_t_user where username='"+userNum+"'";
+		String sql="select * from fr_t_user where username='"+user.getUserName()+"' and id='"+user.getId()+"' ";
+		
+		try {
+			return DataBaseToolService.ifExistsBySql(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	/**
+	 * 
+	 * @time   2017年8月14日 上午10:35:21
+	 * @author zuoqb
+	 * @todo   是否存在部门与用户对照:ID用户名都相同
+	 * @param  @param user
+	 * @param  @return
+	 * @return_type   boolean
+	 */
+	public static boolean ifExistsDepUser(UserModel user){
+		if(user==null){
+			return false;
+		}
+		String sql="select * from fr_t_department_post_user where userid='"+user.getId()+"' and departmentid='"+user.getOrgCode()+"' ";
 		
 		try {
 			return DataBaseToolService.ifExistsBySql(sql);
@@ -80,10 +101,7 @@ public class UserService {
 	 * @return_type   boolean
 	 */
 	public static boolean insertUser(UserModel user){
-		  String insertsql="insert into fr_t_user(username, password, realname) values ("
-                  +"'"+user.getUserName()+"',"
-                  +"'"+user.getPassword()+"',"
-                  +"'"+user.getUserNum()+"')";
+		  String insertsql=getInsertUserSql(user);
 		  try {
 			DataBaseToolService.excuteBySql(insertsql);
 			return true;
@@ -91,6 +109,22 @@ public class UserService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	/**
+	 * 
+	 * @time   2017年8月16日 上午11:11:09
+	 * @author zuoqb
+	 * @todo   部门角色对应的用户表插入语句
+	 * @param  @param user
+	 * @param  @return
+	 * @return_type   String
+	 */
+	public static String getInsertDepartmentPostUserSql(UserModel user){
+		String insertsql="insert into fr_t_department_post_user(userid, departmentid, postid) values ("
+                +"'"+user.getId()+"',"
+                 +"'"+user.getOrgCode()+"',"
+                +"'"+Constants.DEFAULT_POST+"')";
+		  return insertsql;
 	}
 	/**
 	 * 
@@ -102,16 +136,17 @@ public class UserService {
 	 * @return_type   String
 	 */
 	public static String getInsertUserSql(UserModel user){
-		  String insertsql="insert into fr_t_user(username, password, realname) values ("
+		String insertsql="insert into fr_t_user(id,username, password, realname,email) values ("
+                +"'"+user.getId()+"',"
+                 +"'"+user.getUserName()+"',"
+                  +"'"+user.getPassword()+"',"
                 +"'"+user.getUserName()+"',"
-                +"'"+user.getPassword()+"',"
-                +"'"+user.getUserNum()+"')";
+                +"'"+user.getEmail()+"')";
 		  return insertsql;
 	}
 	
 	public static boolean updateUser(UserModel user){
-		  String updatesql=" update  fr_t_user set username='"+user.getUserName()+"', password='"+user.getPassword()+"',realname='"+user.getUserNum()+"' ";
-		  updatesql+=" where username='"+user.getUserName()+"' ";
+		  String updatesql=getupdateUserSql(user);
 		  try {
 			DataBaseToolService.excuteBySql(updatesql);
 			return true;
@@ -119,6 +154,11 @@ public class UserService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	public static String getupdateUserSql(UserModel user){
+		 String updatesql=" update  fr_t_user set  username='"+user.getUserName()+"', password='"+user.getPassword()+"', realname='"+user.getRealName()+"', email='"+user.getEmail()+"' ";
+		  updatesql+=" where id='"+user.getId()+"' ";
+		  return updatesql;
 	}
 	/**
 	 * 
@@ -131,9 +171,6 @@ public class UserService {
 	 */
 	public static List<UserModel> getExcel2User(String filePath){
 		ImportExcel ei;
-		/**
-		 * 	可同步的数据有工号、姓名、状态、组织机构编码，系统ID
-		 */
 		try {
 			ei = new ImportExcel(filePath, 0);
 			return excel2User(ei);
@@ -144,9 +181,6 @@ public class UserService {
 	}
 	public static List<UserModel> getExcel2User(String fileName,InputStream is){
 		ImportExcel ei;
-		/**
-		 * 	可同步的数据有工号、姓名、状态、组织机构编码，系统ID
-		 */
 		try {
 			ei = new ImportExcel(fileName,is,0, 0);
 			return excel2User(ei);
@@ -155,9 +189,13 @@ public class UserService {
 		}
 		return null;
 	}
+	/**
+	 * 	可同步的数据USERID （用户ID）	PASSWORD（密码）	NAME（名字）	
+	 * ORGID（组织机构ID）	EMAIL（邮箱）	FORGNAME（组织机构名称）
+	 */
 	private static List<UserModel> excel2User(ImportExcel ei) {
 		List<UserModel> userList=new ArrayList<UserModel>();
-		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum(); i++) {
+		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum()+1; i++) {
 			Row row = ei.getRow(i);
 			if(ei.getLastCellNum()>=5){
 				UserModel m=new UserModel();
@@ -165,28 +203,30 @@ public class UserService {
 					String val = ei.getCellValue(row, j)+"";
 					switch (j) {
 					case 0:
-						m.setUserNum(val);
+						m.setId(val);
 						break;
 					case 1:
-						m.setUserName(val);
+						m.setPassword(Constants.DEFAULT_PWD);
 						break;
 					case 2:
-						m.setFlag(val);
+						m.setUserName(val);
+						m.setRealName(val);
 						break;
 					case 3:
 						m.setOrgCode(val);
 						break;
 					case 4:
-						m.setSysId(val);
+						m.setEmail(val);
+						break;
+					case 5:
+						m.setOrgName(val);
 						break;
 					default:
 						break;
 					}
 				}
-				if(StringUtils.isNotBlank(m.getUserName())){
-					m.setPassword(Constants.DEFAULT_PWD);
-					userList.add(m);
-				}
+				m.setPassword(Constants.DEFAULT_PWD);
+				userList.add(m);
 			}
 		}
 		return userList;
@@ -202,39 +242,69 @@ public class UserService {
 	 */
 	public static JSONObject importUser(String filePath){
 		List<UserModel> userList=getExcel2User(filePath);
-		System.out.println("userList:"+userList.toString());
 		return operateDbForUser(userList);
 	}
 	
 	public static JSONObject importUser(String fileName,InputStream is){
 		List<UserModel> userList=getExcel2User(fileName,is);
-		System.out.println("userList:"+userList.toString());
 		return operateDbForUser(userList);
 	}
+	/**
+	 * 
+	 * @time   2017年8月16日 上午11:08:46
+	 * @author zuoqb
+	 * @todo   将用户写入数据库
+	 * @param  @param userList
+	 * @param  @return
+	 * @return_type   JSONObject
+	 */
 	private static JSONObject operateDbForUser(List<UserModel> userList) {
 		JSONObject o=new JSONObject();
 		if(userList==null||userList.size()==0){
 			o.put("fail", true);
 			o.put("msg", "Excel内容不能为空！");
 		}else{
-			String failUser="";//原系统已经存在的用户
-			List<String> insertList=new ArrayList<String>();
+			List<String> updateUser=new ArrayList<String>();//原系统已经存在的用户
+			List<String> insertUserList=new ArrayList<String>();
+			List<String> insertDepUserPostList=new ArrayList<String>();
 			for(UserModel u:userList){
-				if(!UserService.ifExistsUser(u.getUserName())){
-					insertList.add(UserService.getInsertUserSql(u));
+				if(!UserService.ifExistsUser(u)){
+					insertUserList.add(UserService.getInsertUserSql(u));
 				}else{
-					failUser+=u.getUserName()+",";
+					updateUser.add(UserService.getupdateUserSql(u));
+				}
+				if(!UserService.ifExistsDepUser(u)){
+					//维护机构与用户对应关系
+					insertDepUserPostList.add(UserService.getInsertDepartmentPostUserSql(u));
 				}
 			}
 			try {
-				DataBaseToolService.excuteBySqlBatch(insertList);
+				//写入fr_t_user
+				if(insertUserList.size()>0){
+					DataBaseToolService.excuteBySqlBatch(insertUserList);
+				}
+				if(updateUser.size()>0){
+					DataBaseToolService.excuteBySqlBatch(updateUser);
+				}
+				//写入fr_t_department_post_user 部门角色对应的用户表
+				if(insertDepUserPostList.size()>0){
+					DataBaseToolService.excuteBySqlBatch(insertDepUserPostList);
+				}
+				o.put("fail", false);
+				String msg="Excel人员总数量:"+userList.size()+"。导入成功数量："+(insertUserList.size()+updateUser.size());
+				if(insertUserList.size()>0){
+					msg+=",其中新增数量为："+insertUserList.size();
+				}
+				if(updateUser.size()>0){
+					msg+="。更新数量为："+updateUser.size();
+				}
+				o.put("msg", msg);
 			} catch (Exception e) {
 				e.printStackTrace();
+				o.put("fail", true);
+				o.put("msg", "导入失败，请检查Excel格式以及导入类型");
 			}
-			o.put("fail", false);
-			o.put("msg", "Excel人员总数量:"+userList.size()+"。其导入成功数量："
-			+insertList.size()+",导入失败数量为："+(userList.size()-insertList.size())
-			+"。失败用户名称："+failUser+"，失败原因：上述用户已经在系统中存在！");
+		
 		}
 		return o;
 	}
@@ -248,7 +318,7 @@ public class UserService {
 			boolean update=updateUser(user);
 			System.out.println("update:"+update);
 		}*/
-		JSONObject o=UserService.importUser("D:\\test.xlsx");
+		JSONObject o=UserService.importUser("D:\\用户管理.xlsx");
 		System.out.println(o.toString());
 	}
 

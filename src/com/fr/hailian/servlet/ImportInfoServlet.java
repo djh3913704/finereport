@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.hailian.core.BaseServlet;
+import com.fr.hailian.service.OrganizationService;
 import com.fr.hailian.service.UserService;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.stable.StringUtils;
@@ -61,7 +62,7 @@ public class ImportInfoServlet extends BaseServlet {
 		try {
 			type=java.net.URLDecoder.decode(request.getParameter("type"),"UTF-8");//type:类型 0-人员 1-机构
 			filePath = java.net.URLDecoder.decode(request.getParameter("filePath"),"UTF-8");
-			System.out.println("filePath:"+filePath+",type="+type);
+			//System.out.println("filePath:"+filePath+",type="+type);
 			if(StringUtils.isBlank(type)){
 				r.put("fail", false);
 				r.put("msg", "参数不全，请选择导入信息类型 : 0-人员 1-机构");
@@ -83,7 +84,8 @@ public class ImportInfoServlet extends BaseServlet {
 					r=UserService.importUser(filePath);
 				}else if("1".equals(type)){
 					//导入机构
-					
+					r=new JSONObject();
+					r=OrganizationService.importOrganization(filePath);
 				}else{
 					r.put("fail", false);
 					r.put("msg", "type类型只能为0或1 : 0-人员    1-机构");

@@ -15,6 +15,7 @@ public class OrganizationModel  implements Serializable{
 	 */
 	private static final long serialVersionUID = -2264294461266991528L;
 	private String id;//主键
+	private String pid;//父键
 	private String name;//名称
 	private String des;//描述
 	public String getId() {
@@ -22,6 +23,12 @@ public class OrganizationModel  implements Serializable{
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getPid() {
+		return pid;
+	}
+	public void setPid(String pid) {
+		this.pid = pid;
 	}
 	public String getName() {
 		return name;

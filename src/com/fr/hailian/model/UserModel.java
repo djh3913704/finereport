@@ -17,39 +17,24 @@ public class UserModel implements Serializable{
 	 */
 	private static final long serialVersionUID = 6201547131958870064L;
 	private String id;//主键ID
-	private String userNum;//员工编号
 	private String userName;//员工姓名
 	private String password;//密码  默认123456
-	private String flag;//状态
 	private String orgCode;//组织编码
-	private String sysId;//系统ID
+	private String orgName;//组织名字
 	private String realName;
 	private String email;
-	public UserModel(){
-		super();
-	}
-	public UserModel(String userNum, String userName, String flag,
-			String orgCode, String sysId) {
-		super();
-		this.userNum = userNum;
-		this.userName = userName;
-		this.flag = flag;
-		this.orgCode = orgCode;
-		this.sysId = sysId;
-		this.password=Constants.DEFAULT_PWD;
-	}
 	
-	public UserModel(String userNum, String userName, String flag,
-			String orgCode, String sysId, String password) {
-		super();
-		this.userNum = userNum;
-		this.userName = userName;
-		this.flag = flag;
-		this.orgCode = orgCode;
-		this.sysId = sysId;
-		this.password = password;
-	}
 	
+	public String getOrgName() {
+		return orgName;
+	}
+
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+
 	public String getRealName() {
 		return realName;
 	}
@@ -74,34 +59,16 @@ public class UserModel implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getUserNum() {
-		return userNum;
-	}
-	public void setUserNum(String userNum) {
-		this.userNum = userNum;
-	}
 	public String getUserName() {
 		return userName;
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getFlag() {
-		return flag;
-	}
-	public void setFlag(String flag) {
-		this.flag = flag;
-	}
 	public String getOrgCode() {
 		return orgCode;
 	}
 	public void setOrgCode(String orgCode) {
 		this.orgCode = orgCode;
-	}
-	public String getSysId() {
-		return sysId;
-	}
-	public void setSysId(String sysId) {
-		this.sysId = sysId;
 	}
 }

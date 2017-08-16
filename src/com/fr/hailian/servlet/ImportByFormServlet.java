@@ -1,7 +1,6 @@
 package com.fr.hailian.servlet;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
@@ -27,9 +26,6 @@ import com.fr.hailian.service.UserService;
  * @todo   通过form导入人员信息
  */
 public class ImportByFormServlet extends BaseServlet {
-	/*private String uploadPath = "D:\\zuo_temp"; // 上传文件的目录  
-    File tempPathFile;  
-*/
 	/**
 	 * 
 	 */
@@ -51,15 +47,15 @@ public class ImportByFormServlet extends BaseServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		overwriteImportInfo(request,response);
+		overwriteImportByForm(request,response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		overwriteImportInfo(request,response);
+		overwriteImportByForm(request,response);
 	}
 	@SuppressWarnings("unchecked")
-	private void overwriteImportInfo(HttpServletRequest request,
+	private void overwriteImportByForm(HttpServletRequest request,
 			HttpServletResponse response) {
 		JSONObject r=new JSONObject();
 		try {
@@ -85,7 +81,6 @@ public class ImportByFormServlet extends BaseServlet {
                 	excelFile=fileItem;
                 }
             }  
-            System.out.println(type);
             if(excelFile!=null){
             	if("0".equals(type)){
             		r=UserService.importUser(excelFile.getName(), excelFile.getInputStream());

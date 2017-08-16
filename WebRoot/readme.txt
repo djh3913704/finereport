@@ -80,6 +80,9 @@
 
 
 七 导入人员信息
+  强调：因为表设置外键关系，所以必须先导入机构信息，才可以导入人员信息。在生成机构与人员对应关系时，
+  需要写入一个职位字段值，目前写死默认，导入员工的默认职务ID（变量DEFAULT_POST） 表名：FR_T_POST 在Constants类中。这个字段值
+  必须在FR_T_POST表中存在，否则导入失败。
    方式一：js引用
    1 引用方式
    	引入js同上（\WebReport\hailian\js\hl_common.js）
@@ -90,7 +93,10 @@
           成功：导入数据库，并返还信息
           失败返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}
    方式二：访问页面操作
-   http://localhost:8075/WebReport/importInfo.html
+   http://localhost:8075/WebReport/hailian/importInfo.html
+   
+   
+   
 
 
 强调：其他注意项 

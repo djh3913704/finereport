@@ -137,7 +137,7 @@ function importUserInfo(filePath){
  * @returns {___anonymous4219_4224}
  */
 function importOrgInfo(filePath){
-	return importExcelInfo(0,filePath);
+	return importExcelInfo(1,filePath);
 }
 /**
  * @param type:类型 0-人员 1-机构

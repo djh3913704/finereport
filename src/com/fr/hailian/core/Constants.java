@@ -19,6 +19,7 @@ public class Constants {
 	 */
 	public static final String WebService_Port = "8888";
 	public static final String DEFAULT_PWD = "123456";//导入员工的默认密码
+	public static final String DEFAULT_POST= "53";//导入员工的默认职务ID FR_T_POST
 	/**
 	 * 数据库配置
 	 */

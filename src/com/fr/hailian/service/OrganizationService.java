@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import com.fr.hailian.core.DataBaseToolService;
 import com.fr.hailian.excel.ImportExcel;
 import com.fr.hailian.model.OrganizationModel;
-import com.fr.stable.StringUtils;
 
 /**
  * 
@@ -30,12 +29,11 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean ifExistsOrganization(String orgId){
-		if(StringUtils.isBlank(orgId)){
+	public static boolean ifExistsOrganization(OrganizationModel org){
+		if(org==null){
 			return false;
 		}
-		String sql="select * from fr_t_department where id='"+orgId+"'";
-		
+		String sql="select * from fr_t_department where id='"+org.getId()+"' and name='"+org.getName()+"' ";
 		try {
 			return DataBaseToolService.ifExistsBySql(sql);
 		} catch (Exception e) {
@@ -53,9 +51,7 @@ public class OrganizationService {
 	 * @return_type   boolean
 	 */
 	public static boolean insertOrganization(OrganizationModel org){
-		  String insertsql="insert into fr_t_department(name, description) values ("
-                  +"'"+org.getName()+"',"
-                  +"'"+org.getDes()+"')";
+		  String insertsql=getInsertOrganizationSql(org);
 		  try {
 			DataBaseToolService.excuteBySql(insertsql);
 			return true;
@@ -74,9 +70,11 @@ public class OrganizationService {
 	 * @return_type   String
 	 */
 	public static String getInsertOrganizationSql(OrganizationModel org){
-		 String insertsql="insert into fr_t_department(name, description) values ("
-                 +"'"+org.getName()+"',"
-                 +"'"+org.getDes()+"')";
+		  String insertsql="insert into fr_t_department(id,pid,name, description) values ("
+                  +"'"+org.getId()+"',"
+                   +"'"+org.getPid()+"',"
+                    +"'"+org.getName()+"',"
+                  +"'"+org.getDes()+"')";
 		  return insertsql;
 	}
 	/**
@@ -89,8 +87,7 @@ public class OrganizationService {
 	 * @return_type   boolean
 	 */
 	public static boolean updateOrganization(OrganizationModel org){
-		  String updatesql=" update  fr_t_department set name='"+org.getName()+"', description='"+org.getDes()+"' ";
-		  updatesql+=" where id='"+org.getId()+"' ";
+		  String updatesql=getUpdateOrganizationSql(org);
 		  try {
 			DataBaseToolService.excuteBySql(updatesql);
 			return true;
@@ -98,6 +95,20 @@ public class OrganizationService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	/**
+	 * 
+	 * @time   2017年8月14日 下午4:45:41
+	 * @author zuoqb
+	 * @todo   拼接更新语句
+	 * @param  @param user
+	 * @param  @return
+	 * @return_type   String
+	 */
+	public static String getUpdateOrganizationSql(OrganizationModel org){
+		 String updatesql=" update  fr_t_department set  pid='"+org.getPid()+"', name='"+org.getName()+"', description='"+org.getDes()+"' ";
+		  updatesql+=" where id='"+org.getId()+"' ";
+		  return updatesql;
 	}
 	/**
 	 * 
@@ -120,9 +131,6 @@ public class OrganizationService {
 	}
 	public static List<OrganizationModel> getExcel2Organization(String fileName,InputStream is){
 		ImportExcel ei;
-		/**
-		 * 	可同步的数据有工号、姓名、状态、组织机构编码，系统ID
-		 */
 		try {
 			ei = new ImportExcel(fileName,is,0, 0);
 			return excel2Organization(ei);
@@ -142,7 +150,7 @@ public class OrganizationService {
 	 */
 	private static List<OrganizationModel> excel2Organization(ImportExcel ei) {
 		List<OrganizationModel> orgList=new ArrayList<OrganizationModel>();
-		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum(); i++) {
+		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum()+1; i++) {
 			Row row = ei.getRow(i);
 			if(ei.getLastCellNum()>=5){
 				OrganizationModel m=new OrganizationModel();
@@ -150,16 +158,14 @@ public class OrganizationService {
 					String val = ei.getCellValue(row, j)+"";
 					switch (j) {
 					case 0:
-						m.setName(val);
+						m.setId(val);
 						break;
 					case 1:
-						m.setDes(val);
-						break;
-					case 2:
-						break;
-					case 3:
+						m.setPid(val);
 						break;
 					case 4:
+						m.setName(val);
+						m.setDes(val);
 						break;
 					default:
 						break;
@@ -194,26 +200,35 @@ public class OrganizationService {
 			o.put("fail", true);
 			o.put("msg", "Excel内容不能为空！");
 		}else{
-			String failOrg="";//原系统已经存在的组织机构
 			List<String> insertList=new ArrayList<String>();
+			List<String> updateList=new ArrayList<String>();//原系统已经存在的组织机构
 			for(OrganizationModel org:orgList){
-				if(!OrganizationService.ifExistsOrganization(org.getId())){
-					System.out.println(OrganizationService.getInsertOrganizationSql(org));
+				if(!OrganizationService.ifExistsOrganization(org)){
 					insertList.add(OrganizationService.getInsertOrganizationSql(org));
 				}else{
-					failOrg+=org.getName()+",";
+					updateList.add(getUpdateOrganizationSql(org));
 				}
 			}
 			try {
-				DataBaseToolService.excuteBySqlBatch(insertList);
+				if(insertList.size()>0){
+					DataBaseToolService.excuteBySqlBatch(insertList);
+				}
+				if(updateList.size()>0){
+					DataBaseToolService.excuteBySqlBatch(updateList);
+				}
 				o.put("fail", false);
-				o.put("msg", "Excel组织机构总数量:"+orgList.size()+"。其导入成功数量："
-				+insertList.size()+",导入失败数量为："+(orgList.size()-insertList.size())
-				+"。失败组织机构名称："+failOrg+"，失败原因：上述组织机构已经在系统中存在！");
+				String msg="Excel组织机构总数量:"+orgList.size()+"。导入成功数量："+(insertList.size()+updateList.size());
+				if(insertList.size()>0){
+					msg+=",其中新增数量为："+insertList.size();
+				}
+				if(updateList.size()>0){
+					msg+="。更新数量为："+updateList.size();
+				}
+				o.put("msg",msg);
 			} catch (Exception e) {
 				e.printStackTrace();
 				o.put("fail", true);
-				o.put("msg",e.getStackTrace());
+				o.put("msg", "导入失败，请检查Excel格式以及导入类型");
 			}
 			
 		}
@@ -229,7 +244,7 @@ public class OrganizationService {
 			boolean update=updateUser(user);
 			System.out.println("update:"+update);
 		}*/
-		JSONObject o=OrganizationService.importOrganization("D:\\org.xlsx");
+		JSONObject o=OrganizationService.importOrganization("D:\\组织机构.xlsx");
 		System.out.println(o.toString());
 	}
 
