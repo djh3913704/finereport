@@ -15,8 +15,8 @@ import com.fr.file.BaseClusterHelper;
 import com.fr.file.ClusterConfigManager;
 import com.fr.file.ClusterService;
 import com.fr.fs.base.entity.UserInfo;
+import com.fr.fs.web.AuthenticationHelper;
 import com.fr.fs.web.FSConstants;
-import com.fr.fs.web.service.AbstractFSAuthService;
 import com.fr.fs.web.service.FSLoadLoginAction;
 import com.fr.general.ComparatorUtils;
 import com.fr.general.web.ParameterConsts;
@@ -85,7 +85,8 @@ public class HlLoadLoginAction extends FSLoadLoginAction {
     protected boolean dealLoginInfo(
             HttpServletRequest req, HttpServletResponse res, String username, String password,
             boolean isTemplate) throws Exception {
-        return AbstractFSAuthService.dealLoginInfo(req, res, username, password, isTemplate);
+        //return AbstractFSAuthService.dealLoginInfo(req, res, username, password, isTemplate);
+    	return AuthenticationHelper.dealLoginInfo(req, res, username, password, isTemplate);
     }
  
     protected void signOnSuccess(HttpServletRequest req, HttpServletResponse res, PrintWriter writer, String url) throws IOException, JSONException {

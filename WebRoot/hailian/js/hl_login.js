@@ -258,6 +258,7 @@ $(function () {
                     return;
                 }
                 var signResult = FR.jsonDecode(res.responseText);
+                console.log(signResult)
                 if (signResult.fail) {
                     //用户名和密码不匹配
                     //showErrorMsg($username, FR.i18nText("FS-Generic-Privilege_Name_Not_Match_Password"));
