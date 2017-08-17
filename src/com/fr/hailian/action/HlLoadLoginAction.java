@@ -23,6 +23,7 @@ import com.fr.general.web.ParameterConsts;
 import com.fr.json.JSONException;
 import com.fr.json.JSONObject;
 import com.fr.stable.Constants;
+import com.fr.stable.StringUtils;
 import com.fr.web.cluster.ClusterManager;
 import com.fr.web.utils.WebUtils;
 /**
@@ -60,6 +61,11 @@ public class HlLoadLoginAction extends FSLoadLoginAction {
             //wei : 跨域的时候如果返回相对路径，就又跳到跨域前的url+op=fs了。
             String url = (oo == null) ? getRenderedUrl() : oo.toString()
                     + "&_=" + System.currentTimeMillis();
+            if(StringUtils.isNotBlank(req.getParameter("hl_url"))){
+            	url=req.getParameter("hl_url");
+            	//url=java.net.URLDecoder.decode(url, "UTF-8");
+            	url=url.replaceAll("@@", "&");
+            }
             addServerID(session);
             System.out.println("url:"+url);
             signOnSuccess(req, res, writer, url);

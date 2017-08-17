@@ -117,27 +117,28 @@
 	pageSize：每页大小	每页请求的条数（例如每页10条）
 	
   4 返回结果(JSON格式)
-  请求成功：
-  {
-    "count": 2,
-    "memo": "获取数据成功！",
-    "result": 1,
-    "moreUrl": "",
-    "viewEntries": [
-        {
-            "fromDept": "销售部",
-            "fromUser": "31",
-            "fromUserName": "zhangshan",
-            "sendTime": "2017-08-15 11:25:03",
-            "source": "1",
-            "startTime": "2017-08-15 11:24:51",
-            "subject": "添加流程2",
-            "tel": "",
-            "urgentLevel": "普通",
-            "url": ""
-        }
-    ]
-}
+	  请求成功：
+	  {
+	    "count": 2,
+	    "memo": "获取数据成功！",
+	    "result": 1,
+	    "moreUrl": "",
+	    "viewEntries": [
+	        {
+	            "fromDept": "销售部",
+	            "fromUser": "31",
+	            "fromUserName": "zhangshan",
+	            "sendTime": "2017-08-15 11:25:03",
+	            "source": "1",
+	            "startTime": "2017-08-15 11:24:51",
+	            "subject": "添加流程2",
+	            "tel": "",
+	            "urgentLevel": "普通",
+	            "url": "%2FrtxSecurityServlet%3FuserId%3D32%26sign%3Dd%25252FLWhfP96RBD5eWLLRoJezGZecZkrgZweFR0KQclwL0Jyw7jFIMnfu0H5XgH1P%25252BdFi3%25252Bs1btBjM5%25250D%25250Aq56U3lbHrS56%25252BvtTEMxkYsTOok2HWzE75kyyWTb2tg%25253D%25253D%26hl_url%3D%2FWebReport%2FReportServer%3Freportlet%3Ddoc%2FForm%2FCutpage%2FCutpage.cpt%40%40op%3Dwrite%40%40__cutpage__%3Dnull%40%40__processtaskid__%3D58%40%40__allprocesstaskid__%3D18"
+	        }
+	    ]
+	}
+	其中url使用前需要decode，格式utf-8
 
 
 强调：其他注意项 

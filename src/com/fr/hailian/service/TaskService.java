@@ -10,6 +10,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.fr.hailian.core.DataBaseToolService;
 import com.fr.hailian.model.TaskDetailModel;
 import com.fr.hailian.model.UserModel;
+import com.fr.hailian.util.DESSymmetricEncoder;
+import com.fr.hailian.util.JsonKit;
 import com.fr.stable.StringUtils;
 
 /**
@@ -76,11 +78,13 @@ public class TaskService {
 		StringBuffer sb=new StringBuffer();
 		sb.append(" select process.name as subject, sendtime,senderid as fromuser,");
 		sb.append(" process.createtime as starttime,task_impl.sender as fromusername,  ");
-		sb.append("	t_department.name as fromdept,t_user.mobile as tel ");
+		sb.append("	t_department.name as fromdept,t_user.mobile as tel ,process_node.reportcontrol,process_task.id as taskId,task_impl.id as taskImpId ");
 		sb.append(joinTaskFromSql());
 		sb.append(taskSqlWhere(map, user));
 		sb.append(" order by createtime,sendtime  asc ");
 		sb.append("  limit "+pageSize+" offset "+(page-1)*pageSize);
+		//生成url地址 发送RTX信息使用
+		String sign=DESSymmetricEncoder.createSign(user.getId()+"");
 		try {
 			String[][] result=DataBaseToolService.getQueryResultBySql(sb.toString());
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -90,7 +94,10 @@ public class TaskService {
 					 * 待办链接可以跳转到流程办理页面待办；
 					 * 已办链接可以跳转到流程跟踪页面。例如：http://10.0.6.31:8080?workflow=。
 					 */
-					String url="";
+					String url = joinTaskUrl(user, sign,result[x][7],result[x][8],result[x][9]);
+					/**
+					 * [{"reportPath":"Poly2.cpt","parameters":[],"operator":":1##1##测试2姓名##测试1姓名"}]
+					 */
 					String sendTime= result[x][1];
 					String startTime=result[x][3];
 					if(StringUtils.isNotBlank(sendTime)){
@@ -110,6 +117,7 @@ public class TaskService {
 		return taskList;
 		
 	}
+	
 	/**
 	 * 
 	 * @time   2017年8月15日 下午5:29:36
@@ -171,9 +179,64 @@ public class TaskService {
 		sb.append(" from fr_process_task_impl task_impl  ");
 		sb.append(" left join fr_report_process_task process_task on process_task.id=task_impl.taskid ");
 		sb.append(" left join fr_report_process process on process.id=process_task.processid ");
+		sb.append(" left join fr_report_process_node process_node on process_node.processid=process.id ");
 		sb.append(" left join fr_t_user t_user on t_user.id=task_impl.senderid ");
 		sb.append(" left join fr_t_department_post_user department_post_user on department_post_user.userid=t_user.id ");
 		sb.append(" left join fr_t_department t_department  on t_department.id=department_post_user.departmentid ");
 		return sb.toString();
+	}
+	/**
+	 * 
+	 * @time   2017年8月17日 下午3:28:44
+	 * @author zuoqb
+	 * @todo   拼接已办待办url
+	 * @param  @param user
+	 * @param  @param sign
+	 * @param  @param reportcontrol
+	 * @param  @return
+	 * @param  @throws Exception
+	 * @return_type   String
+	 */
+	private static String joinTaskUrl(UserModel user, String sign,String reportcontrol,String taskId,String taskImpId)
+			throws Exception {
+		String path="/rtxSecurityServlet?userId="+user.getId()+"&sign="+sign;
+		String hl_url="/WebReport/ReportServer?reportlet="+reportPath(reportcontrol)+"&op=write&__cutpage__=null&__processtaskid__="+taskImpId+"&__allprocesstaskid__="+taskId;
+		//hl_url=java.net.URLEncoder.encode(hl_url, "UTF-8");
+		hl_url=hl_url.replaceAll("&", "@@");
+		String url=path+"&hl_url="+hl_url;
+		url=java.net.URLEncoder.encode(url, "UTF-8");
+		return url;
+	}
+	/**
+	 * 
+	 * @time   2017年8月17日 下午3:51:18
+	 * @author zuoqb
+	 * @todo   具体上报页面
+	 * @param  @param json
+	 * @param  @return
+	 * @return_type   String
+	 */
+	public static String reportPath(String json){
+		if(StringUtils.isBlank(json)){
+			return "";
+		}
+		String path="";
+		List<Map<String,Object>> list=JsonKit.json2listmap(json);
+		for(Map<String,Object> map:list){
+			if(map.get("reportPath")!=null){
+				path=map.get("reportPath").toString();
+			}
+		}
+		return path;
+	}
+	public static void main(String[] args) throws Exception {
+		String url="%2FrtxSecurityServlet%3FuserId%3D32%26sign%3Dd%25252FLWhfP96RBD5eWLLRoJezGZecZkrgZweFR0KQclwL0Jyw7jFIMnfu0H5XgH1P%25252BdFi3%25252Bs1btBjM5%25250D%25250Aq56U3lbHrS56%25252BvtTEMxkYsTOok2HWzE75kyyWTb2tg%25253D%25253D%26hl_url%3D%2FWebReport%2FReportServer%3Freportlet%3Ddoc%2FForm%2FCutpage%2FCutpage.cpt%40%40op%3Dwrite%40%40__cutpage__%3Dnull%40%40__processtaskid__%3D58%40%40__allprocesstaskid__%3D18";
+		url=java.net.URLDecoder.decode(url, "UTF-8");
+		System.out.println(url);
+		List<Map<String,Object>> list=JsonKit.json2listmap("[{\"reportPath\":\"Poly2.cpt\",\"parameters\":[],\"operator\":\":1##1##测试2姓名##测试1姓名\"}]");
+		for(Map<String,Object> map:list){
+			System.out.println(map.get("reportPath"));
+			System.out.println(map.get("operator"));
+		}
 	}
 }
