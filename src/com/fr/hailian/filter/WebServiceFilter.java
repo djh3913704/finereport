@@ -12,7 +12,7 @@ import javax.xml.ws.Endpoint;
 
 import com.fr.hailian.core.BaseServlet;
 import com.fr.hailian.core.Constants;
-import com.fr.hailian.wsdl.HaveDoneWebService;
+import com.fr.hailian.wsdl.TaskWebService;
 /**
  * 
  * @className FRFilter.java
@@ -33,7 +33,7 @@ public class WebServiceFilter implements Filter {
 	public void init(FilterConfig arg0) throws ServletException {
 		String domain="http://"+BaseServlet.getIpAddress()+":"+Constants.WebService_Port+"/Service";
 		//统一待办已办接口
-		Endpoint.publish(domain+"/HaveDoneWebService",new HaveDoneWebService());
+		Endpoint.publish(domain+"/TaskWebService",new TaskWebService());
 
 	}
 

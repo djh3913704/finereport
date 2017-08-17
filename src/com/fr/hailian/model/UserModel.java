@@ -2,8 +2,6 @@ package com.fr.hailian.model;
 
 import java.io.Serializable;
 
-import com.fr.hailian.core.Constants;
-
 /**
  * 
  * @className UserModel.java

@@ -19,7 +19,7 @@ import com.fr.fs.control.UserControl;
 import com.fr.fs.privilege.auth.FSAuthentication;
 import com.fr.fs.privilege.base.FServicePrivilegeLoader;
 import com.fr.fs.privilege.entity.DaoFSAuthentication;
-import com.fr.hailian.wsdl.HaveDoneWebService;
+import com.fr.hailian.wsdl.TaskWebService;
 import com.fr.privilege.session.PrivilegeInfoSessionMananger;
 /**
  * 

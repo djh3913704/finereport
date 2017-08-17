@@ -15,7 +15,8 @@ public class Constants {
 	/**
 	 * 对外发布的webservice端口号 不能与finereport端口一致
 	 * 测试是否发布成功
-	 * http://ip:8888/Service/HaveDoneWebService?wsdl
+	 * http://ip:8888/Service/TaskWebService?wsdl
+	 * 入参格式：{"Flag":"1","Page":1,"Pagesize":10,"Type":"1","Uid":"47"}
 	 */
 	public static final String WebService_Port = "8888";
 	public static final String DEFAULT_PWD = "123456";//导入员工的默认密码

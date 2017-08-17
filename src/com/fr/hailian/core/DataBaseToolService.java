@@ -54,6 +54,7 @@ public class DataBaseToolService {
             result = StringHelper.convertResult(rs);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("执行错误！");
         } finally {
             if (null != ps) {
 
@@ -79,6 +80,7 @@ public class DataBaseToolService {
             result = StringHelper.convertResult(rs);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("执行错误！");
         } finally {
             if (null != ps) {
 
@@ -101,6 +103,7 @@ public class DataBaseToolService {
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("执行错误！");
         } finally {
             if (null != ps) {
 
@@ -124,6 +127,7 @@ public class DataBaseToolService {
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("执行错误！");
         } finally {
             if (null != ps) {
 
@@ -174,6 +178,7 @@ public class DataBaseToolService {
             cs.execute();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("执行错误！");
         } finally {
             if (null != cs) {
 
@@ -198,6 +203,7 @@ public class DataBaseToolService {
             result = StringHelper.convertResult(rs);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("执行错误！");
         } finally {
             if (null != cs) {
 

@@ -79,7 +79,7 @@
            修改失败返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}
 
 
-七 导入人员信息
+七 导入信息
   强调：因为表设置外键关系，所以必须先导入机构信息，才可以导入人员信息。在生成机构与人员对应关系时，
   需要写入一个职位字段值，目前写死默认，导入员工的默认职务ID（变量DEFAULT_POST） 表名：FR_T_POST 在Constants类中。这个字段值
   必须在FR_T_POST表中存在，否则导入失败。
@@ -87,8 +87,10 @@
    1 引用方式
    	引入js同上（\WebReport\hailian\js\hl_common.js）
     2 事件编辑界面 
-          绑定的方法名为var result=importUserInfo(filePath);需要一个参数 filePath:文件路径。
+          导入人员信息绑定的方法名为var result=importUserInfo(filePath);需要一个参数 filePath:文件路径。
           比如    importUserInfo(" D:\\test.xlsx")
+           导入组织机构绑定的方法名为var result=importOrgInfo(filePath);需要一个参数 filePath:文件路径。
+          比如    importOrgInfo(" D:\\test.xlsx")
     3 响应
           成功：导入数据库，并返还信息
           失败返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}
@@ -96,7 +98,45 @@
    http://localhost:8075/WebReport/hailian/importInfo.html
    
    
-   
+ 八 工作流（待办已办任务）
+ 
+  1 对外访问地址：http://ip:port/Service/TaskWebService?wsdl
+     说明：ip为本项目发布服务器IP
+       port:可以在常量中通过变量WebService_Port设置，目前默认8888
+       
+  2 入参格式：{"flag":"1","page":1,"pageSize":10,"startTime":"2017-01-22","title":"流程","type":"1","uid":"47"}
+  
+  3 参数说明
+  	uid：用户账号
+	type：请求类型	1:待办事宜；2：已办事宜
+	flag：是否查询明细	1：是；0：否（当为1时需返回具体的记录内容；当为0时只需返回查询结果的总条数）
+	startTime：流程发起时间	返回流程发起时间在starttime至今之间的数据（为null时查询所有）
+	title：流程标题	返回标题中带有title的数据（为null时查询所有）
+	page：//第几页	根据page请求第几页的数据。
+	pageSize：每页大小	每页请求的条数（例如每页10条）
+	
+  4 返回结果(JSON格式)
+  请求成功：
+  {
+    "count": 2,
+    "memo": "获取数据成功！",
+    "result": 1,
+    "moreUrl": "",
+    "viewEntries": [
+        {
+            "fromDept": "销售部",
+            "fromUser": "31",
+            "fromUserName": "zhangshan",
+            "sendTime": "2017-08-15 11:25:03",
+            "source": "1",
+            "startTime": "2017-08-15 11:24:51",
+            "subject": "添加流程2",
+            "tel": "",
+            "urgentLevel": "普通",
+            "url": ""
+        }
+    ]
+}
 
 
 强调：其他注意项 
