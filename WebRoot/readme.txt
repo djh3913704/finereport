@@ -83,6 +83,7 @@
   强调：因为表设置外键关系，所以必须先导入机构信息，才可以导入人员信息。在生成机构与人员对应关系时，
   需要写入一个职位字段值，目前写死默认，导入员工的默认职务ID（变量DEFAULT_POST） 表名：FR_T_POST 在Constants类中。这个字段值
   必须在FR_T_POST表中存在，否则导入失败。
+ 需要切换数据库配置地址：Constants常量类里面
    方式一：js引用
    1 引用方式
    	引入js同上（\WebReport\hailian\js\hl_common.js）
@@ -99,7 +100,7 @@
    
    
  八 工作流（待办已办任务）
- 
+  
   1 对外访问地址：http://ip:port/Service/TaskWebService?wsdl
      说明：ip为本项目发布服务器IP
        port:可以在常量中通过变量WebService_Port设置，目前默认8888
