@@ -257,12 +257,12 @@ div.fs-login-errmask {
 }
 
 div.fs-login-input-username {
-    background: url('/WebReport/hailian/img/username.png') no-repeat 0px 5px;
+    background: url('/hailian/img/username.png') no-repeat 0px 5px;
     background-size: 16px 16px;
 }
 
 div.fs-login-input-password {
-    background: url('/WebReport/hailian/img/password.png') no-repeat 0px 5px;
+    background: url('/hailian/img/password.png') no-repeat 0px 5px;
     background-size: 16px 16px;
 }
 
@@ -288,7 +288,7 @@ div.fs-login-check {
     font-size: 12px;
     color: #aaaaa9;
     margin-top: 15px;
-    background: url('/WebReport/hailian/img/checkbox.png') no-repeat;
+    background: url('/hailian/img/checkbox.png') no-repeat;
     background-size: 14px 14px;
 }
 
@@ -298,7 +298,7 @@ span.fs-login-remember {
 }
 
 span.fs-login-remember-selected {
-    background: url('/WebReport/hailian/img/checkbox_selected.png') no-repeat;
+    background: url('/hailian/img/checkbox_selected.png') no-repeat;
     background-size: 14px 14px;
 }
 
