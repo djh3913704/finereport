@@ -11,8 +11,38 @@
     <meta name="description" content="FineReport--Web Reporting Tool">
     <meta name="keywords" content="FineReport,Web Reporting Tool">
     <script type="text/javascript" src="/hailian/js/finereport.js"></script>
-    <link rel="stylesheet" type="text/css"  href="/hailian/css/bi_login.css"/>
-    <link rel="stylesheet" type="text/css" href="/hailian/css/finereport.css"/>
+     <script type="text/javascript" src="/WebReport/hailian/js/finereport.js"></script>
+    <script>
+    var dynamicLoading = {
+    	    css: function(path){
+    			if(!path || path.length === 0){
+    				throw new Error('argument "path" is required !');
+    			}
+    			var head = document.getElementsByTagName('head')[0];
+    	        var link = document.createElement('link');
+    	        link.href = path;
+    	        link.rel = 'stylesheet';
+    	        link.type = 'text/css';
+    	        head.appendChild(link);
+    	    },
+    	    js: function(path){
+    			if(!path || path.length === 0){
+    				throw new Error('argument "path" is required !');
+    			}
+    			var head = document.getElementsByTagName('head')[0];
+    	        var script = document.createElement('script');
+    	        script.src = path;
+    	        script.type = 'text/javascript';
+    	        head.appendChild(script);
+    	    }
+    	}
+    var domain=FR.serverURL+FR.servletURL;
+    domain=domain.replace("/ReportServer","");
+    dynamicLoading.css(domain+"/hailian/css/bi_login.css");
+    dynamicLoading.css(domain+"/hailian/css/finereport.css");
+    dynamicLoading.js(domain+"/hailian/js/hl_login.js");
+    </script>
+    
 </head>
 <body>
 <div id="fs-login-background">
@@ -48,7 +78,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript"
-        src="/hailian/js/hl_login.js"></script>
 </body>
 </html>

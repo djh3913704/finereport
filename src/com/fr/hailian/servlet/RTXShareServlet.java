@@ -1,6 +1,8 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.hailian.core.BaseServlet;
+import com.fr.hailian.service.TaskService;
 import com.fr.hailian.util.DESSymmetricEncoder;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
@@ -65,22 +68,24 @@ public class RTXShareServlet extends BaseServlet {
 			System.out.println("name:"+name);*/
 			if(user!=null){
 				//获取下一级审核人信息
-				String toUserIds="test001";
-				
+				List<User> userList=TaskService.getShareUser(taskImpId);
 				//生成url地址 发送RTX信息使用
-				String sign=DESSymmetricEncoder.createSign(user.getId()+"");
-				String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+user.getId();
-				System.out.println(url);
-				if(PortalService.sendMessageToUser(request,"多级上报未处理信息提醒", "BI平台", url, toUserIds)){
-					r.put("fail", false);
-					r.put("msg", "发送RTX信息成功!");
-				}else{
-					r.put("fail", true);
-					r.put("msg", "发送RTX信息失败!");
-				};
+				List<String> successUser=new ArrayList<String>();
+				List<String> failUser=new ArrayList<String>();
+				for(User u:userList){
+					String sign=DESSymmetricEncoder.createSign(u.getId()+"");
+					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId();
+					System.out.println(url);
+					if(PortalService.sendMessageToUser(request,"多级上报未处理信息提醒", "BI平台", url, u.getId()+"")){
+						successUser.add(u.getUsername());
+					}else{
+						failUser.add(u.getUsername());
+					};
+				}
+				r.put("fail", false);
+				r.put("msg", "发送RTX信息成功!");
 			}else{
 				//先登录
-				//response.sendRedirect("/WebReport/ReportServer?op=fs");
 				r.put("fail", true);
 				r.put("msg", "请先登录!");
 			}

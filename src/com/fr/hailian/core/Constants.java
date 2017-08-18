@@ -29,4 +29,6 @@ public class Constants {
 	public static final String username = "sa";
 	public static final String password = "";
 	
+	public static final String CTX_PATH = "/WebReport";//帆软项目根目录
+	public static final String CTX_PORT = "8075";//帆软项目端口
 }

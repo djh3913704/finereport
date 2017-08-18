@@ -3,11 +3,11 @@
  */
 /**
  * RTX集成相关方法 多级上报
+ * taskImpId//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
  */
-function initHlRTXReportMethod(){
+function initHlRTXReportMethod(taskImpId){
 	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
-	  domain="";
 	  var url=domain.replace("/ReportServer","");
       domain=domain.replace("/ReportServer","")+'/rtxShareServlet';
 	  console.log(domain)
@@ -15,6 +15,7 @@ function initHlRTXReportMethod(){
       	  url: domain,
           data: FR.cjkEncodeDO({
         	  domain: url,
+        	  taskImpId:taskImpId,
           }),
           type: 'POST',
           async: false,
@@ -47,7 +48,6 @@ function initHlChangePassword(oldpwdInputName,newpwdInputName){
 	  oldpwdInputName=oldpwdInputName.toUpperCase();
 	  newpwdInputName=newpwdInputName.toUpperCase();
 	  var domain=FR.serverURL+FR.servletURL;
-	  domain="";
       domain=domain.replace("/ReportServer","")+'/changePwdServlet';
       var oldPassword=$('[name="'+oldpwdInputName+'"]').val();
       var newPassword=$('[name="'+newpwdInputName+'"]').val();
@@ -96,7 +96,6 @@ function initHlChangePassword(oldpwdInputName,newpwdInputName){
 function initHlLogout(){
 	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
-	  domain="";
       domain=domain.replace("/ReportServer","")+'/logoutServlet';
 	  FR.ajax({
     	  url: domain,
@@ -113,7 +112,8 @@ function initHlLogout(){
             	result.fail=true;
           	    result.msg=signResult.msg;
             } else {
-                window.location.href = "/WebReport/ReportServer?op=fs";
+            	var domain=FR.serverURL+FR.servletURL+'?op=fs';
+                window.location.href = domain;
             } 
       	  }
         }
@@ -147,7 +147,6 @@ function importOrgInfo(filePath){
 function importExcelInfo(type,filePath){
 	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
-	  domain="";
       domain=domain.replace("/ReportServer","")+'/importInfoServlet';
 	  FR.ajax({
     	  url: domain,

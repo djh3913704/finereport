@@ -20,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <form id='myupload' action='/importByFormServlet' method='post' enctype='multipart/form-data'>
 <div class="demo">
 <div class="btn">
-    <span>添加附件</span>
+    <span>添加附件${ctx }</span>
     <input id="fileupload" type="file" name="file1">
 </div>
 <div>

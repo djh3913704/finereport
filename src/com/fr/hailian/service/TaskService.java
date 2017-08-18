@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fr.fs.base.entity.User;
+import com.fr.fs.control.UserControl;
+import com.fr.hailian.core.BaseServlet;
+import com.fr.hailian.core.Constants;
 import com.fr.hailian.core.DataBaseToolService;
 import com.fr.hailian.model.TaskDetailModel;
 import com.fr.hailian.model.UserModel;
@@ -201,7 +205,7 @@ public class TaskService {
 	private static String joinTaskUrl(UserModel user, String sign,String reportcontrol,String taskId,String taskImpId)
 			throws Exception {
 		String path="/rtxSecurityServlet?userId="+user.getId()+"&sign="+sign;
-		String hl_url="/WebReport/ReportServer?reportlet="+reportPath(reportcontrol)+"&op=write&__cutpage__=null&__processtaskid__="+taskImpId+"&__allprocesstaskid__="+taskId;
+		String hl_url=Constants.CTX_PATH+"/ReportServer?reportlet="+reportPath(reportcontrol)+"&op=write&__cutpage__=null&__processtaskid__="+taskImpId+"&__allprocesstaskid__="+taskId;
 		//hl_url=java.net.URLEncoder.encode(hl_url, "UTF-8");
 		hl_url=hl_url.replaceAll("&", "@@");
 		String url=path+"&hl_url="+hl_url;
@@ -230,9 +234,47 @@ public class TaskService {
 		}
 		return path;
 	}
-	public void getShareUser(String taskImplId){
+	/**
+	 * 
+	 * @time   2017年8月18日 下午5:26:36
+	 * @author zuoqb
+	 * @todo   获取审核人
+	 * @param  @param taskImplId //上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
+	 * @param  @return
+	 * @return_type   List<User>
+	 */
+	public static List<User> getShareUser(String taskImplId){
 		//http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&Fri%20Aug%2018%202017%2014:12:41%20GMT+0800%20(%D6%D0%B9%FA%B1%EA%D7%BC%CA%B1%BC%E4)&taskId=23
 		//http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&Fri Aug 18 2017 14:12:41 GMT 0800 (�й���׼ʱ��)&taskId=23
+		String taskUrl="http://"+BaseServlet.getIpAddress()+":"+Constants.CTX_PORT+Constants.CTX_PATH+"/ReportServer?op=report_process&cmd=get_taskImpl&taskId="+taskImplId;
+		return nodeInfo(taskUrl);
+	}
+	
+	private static List<User>  nodeInfo(String taskUrl) {
+		List<User>  userList=new ArrayList<User>();
+		String result=HttpClientUtil.sendGetRequest(taskUrl,null);
+		Map<String,Object> data=JsonKit.json2map(result);
+		int currentNodeIdx=Integer.valueOf(data.get("currentNodeIdx")==null?"0":data.get("currentNodeIdx").toString());
+		List<Map<String,Object>> nodes=JsonKit.json2listmap(JsonKit.json2map(data.get("process").toString()).get("nodes").toString());
+		if(nodes!=null&&nodes.size()>=currentNodeIdx+1){
+			//取下一个节点
+			String reportControl=nodes.get(currentNodeIdx+1).get("reportControl")+"";
+			List<Map<String,Object>> rep=JsonKit.json2listmap(reportControl);
+			//"operatorName":"用户:韩文(hanwen),孙林(sunlin),王伟(wangwei),张珊(zhangshan)",
+			String[] operatorName=rep.get(0).get("operatorName").toString().replaceFirst("用户:", "").split(",");
+			for(String name:operatorName){
+				String userName=name.substring(name.indexOf("(")+1,name.indexOf(")"));
+				try {
+					User user=UserControl.getInstance().getByUserName(userName);
+					userList.add(user);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		return userList;
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -244,15 +286,7 @@ public class TaskService {
 			System.out.println(map.get("reportPath"));
 			System.out.println(map.get("operator"));
 		}*/
-		String taskUrl="http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&taskId=23";
-		String result=HttpClientUtil.sendGetRequest(taskUrl,null);
-		System.out.println(result);
-		Map<String,Object> data=JsonKit.json2map(result);
-		int currentNodeIdx=Integer.valueOf(data.get("currentNodeIdx")==null?"0":data.get("currentNodeIdx").toString());
-		System.out.println(currentNodeIdx);
-		List<Map<String,Object>> nodes=JsonKit.json2listmap(JsonKit.json2map(data.get("process").toString()).get("nodes").toString());
-		for(Map<String,Object> map:nodes){
-			System.out.println(map.get("reportControl"));
-		}
+		String taskUrl="http://localhost:8075"+Constants.CTX_PATH+"/ReportServer?op=report_process&cmd=get_taskImpl&taskId=23";
+		nodeInfo(taskUrl);
 	}
 }

@@ -118,7 +118,7 @@ $(function () {
                     if ($('body').length > 0) {
                         var loginImg = $('img.fs-login-img');
                         //loginImg.attr("src", url);
-                        loginImg.attr("src","/WebReport/hailian/img/login.jpg");
+                        loginImg.attr("src","/hailian/img/login.jpg");
                         loginImg.css({
                             "margin-left": "-" + imgOffsetX + "px",
                             "margin-top": "-" + imgOffsetY + "px",

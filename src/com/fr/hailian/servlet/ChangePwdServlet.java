@@ -72,7 +72,7 @@ public class ChangePwdServlet extends BaseServlet {
 							//去首页
 							//response.sendRedirect("/WebReport/ReportServer?op=fs");
 							r.put("fail", false);
-							r.put("msg", "/WebReport/ReportServer?op=fs");
+							r.put("msg", com.fr.hailian.core.Constants.CTX_PATH+"/ReportServer?op=fs");
 						}else{
 							r.put("fail", true);
 							r.put("msg", "管理员密码修改失败，请重试！");
@@ -98,7 +98,7 @@ public class ChangePwdServlet extends BaseServlet {
 							//去首页
 							//UserControl.getInstance().logout(user.getId());
 							r.put("fail", false);
-							r.put("msg", "/WebReport/ReportServer?op=fs");
+							r.put("msg", com.fr.hailian.core.Constants.CTX_PATH+"/ReportServer?op=fs");
 							break;
 						default:
 							r.put("fail", true);

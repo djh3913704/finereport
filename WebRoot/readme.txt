@@ -48,7 +48,8 @@
     在编辑页面需要进行的操作：
     1.2.1 如果1.1步骤没有引入hailian/js/hl_common.js，那在上方“引用JavaScript”先引入hl_common.js（注意路径问题），
     否则直接进入下一步
-    1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：var result=initHlRTXReportMethod();无参数要求。
+    1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：var result=initHlRTXReportMethod(taskImpId);
+        参数 一个 taskImpId//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
     1.2.3 返回结果
           成功：发送RTX信息
           失败 返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}
@@ -147,6 +148,12 @@
  1 辅助决策系统权限目前默认写成222（正式发布需要改，否则所有认证都会返回没有权限的提示）
  com.fr.hailian.core.Constants文件中的AUXILIARYROLE_ID
  2 数据库配置改成正式
+ 3 finereport.js
+ FR.servletURL = '/WebReport/ReportServer'文件路径相应做修改如果没有WebReport则改为'/ReportServer'
+ 4 项目服务IP 端口切换
+ Constants常量
+    public static final String CTX_PATH = "/WebReport";//帆软项目根目录 如果没有则为""
+	public static final String CTX_PORT = "8075";//帆软项目端口 
  
  
  项目组织结构：

@@ -72,7 +72,7 @@ public class LogoutServlet extends BaseServlet {
 					//去首页
 					//response.sendRedirect("/WebReport/ReportServer?op=fs");
 					r.put("fail", false);
-					r.put("msg", "/WebReport/ReportServer?op=fs");
+					r.put("msg", com.fr.hailian.core.Constants.CTX_PATH+"/ReportServer?op=fs");
 				}else{
 					r.put("fail", true);
 					r.put("msg", "注销失败！");
