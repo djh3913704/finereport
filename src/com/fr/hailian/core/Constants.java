@@ -25,7 +25,7 @@ public class Constants {
 	 * 数据库配置
 	 */
 	public static final String driverclass = "com.fr.third.org.hsqldb.jdbcDriver";
-	public static final String url = "emb:jdbc:hsqldb:file:F:\\FineReport8.0\\WebReport\\WEB-INF\\finedb\\db";
+	public static final String url = "emb:jdbc:hsqldb:file:F:\\FineReport_8.0\\WebReport\\WEB-INF\\finedb\\db";
 	public static final String username = "sa";
 	public static final String password = "";
 	

@@ -11,6 +11,7 @@ import com.fr.hailian.core.DataBaseToolService;
 import com.fr.hailian.model.TaskDetailModel;
 import com.fr.hailian.model.UserModel;
 import com.fr.hailian.util.DESSymmetricEncoder;
+import com.fr.hailian.util.HttpClientUtil;
 import com.fr.hailian.util.JsonKit;
 import com.fr.stable.StringUtils;
 
@@ -229,14 +230,29 @@ public class TaskService {
 		}
 		return path;
 	}
+	public void getShareUser(String taskImplId){
+		//http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&Fri%20Aug%2018%202017%2014:12:41%20GMT+0800%20(%D6%D0%B9%FA%B1%EA%D7%BC%CA%B1%BC%E4)&taskId=23
+		//http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&Fri Aug 18 2017 14:12:41 GMT 0800 (�й���׼ʱ��)&taskId=23
+	}
+	
 	public static void main(String[] args) throws Exception {
-		String url="%2FrtxSecurityServlet%3FuserId%3D32%26sign%3Dd%25252FLWhfP96RBD5eWLLRoJezGZecZkrgZweFR0KQclwL0Jyw7jFIMnfu0H5XgH1P%25252BdFi3%25252Bs1btBjM5%25250D%25250Aq56U3lbHrS56%25252BvtTEMxkYsTOok2HWzE75kyyWTb2tg%25253D%25253D%26hl_url%3D%2FWebReport%2FReportServer%3Freportlet%3Ddoc%2FForm%2FCutpage%2FCutpage.cpt%40%40op%3Dwrite%40%40__cutpage__%3Dnull%40%40__processtaskid__%3D58%40%40__allprocesstaskid__%3D18";
+		/*String url="%2FrtxSecurityServlet%3FuserId%3D32%26sign%3Dd%25252FLWhfP96RBD5eWLLRoJezGZecZkrgZweFR0KQclwL0Jyw7jFIMnfu0H5XgH1P%25252BdFi3%25252Bs1btBjM5%25250D%25250Aq56U3lbHrS56%25252BvtTEMxkYsTOok2HWzE75kyyWTb2tg%25253D%25253D%26hl_url%3D%2FWebReport%2FReportServer%3Freportlet%3Ddoc%2FForm%2FCutpage%2FCutpage.cpt%40%40op%3Dwrite%40%40__cutpage__%3Dnull%40%40__processtaskid__%3D58%40%40__allprocesstaskid__%3D18";
 		url=java.net.URLDecoder.decode(url, "UTF-8");
 		System.out.println(url);
 		List<Map<String,Object>> list=JsonKit.json2listmap("[{\"reportPath\":\"Poly2.cpt\",\"parameters\":[],\"operator\":\":1##1##测试2姓名##测试1姓名\"}]");
 		for(Map<String,Object> map:list){
 			System.out.println(map.get("reportPath"));
 			System.out.println(map.get("operator"));
+		}*/
+		String taskUrl="http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&taskId=23";
+		String result=HttpClientUtil.sendGetRequest(taskUrl,null);
+		System.out.println(result);
+		Map<String,Object> data=JsonKit.json2map(result);
+		int currentNodeIdx=Integer.valueOf(data.get("currentNodeIdx")==null?"0":data.get("currentNodeIdx").toString());
+		System.out.println(currentNodeIdx);
+		List<Map<String,Object>> nodes=JsonKit.json2listmap(JsonKit.json2map(data.get("process").toString()).get("nodes").toString());
+		for(Map<String,Object> map:nodes){
+			System.out.println(map.get("reportControl"));
 		}
 	}
 }

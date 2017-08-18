@@ -47,7 +47,7 @@ function initHlChangePassword(oldpwdInputName,newpwdInputName){
 	  oldpwdInputName=oldpwdInputName.toUpperCase();
 	  newpwdInputName=newpwdInputName.toUpperCase();
 	  var domain=FR.serverURL+FR.servletURL;
-	  domain="/WebReport";
+	  //domain="/WebReport";
       domain=domain.replace("/ReportServer","")+'/changePwdServlet';
       var oldPassword=$('[name="'+oldpwdInputName+'"]').val();
       var newPassword=$('[name="'+newpwdInputName+'"]').val();
@@ -96,7 +96,7 @@ function initHlChangePassword(oldpwdInputName,newpwdInputName){
 function initHlLogout(){
 	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
-	  domain="/WebReport";
+	  //domain="/WebReport";
       domain=domain.replace("/ReportServer","")+'/logoutServlet';
 	  FR.ajax({
     	  url: domain,
@@ -147,7 +147,7 @@ function importOrgInfo(filePath){
 function importExcelInfo(type,filePath){
 	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
-	  domain="/WebReport";
+	 // domain="/WebReport";
       domain=domain.replace("/ReportServer","")+'/importInfoServlet';
 	  FR.ajax({
     	  url: domain,
