@@ -1,6 +1,7 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -63,6 +64,9 @@ public class PortalLoginServlet extends BaseServlet {
 		System.out.println("Token="+token+",Target="+redictUrl);
 		//根据token获取用户信息
 		Map<String,Object> result = PortalService.getUserInfoByToken(token, redictUrl);
+	/*	Map<String,Object> result =new HashMap<String, Object>();
+		result.put("Result", "1");
+		result.put("Memo", "admin");*/
 		System.out.println("根据token获取用户信息返回："+result);
 		if(result!=null&&"1".equals(result.get("Result"))){
 			String name = (String) result.get("Memo");//获取用户名，需进一步确认
