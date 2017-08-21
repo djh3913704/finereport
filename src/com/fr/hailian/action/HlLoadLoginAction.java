@@ -99,7 +99,7 @@ public class HlLoadLoginAction extends FSLoadLoginAction {
         if ("true".equals(WebUtils.getHTTPRequestParameter(req, ParameterConsts.__REDIRECT__))) {
             res.sendRedirect(url);
         } else {
-            writer.print(JSONObject.create().put("url", url));
+            writer.print(JSONObject.create().put("url", url).put("fail", false));
         }
     }
  
