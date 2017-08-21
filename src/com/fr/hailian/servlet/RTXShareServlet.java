@@ -63,7 +63,7 @@ public class RTXShareServlet extends BaseServlet {
 			User user =RoleUtil.getCurrentUser(request);
 			String domain=request.getParameter("domain");
 			String taskImpId=request.getParameter("taskImpId");//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
-			System.out.println("userName:"+user);
+			System.out.println("userName:"+user+",taskImpId="+taskImpId);
 			/*String name = java.net.URLDecoder.decode(request.getParameter(Constants.FR_USERNAME),"UTF-8");
 			System.out.println("name:"+name);*/
 			if(user!=null){
@@ -75,6 +75,7 @@ public class RTXShareServlet extends BaseServlet {
 				for(User u:userList){
 					String sign=DESSymmetricEncoder.createSign(u.getId()+"");
 					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId();
+					System.out.println(u.getUsername());
 					System.out.println(url);
 					if(PortalService.sendMessageToUser(request,"多级上报未处理信息提醒", "BI平台", url, u.getId()+"")){
 						successUser.add(u.getUsername());
@@ -83,7 +84,7 @@ public class RTXShareServlet extends BaseServlet {
 					};
 				}
 				r.put("fail", false);
-				r.put("msg", "发送RTX信息成功!");
+				r.put("msg", "发送RTX信息成功!"+successUser.toString());
 			}else{
 				//先登录
 				r.put("fail", true);

@@ -37,6 +37,7 @@ public class BaseServlet extends HttpServlet {
 		try {
 			InetAddress address = InetAddress.getLocalHost();// 获取的是本地的IP地址
 			String hostAddress = address.getHostAddress();// 192.168.0.121
+			hostAddress=Constants.CTX_DOMAIN;
 			return hostAddress;
 		} catch (Exception e) {
 		}

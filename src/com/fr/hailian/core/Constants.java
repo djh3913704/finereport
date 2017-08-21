@@ -29,6 +29,7 @@ public class Constants {
 	public static final String username = "sa";
 	public static final String password = "";
 	
+	public static final String CTX_DOMAIN="10.0.6.17";
 	public static final String CTX_PATH = "";//帆软项目根目录
-	public static final String CTX_PORT = "8075";//帆软项目端口
+	public static final String CTX_PORT = "80";//帆软项目端口
 }

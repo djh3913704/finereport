@@ -254,6 +254,7 @@ public class TaskService {
 		List<User>  userList=new ArrayList<User>();
 		String result=HttpClientUtil.sendGetRequest(taskUrl,null);
 		Map<String,Object> data=JsonKit.json2map(result);
+		System.out.println("data:"+data);
 		int currentNodeIdx=Integer.valueOf(data.get("currentNodeIdx")==null?"0":data.get("currentNodeIdx").toString());
 		List<Map<String,Object>> nodes=JsonKit.json2listmap(JsonKit.json2map(data.get("process").toString()).get("nodes").toString());
 		if(nodes!=null&&nodes.size()>=currentNodeIdx+1){
@@ -261,12 +262,28 @@ public class TaskService {
 			String reportControl=nodes.get(currentNodeIdx+1).get("reportControl")+"";
 			List<Map<String,Object>> rep=JsonKit.json2listmap(reportControl);
 			//"operatorName":"用户:韩文(hanwen),孙林(sunlin),王伟(wangwei),张珊(zhangshan)",
-			String[] operatorName=rep.get(0).get("operatorName").toString().replaceFirst("用户:", "").split(",");
+			/*String[] operatorName=rep.get(0).get("operatorName").toString().replaceFirst("用户:", "").split(",");
 			for(String name:operatorName){
 				String userName=name.substring(name.indexOf("(")+1,name.indexOf(")"));
 				try {
 					User user=UserControl.getInstance().getByUserName(userName);
 					userList.add(user);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}*/
+			String pre=JsonKit.json2listmap(nodes.get(currentNodeIdx).get("reportControl")+"").get(0).get("operator").toString();
+			System.out.println("pre:"+pre);
+			String[] operatorName=rep.get(0).get("operator").toString().replaceFirst("1##1##", "").split(":1##1##");
+			for(String name:operatorName){
+				try {
+					if(StringUtils.isNotBlank(pre)&&pre.indexOf(name)==-1){
+						System.out.println("name:"+name);
+						User user=UserControl.getInstance().getByUserName(name);
+						System.out.println("send to:"+user.getUsername());
+						userList.add(user);
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -286,7 +303,8 @@ public class TaskService {
 			System.out.println(map.get("reportPath"));
 			System.out.println(map.get("operator"));
 		}*/
-		String taskUrl="http://localhost:8075"+Constants.CTX_PATH+"/ReportServer?op=report_process&cmd=get_taskImpl&taskId=23";
-		nodeInfo(taskUrl);
+		//String taskUrl="http://10.0.6.17/ReportServer?op=report_process&cmd=get_taskImpl&taskId=17";
+		//nodeInfo(taskUrl);
+		System.out.println(HttpClientUtil.sendGetRequest("http://10.0.6.17/rtxShareServlet?taskImpId=21", null));
 	}
 }
