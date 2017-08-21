@@ -5,7 +5,8 @@
  * RTX集成相关方法 多级上报
  * taskImpId//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
  */
-function initHlRTXReportMethod(taskImpId){
+function initHlRTXReportMethod(){
+	  var taskImpId=a.taskId
 	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
 	  var url=domain.replace("/ReportServer","");
