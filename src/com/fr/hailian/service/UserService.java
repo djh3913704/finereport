@@ -308,7 +308,22 @@ public class UserService {
 		}
 		return o;
 	}
-	
+	public static UserModel  getExistsUser(String name){
+		String sql="select id,username from fr_t_user where username='"+name+"' or realname='"+name+"' ";
+		
+		try {
+			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
+			 UserModel user=new UserModel();
+			 if(res.length>0){
+				 user.setId(res[0][0]);
+				 user.setUserName(res[0][1]);
+				 return user;
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static void main(String[] args) {
 		/*UserModel user=new UserModel("num", "test", "1", "2", "3");
 		if(!ifExistsUser(user.getUserName())){

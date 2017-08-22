@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
 import com.fr.hailian.core.BaseServlet;
+import com.fr.hailian.model.UserModel;
 import com.fr.hailian.service.TaskService;
 import com.fr.hailian.util.DESSymmetricEncoder;
 import com.fr.hailian.util.PortalService;
@@ -68,19 +69,19 @@ public class RTXShareServlet extends BaseServlet {
 			System.out.println("name:"+name);*/
 			if(user!=null){
 				//获取下一级审核人信息
-				List<User> userList=TaskService.getShareUser(taskImpId);
+				List<UserModel> userList=TaskService.getShareUser(taskImpId);
 				//生成url地址 发送RTX信息使用
 				List<String> successUser=new ArrayList<String>();
 				List<String> failUser=new ArrayList<String>();
-				for(User u:userList){
+				for(UserModel u:userList){
 					String sign=DESSymmetricEncoder.createSign(u.getId()+"");
 					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId();
-					System.out.println(u.getUsername());
+					System.out.println(u.getUserName());
 					System.out.println(url);
 					if(PortalService.sendMessageToUser(request,"多级上报未处理信息提醒", "BI平台", url, u.getId()+"")){
-						successUser.add(u.getUsername());
+						successUser.add(u.getUserName());
 					}else{
-						failUser.add(u.getUsername());
+						failUser.add(u.getUserName());
 					};
 				}
 				r.put("fail", false);

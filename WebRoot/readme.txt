@@ -49,7 +49,7 @@
     1.2.1 如果1.1步骤没有引入hailian/js/hl_common.js，那在上方“引用JavaScript”先引入hl_common.js（注意路径问题），
     否则直接进入下一步
     1.2.2 在下方“JavaScript脚本”中加入自定义方法，方法名称固定：var result=initHlRTXReportMethod(taskImpId);
-        参数 无
+        参数 fr_task_id 引用方式 服务器--服务器配置--填报页面设置--事件-右侧“参数” --参数填写 fr_task_id 值填写 $fr_task_id
     1.2.3 返回结果
           成功：发送RTX信息
           失败 返回错误提示信息result 格式：{fail: true, msg: "错误信息 "}

@@ -5,18 +5,17 @@
  * RTX集成相关方法 多级上报
  * taskImpId//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
  */
-function initHlRTXReportMethod(){
-	  var taskImpId=a.taskId
+function initHlRTXReportMethod(fr_task_id){
 	  var result=new Object();
 	  var domain=FR.serverURL+FR.servletURL;
 	  var url=domain.replace("/ReportServer","");
       domain=domain.replace("/ReportServer","")+'/rtxShareServlet';
-	  console.log(domain)
+	  console.log(domain+"----"+fr_task_id)
 	  FR.ajax({
       	  url: domain,
           data: FR.cjkEncodeDO({
         	  domain: url,
-        	  taskImpId:taskImpId,
+        	  taskImpId:fr_task_id,
           }),
           type: 'POST',
           async: false,

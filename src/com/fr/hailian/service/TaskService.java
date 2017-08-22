@@ -243,15 +243,15 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   List<User>
 	 */
-	public static List<User> getShareUser(String taskImplId){
+	public static List<UserModel> getShareUser(String taskImplId){
 		//http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&Fri%20Aug%2018%202017%2014:12:41%20GMT+0800%20(%D6%D0%B9%FA%B1%EA%D7%BC%CA%B1%BC%E4)&taskId=23
 		//http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&Fri Aug 18 2017 14:12:41 GMT 0800 (�й���׼ʱ��)&taskId=23
 		String taskUrl="http://"+BaseServlet.getIpAddress()+":"+Constants.CTX_PORT+Constants.CTX_PATH+"/ReportServer?op=report_process&cmd=get_taskImpl&taskId="+taskImplId;
 		return nodeInfo(taskUrl);
 	}
 	
-	private static List<User>  nodeInfo(String taskUrl) {
-		List<User>  userList=new ArrayList<User>();
+	private static List<UserModel>  nodeInfo(String taskUrl) {
+		List<UserModel>  userList=new ArrayList<UserModel>();
 		String result=HttpClientUtil.sendGetRequest(taskUrl,null);
 		Map<String,Object> data=JsonKit.json2map(result);
 		System.out.println("data:"+data);
@@ -273,7 +273,7 @@ public class TaskService {
 					e.printStackTrace();
 				}
 			}*/
-			String pre=JsonKit.json2listmap(nodes.get(currentNodeIdx).get("reportControl")+"").get(0).get("operator").toString();
+			/*String pre=JsonKit.json2listmap(nodes.get(currentNodeIdx).get("reportControl")+"").get(0).get("operator").toString();
 			System.out.println("pre:"+pre);
 			String[] operatorName=rep.get(0).get("operator").toString().replaceFirst("1##1##", "").split(":1##1##");
 			for(String name:operatorName){
@@ -285,9 +285,22 @@ public class TaskService {
 						userList.add(user);
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}*/
+			//1##1##Lisa:1##1##eoco
+			String operator=rep.get(0).get("operator").toString();
+			String ids=operator.substring(operator.indexOf(":1##1##")+7);
+			System.out.println("ids:"+ids);
+			if(ids.indexOf("##")!=-1){
+				ids=ids.substring(0,ids.indexOf("##"));
+			}
+			try {
+				UserModel user = UserService.getExistsUser(ids);
+				System.out.println(user);
+				userList.add(user);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			
 		}
@@ -303,8 +316,8 @@ public class TaskService {
 			System.out.println(map.get("reportPath"));
 			System.out.println(map.get("operator"));
 		}*/
-		//String taskUrl="http://10.0.6.17/ReportServer?op=report_process&cmd=get_taskImpl&taskId=17";
-		//nodeInfo(taskUrl);
-		System.out.println(HttpClientUtil.sendGetRequest("http://10.0.6.17/rtxShareServlet?taskImpId=21", null));
+		String taskUrl="http://"+Constants.CTX_DOMAIN+":"+Constants.CTX_PORT+Constants.CTX_PATH+"/ReportServer?op=report_process&cmd=get_taskImpl&taskId=23";
+		nodeInfo(taskUrl);
+		
 	}
 }
