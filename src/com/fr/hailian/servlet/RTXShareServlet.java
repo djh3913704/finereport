@@ -85,7 +85,10 @@ public class RTXShareServlet extends BaseServlet {
 					String sign=DESSymmetricEncoder.createSign(u.getId()+"");
 					String hl_url=TaskService.joinTaskUrl(data[0][4], data[0][2], taskImpId);
 					System.out.println("hl_url:"+hl_url);
-					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId()+"&__redirect__="+__redirect__+"&hl_url="+hl_url;
+					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId();
+					if("true".equals(__redirect__)){
+						url+="&__redirect__="+__redirect__+"&hl_url="+hl_url;
+					}
 					System.out.println(u.getUserName());
 					System.out.println(url);
 					if(PortalService.sendMessageToUser(request, com.fr.hailian.core.Constants.RTX_TITLE, com.fr.hailian.core.Constants.RTX_CONTENT, url, u.getUserName())){
