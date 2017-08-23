@@ -260,45 +260,43 @@ public class TaskService {
 			String reportControl=nodes.get(currentNodeIdx+1).get("reportControl")+"";
 			List<Map<String,Object>> rep=JsonKit.json2listmap(reportControl);
 			//"operatorName":"用户:韩文(hanwen),孙林(sunlin),王伟(wangwei),张珊(zhangshan)",
-			/*String[] operatorName=rep.get(0).get("operatorName").toString().replaceFirst("用户:", "").split(",");
+			String[] operatorName=rep.get(0).get("operatorName").toString().replaceFirst("用户:", "").split(",");
 			for(String name:operatorName){
 				String userName=name.substring(name.indexOf("(")+1,name.indexOf(")"));
 				try {
-					User user=UserControl.getInstance().getByUserName(userName);
-					userList.add(user);
+					UserModel mUser=UserService.getExistsUser(userName);
+					userList.add(mUser);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}*/
-			/*String pre=JsonKit.json2listmap(nodes.get(currentNodeIdx).get("reportControl")+"").get(0).get("operator").toString();
-			System.out.println("pre:"+pre);
-			String[] operatorName=rep.get(0).get("operator").toString().replaceFirst("1##1##", "").split(":1##1##");
-			for(String name:operatorName){
+			}
+			//1##1##Lisa:1##1##eoco
+			if(userList.size()==0){
+				/*String operator=rep.get(0).get("operator").toString();
+				String ids=operator.substring(operator.indexOf(":1##1##")+7);
+				System.out.println("ids:"+ids);
+				if(ids.indexOf("##")!=-1){
+					ids=ids.substring(0,ids.indexOf("##"));
+				}
 				try {
-					if(StringUtils.isNotBlank(pre)&&pre.indexOf(name)==-1){
-						System.out.println("name:"+name);
-						User user=UserControl.getInstance().getByUserName(name);
-						System.out.println("send to:"+user.getUsername());
+					UserModel user = UserService.getExistsUser(ids);
+					System.out.println(user);
+					userList.add(user);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}*/
+				String operator=rep.get(0).get("operator").toString();
+				String[] ids=operator.substring(operator.indexOf(":")+7).split("##");
+				try {
+					for(String id:ids){
+						UserModel user = UserService.getExistsUser(id);
+						System.out.println(user);
 						userList.add(user);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}*/
-			//1##1##Lisa:1##1##eoco
-			String operator=rep.get(0).get("operator").toString();
-			String ids=operator.substring(operator.indexOf(":1##1##")+7);
-			System.out.println("ids:"+ids);
-			if(ids.indexOf("##")!=-1){
-				ids=ids.substring(0,ids.indexOf("##"));
-			}
-			try {
-				UserModel user = UserService.getExistsUser(ids);
-				System.out.println(user);
-				userList.add(user);
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 			
 		}
