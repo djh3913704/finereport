@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import com.fr.fs.base.entity.User;
+import com.fr.general.web.ParameterConsts;
 import com.fr.hailian.core.BaseServlet;
 import com.fr.hailian.model.UserModel;
 import com.fr.hailian.service.TaskService;
 import com.fr.hailian.util.DESSymmetricEncoder;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
+import com.fr.stable.Constants;
+import com.fr.web.utils.WebUtils;
 /**
  * 
  * @className RTXShareServlet.java
@@ -65,6 +68,7 @@ public class RTXShareServlet extends BaseServlet {
 			String domain=request.getParameter("domain");
 			//帆软实际ID对应表fr_process_task_impl中frtaskid 实际值字段
 			String frTaskId=request.getParameter("taskImpId");
+			String __redirect__ = WebUtils.getHTTPRequestParameter(request, ParameterConsts.__REDIRECT__);//是否直接跳转到任务详情页面 true跳转
 			//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
 			/*String name = java.net.URLDecoder.decode(request.getParameter(Constants.FR_USERNAME),"UTF-8");
 			System.out.println("name:"+name);*/
@@ -81,7 +85,7 @@ public class RTXShareServlet extends BaseServlet {
 					String sign=DESSymmetricEncoder.createSign(u.getId()+"");
 					String hl_url=TaskService.joinTaskUrl(data[0][4], data[0][2], taskImpId);
 					System.out.println("hl_url:"+hl_url);
-					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId()+"&__redirect__=true&hl_url="+hl_url;
+					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId()+"&__redirect__="+__redirect__+"&hl_url="+hl_url;
 					System.out.println(u.getUserName());
 					System.out.println(url);
 					if(PortalService.sendMessageToUser(request, com.fr.hailian.core.Constants.RTX_TITLE, com.fr.hailian.core.Constants.RTX_CONTENT, url, u.getUserName())){
