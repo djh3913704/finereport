@@ -81,7 +81,7 @@ public class RTXShareServlet extends BaseServlet {
 					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId();
 					System.out.println(u.getUserName());
 					System.out.println(url);
-					if(PortalService.sendMessageToUser(request,"多级上报未处理信息提醒", "BI平台", url, u.getUserName())){
+					if(PortalService.sendMessageToUser(request, com.fr.hailian.core.Constants.RTX_TITLE, com.fr.hailian.core.Constants.RTX_CONTENT, url, u.getUserName())){
 						successUser.add(u.getUserName());
 					}else{
 						failUser.add(u.getUserName());

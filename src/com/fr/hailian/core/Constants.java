@@ -28,7 +28,7 @@ public class Constants {
 	public static final String url = "emb:jdbc:hsqldb:file://f:FineReport_8.0/WebReport/WEB-INF/finedb/db";
 	public static final String username = "sa";
 	public static final String password = "";*/
-	public static final String DB_NAME = "Hsql";
+	public static final String DB_NAME = "Hsql";//数据库名称 配置在服务器上
 	
 	public static final String CTX_DOMAIN="10.0.6.17";
 	public static final String CTX_PATH = "";//帆软项目根目录
@@ -37,4 +37,7 @@ public class Constants {
 /*	public static final String CTX_DOMAIN="10.158.215.151";
 	public static final String CTX_PATH = "/WebReport";//帆软项目根目录
 	public static final String CTX_PORT = "8075";//帆软项目端口
-*/}
+*/	
+	public static final String RTX_TITLE = "多级上报未处理信息提醒";//RTX发送标题
+	public static final String RTX_CONTENT = "BI平台";//RTX发送内容
+	}
