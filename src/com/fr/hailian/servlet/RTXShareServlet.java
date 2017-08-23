@@ -63,7 +63,10 @@ public class RTXShareServlet extends BaseServlet {
 			//用户名
 			User user =RoleUtil.getCurrentUser(request);
 			String domain=request.getParameter("domain");
-			String taskImpId=request.getParameter("taskImpId");//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
+			//帆软实际ID对应表fr_process_task_impl中frtaskid 实际值字段
+			String frTaskId=request.getParameter("taskImpId");
+			//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
+			String taskImpId=TaskService.getTaskImplByFrtaskId(frTaskId);
 			System.out.println("userName:"+user+",taskImpId="+taskImpId);
 			/*String name = java.net.URLDecoder.decode(request.getParameter(Constants.FR_USERNAME),"UTF-8");
 			System.out.println("name:"+name);*/

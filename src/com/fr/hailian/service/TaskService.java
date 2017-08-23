@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fr.fs.base.entity.User;
-import com.fr.fs.control.UserControl;
 import com.fr.hailian.core.BaseServlet;
 import com.fr.hailian.core.Constants;
 import com.fr.hailian.core.DataBaseToolService;
@@ -306,7 +304,26 @@ public class TaskService {
 		}
 		return userList;
 	}
-	
+	/**
+	 * 
+	 * @time   2017年8月23日 上午8:52:55
+	 * @author zuoqb
+	 * @todo   根据帆软实际taskid获取本地具体任务id
+	 * @param  @param frTaskId
+	 * @return_type   void
+	 */
+	public static String getTaskImplByFrtaskId(String frTaskId){
+		String sql="select id from fr_process_task_impl where frtaskid='"+frTaskId+"' ";
+		try {
+			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
+			 if(res.length>0){
+				 return res[0][0];
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static void main(String[] args) throws Exception {
 		/*String url="%2FrtxSecurityServlet%3FuserId%3D32%26sign%3Dd%25252FLWhfP96RBD5eWLLRoJezGZecZkrgZweFR0KQclwL0Jyw7jFIMnfu0H5XgH1P%25252BdFi3%25252Bs1btBjM5%25250D%25250Aq56U3lbHrS56%25252BvtTEMxkYsTOok2HWzE75kyyWTb2tg%25253D%25253D%26hl_url%3D%2FWebReport%2FReportServer%3Freportlet%3Ddoc%2FForm%2FCutpage%2FCutpage.cpt%40%40op%3Dwrite%40%40__cutpage__%3Dnull%40%40__processtaskid__%3D58%40%40__allprocesstaskid__%3D18";
 		url=java.net.URLDecoder.decode(url, "UTF-8");
