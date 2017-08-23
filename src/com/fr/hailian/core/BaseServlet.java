@@ -2,7 +2,11 @@ package com.fr.hailian.core;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
@@ -32,15 +36,32 @@ public class BaseServlet extends HttpServlet {
 			}
 		}
 	}
-
+	/**
+	 * 
+	 * @time   2017年8月23日 下午5:45:20
+	 * @author zuoqb
+	 * @todo   获取当前项目发布服务器的ip
+	 * @param  @return
+	 * @return_type   String
+	 */
 	public static String getIpAddress() {
-		try {
-			InetAddress address = InetAddress.getLocalHost();// 获取的是本地的IP地址
-			String hostAddress = address.getHostAddress();// 192.168.0.121
-			hostAddress=Constants.CTX_DOMAIN;
-			return hostAddress;
-		} catch (Exception e) {
-		}
-		return null;
+        try {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface ni = (NetworkInterface) networkInterfaces.nextElement();
+                Enumeration<InetAddress> nias = ni.getInetAddresses();
+                while (nias.hasMoreElements()) {
+                    InetAddress ia = (InetAddress) nias.nextElement();
+                    if (!ia.isLinkLocalAddress() && !ia.isLoopbackAddress() && ia instanceof Inet4Address) {
+                        return ia.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException e) {
+        }
+        return null;
+    }
+	public static void main(String[] args) {
+		System.out.println(getIpAddress());
 	}
 }

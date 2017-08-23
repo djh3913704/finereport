@@ -211,6 +211,17 @@ public class TaskService {
 		url=java.net.URLEncoder.encode(url, "UTF-8");
 		return url;
 	}
+	/**
+	 * 
+	 * @time   2017年8月23日 下午4:30:56
+	 * @author zuoqb
+	 * @todo   发送消息时  如果想直接进入任务详情页面 拼接地址
+	 * @param  @param reportcontrol
+	 * @param  @param taskId
+	 * @param  @param taskImpId
+	 * @param  @return
+	 * @return_type   String
+	 */
 	public static String joinTaskUrl(String reportcontrol,String taskId,String taskImpId) {
 		//reportcontrol {"demo/DataReport/financial.cpt":{"sunlin":1}}
 		Map<String,Object> map=JsonKit.json2map(reportcontrol);

@@ -75,7 +75,6 @@ public class RTXShareServlet extends BaseServlet {
 			if(user!=null){
 				String taskImpId=TaskService.getTaskImplByFrtaskId(frTaskId);
 				String[][] data=TaskService.getTaskIdByFrtaskId(frTaskId);
-				System.out.println("userName:"+user+",taskImpId="+taskImpId);
 				//获取下一级审核人信息
 				List<UserModel> userList=TaskService.getShareUser(taskImpId);
 				//生成url地址 发送RTX信息使用
@@ -83,10 +82,9 @@ public class RTXShareServlet extends BaseServlet {
 				List<String> failUser=new ArrayList<String>();
 				for(UserModel u:userList){
 					String sign=DESSymmetricEncoder.createSign(u.getId()+"");
-					String hl_url=TaskService.joinTaskUrl(data[0][4], data[0][2], taskImpId);
-					System.out.println("hl_url:"+hl_url);
 					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId();
 					if("true".equals(__redirect__)){
+						String hl_url=TaskService.joinTaskUrl(data[0][4], data[0][2], taskImpId);
 						url+="&__redirect__="+__redirect__+"&hl_url="+hl_url;
 					}
 					System.out.println(u.getUserName());
