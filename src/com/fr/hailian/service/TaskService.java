@@ -263,12 +263,11 @@ public class TaskService {
 			String[] operatorName=rep.get(0).get("operatorName").toString().replaceFirst("用户:", "").split(",");
 			for(String name:operatorName){
 				String userName=name.substring(name.indexOf("(")+1,name.indexOf(")"));
-				try {
+				if(StringUtils.isNotBlank(userName)){
 					UserModel mUser=UserService.getExistsUser(userName);
-					userList.add(mUser);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					if(mUser!=null&&StringUtils.isNotBlank(mUser.getId())){
+						userList.add(mUser);
+					}
 				}
 			}
 			//1##1##Lisa:1##1##eoco
@@ -311,7 +310,25 @@ public class TaskService {
 	 * @return_type   void
 	 */
 	public static String getTaskImplByFrtaskId(String frTaskId){
-		String sql="select id from fr_process_task_impl where frtaskid='"+frTaskId+"' ";
+		/*String sql="select id,frTaskId from fr_process_task_impl  ";
+		System.out.println(sql);
+		String id="";
+		try {
+			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
+			 if(res.length>0){
+				 for(String[] s:res){
+					 if(frTaskId.equals(s[1])){
+						 id=s[0];
+						 break;
+					 }
+				 }
+				 return id;
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;*/
+		String sql="select id from fr_process_task_impl where frtaskid='"+frTaskId+"'";
 		try {
 			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
 			 if(res.length>0){
