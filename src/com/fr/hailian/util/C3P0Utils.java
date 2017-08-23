@@ -1,13 +1,12 @@
 package com.fr.hailian.util;
 
-import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.fr.data.impl.NameDatabaseConnection;
 import com.fr.hailian.core.Constants;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 /**
  * @className C3P0Utils.java
  * @time   2017年8月12日 上午8:53:54
@@ -16,59 +15,29 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
  */
 public class C3P0Utils extends Constants{
     private static C3P0Utils dbcputils = null;
-    private ComboPooledDataSource cpds = null;
+    private NameDatabaseConnection connect;
 
-    private C3P0Utils() {
-        if (cpds == null) {
-            cpds = new ComboPooledDataSource();
-        }
-        cpds.setUser(username);
-        cpds.setPassword(password);
-        cpds.setJdbcUrl(url);
-        try {
-            cpds.setDriverClass(driverclass);
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        cpds.setInitialPoolSize(100);
-        cpds.setMaxIdleTime(20);
-        cpds.setMaxPoolSize(100);
-        cpds.setMinPoolSize(10);
+
+    public C3P0Utils(String dbName) {
+    	NameDatabaseConnection con=new NameDatabaseConnection(dbName);
+    	this.connect=con;
     }
-
-    public C3P0Utils(String url, String username, String password) {
-
-        cpds = new ComboPooledDataSource();
-        cpds.setUser(username);
-        cpds.setPassword(password);
-        cpds.setJdbcUrl(url);
-        try {
-            cpds.setDriverClass(driverclass);
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        cpds.setInitialPoolSize(100);
-        cpds.setMaxIdleTime(20);
-        cpds.setMaxPoolSize(100);
-        cpds.setMinPoolSize(10);
-    }
-
-    public synchronized static C3P0Utils getInstance() {
+    public synchronized static C3P0Utils getInstance(String dbName) {
         if (dbcputils == null)
-            dbcputils = new C3P0Utils();
+            dbcputils = new C3P0Utils(dbName);
         return dbcputils;
     }
-
-    public synchronized static C3P0Utils getInstance(String url,
-            String username, String password) {
-        return new C3P0Utils(url, username, password);
+    public synchronized static C3P0Utils getInstance() {
+        if (dbcputils == null)
+            dbcputils = new C3P0Utils(Constants.DB_NAME);
+        return dbcputils;
     }
 
     public Connection getConnection() {
         Connection con = null;
         try {
-            con = cpds.getConnection();
-        } catch (SQLException e) {
+            con = connect.createConnection();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return con;

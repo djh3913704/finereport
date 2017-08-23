@@ -1,6 +1,8 @@
 package com.fr.hailian.service;
 
 import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
 import org.json.JSONObject;
 
+import com.fr.data.impl.NameDatabaseConnection;
 import com.fr.hailian.core.Constants;
 import com.fr.hailian.core.DataBaseToolService;
 import com.fr.hailian.excel.ImportExcel;
@@ -333,8 +336,21 @@ public class UserService {
 			boolean update=updateUser(user);
 			System.out.println("update:"+update);
 		}*/
-		JSONObject o=UserService.importUser("D:\\用户管理.xlsx");
-		System.out.println(o.toString());
+		/*JSONObject o=UserService.importUser("D:\\用户管理.xlsx");
+		System.out.println(o.toString());*/
+		NameDatabaseConnection con=new NameDatabaseConnection("Hsql");
+		try {
+			PreparedStatement ps=con.createConnection().prepareStatement("select * from fr_t_user");
+			  ResultSet rs = ps.executeQuery();
+		        while (rs.next()) {
+		            System.out.println(rs.getString("ID"));
+		        }
+		        rs.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println(UserService.getExistsUser("Tom"));
 	}
 
 }

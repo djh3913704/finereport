@@ -73,7 +73,7 @@ public class DataBaseToolService {
         String[][] result = null;
         PreparedStatement ps = null;
         try {
-            conn = C3P0Utils.getInstance(url, username, password)
+            conn = C3P0Utils.getInstance()
                     .getConnection();
             ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -121,7 +121,7 @@ public class DataBaseToolService {
         Connection conn = null;
         PreparedStatement ps = null;
         try {
-            conn = C3P0Utils.getInstance(url, username, password)
+            conn = C3P0Utils.getInstance()
                     .getConnection();
             ps = conn.prepareStatement(sql);
             ps.executeUpdate();
