@@ -3,6 +3,7 @@ package com.fr.hailian.service;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -200,7 +201,7 @@ public class TaskService {
 	 * @param  @throws Exception
 	 * @return_type   String
 	 */
-	private static String joinTaskUrl(UserModel user, String sign,String reportcontrol,String taskId,String taskImpId)
+	public static String joinTaskUrl(UserModel user, String sign,String reportcontrol,String taskId,String taskImpId)
 			throws Exception {
 		String path="/rtxSecurityServlet?userId="+user.getId()+"&sign="+sign;
 		String hl_url=Constants.CTX_PATH+"/ReportServer?reportlet="+reportPath(reportcontrol)+"&op=write&__cutpage__=null&__processtaskid__="+taskImpId+"&__allprocesstaskid__="+taskId;
@@ -209,6 +210,18 @@ public class TaskService {
 		String url=path+"&hl_url="+hl_url;
 		url=java.net.URLEncoder.encode(url, "UTF-8");
 		return url;
+	}
+	public static String joinTaskUrl(String reportcontrol,String taskId,String taskImpId) {
+		//reportcontrol {"demo/DataReport/financial.cpt":{"sunlin":1}}
+		Map<String,Object> map=JsonKit.json2map(reportcontrol);
+		Iterator<String> iter = map.keySet().iterator(); 
+		String reportlet="";
+        while(iter.hasNext()){ 
+        	reportlet=iter.next(); 
+        }
+		String hl_url=Constants.CTX_PATH+"/ReportServer?reportlet="+reportlet+"&op=write&__cutpage__=null&__processtaskid__="+taskImpId+"&__allprocesstaskid__="+taskId;
+		hl_url=hl_url.replaceAll("&", "@@");
+		return hl_url;
 	}
 	/**
 	 * 
@@ -310,30 +323,31 @@ public class TaskService {
 	 * @return_type   void
 	 */
 	public static String getTaskImplByFrtaskId(String frTaskId){
-		/*String sql="select id,frTaskId from fr_process_task_impl  ";
-		System.out.println(sql);
-		String id="";
-		try {
-			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
-			 if(res.length>0){
-				 for(String[] s:res){
-					 if(frTaskId.equals(s[1])){
-						 id=s[0];
-						 break;
-					 }
-				 }
-				 return id;
-			 }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;*/
 		String sql="select id from fr_process_task_impl where frtaskid='"+frTaskId+"'";
 		try {
 			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
 			 if(res.length>0){
 				 return res[0][0];
 			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 
+	 * @time   2017年8月23日 下午4:06:10
+	 * @author zuoqb
+	 * @todo   根据实际任务id获取任务信息
+	 * @param  @param frTaskId
+	 * @param  @return
+	 * @return_type   String[][]
+	 */
+	public static String[][] getTaskIdByFrtaskId(String frTaskId){
+		String sql="select  id ,frtaskid,taskid,processid,completestate from fr_process_task_impl where frtaskid='"+frTaskId+"'";
+		try {
+			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
+			 return res;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -348,8 +362,14 @@ public class TaskService {
 			System.out.println(map.get("reportPath"));
 			System.out.println(map.get("operator"));
 		}*/
-		String taskUrl="http://"+Constants.CTX_DOMAIN+":"+Constants.CTX_PORT+Constants.CTX_PATH+"/ReportServer?op=report_process&cmd=get_taskImpl&taskId=23";
-		nodeInfo(taskUrl);
-		
+	/*	String taskUrl="http://"+Constants.CTX_DOMAIN+":"+Constants.CTX_PORT+Constants.CTX_PATH+"/ReportServer?op=report_process&cmd=get_taskImpl&taskId=23";
+		nodeInfo(taskUrl);*/
+		String s="{\"demo/DataReport/financial.cpt\":{\"sunlin\":1}}";
+		Map<String,Object> map=JsonKit.json2map(s);
+		Iterator<String> iter = map.keySet().iterator(); 
+        while(iter.hasNext()){ 
+            String key=iter.next(); 
+            System.out.println(key+" "); 
+        }
 	}
 }
