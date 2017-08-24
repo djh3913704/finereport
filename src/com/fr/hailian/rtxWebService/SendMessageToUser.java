@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>anonymous complex type锟斤拷 Java 锟洁。
+ * <p>anonymous complex type的 Java 类。
  * 
- * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
  * &lt;complexType&gt;
@@ -74,7 +74,7 @@ public class SendMessageToUser {
     protected int rank;
 
     /**
-     * 锟斤拷取taskTitle锟斤拷锟皆碉拷值锟斤拷
+     * 获取taskTitle属性的值。
      * 
      * @return
      *     possible object is
@@ -86,7 +86,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷taskTitle锟斤拷锟皆碉拷值锟斤拷
+     * 设置taskTitle属性的值。
      * 
      * @param value
      *     allowed object is
@@ -98,7 +98,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取msgContent锟斤拷锟皆碉拷值锟斤拷
+     * 获取msgContent属性的值。
      * 
      * @return
      *     possible object is
@@ -110,7 +110,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷msgContent锟斤拷锟皆碉拷值锟斤拷
+     * 设置msgContent属性的值。
      * 
      * @param value
      *     allowed object is
@@ -122,7 +122,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取transUrl锟斤拷锟皆碉拷值锟斤拷
+     * 获取transUrl属性的值。
      * 
      * @return
      *     possible object is
@@ -134,7 +134,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷transUrl锟斤拷锟皆碉拷值锟斤拷
+     * 设置transUrl属性的值。
      * 
      * @param value
      *     allowed object is
@@ -146,7 +146,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取userName锟斤拷锟皆碉拷值锟斤拷
+     * 获取userName属性的值。
      * 
      * @return
      *     possible object is
@@ -158,7 +158,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷userName锟斤拷锟皆碉拷值锟斤拷
+     * 设置userName属性的值。
      * 
      * @param value
      *     allowed object is
@@ -170,7 +170,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取userList锟斤拷锟皆碉拷值锟斤拷
+     * 获取userList属性的值。
      * 
      * @return
      *     possible object is
@@ -182,7 +182,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷userList锟斤拷锟皆碉拷值锟斤拷
+     * 设置userList属性的值。
      * 
      * @param value
      *     allowed object is
@@ -194,7 +194,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取from锟斤拷锟皆碉拷值锟斤拷
+     * 获取from属性的值。
      * 
      * @return
      *     possible object is
@@ -206,7 +206,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷from锟斤拷锟皆碉拷值锟斤拷
+     * 设置from属性的值。
      * 
      * @param value
      *     allowed object is
@@ -218,7 +218,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取smsType锟斤拷锟皆碉拷值锟斤拷
+     * 获取smsType属性的值。
      * 
      * @return
      *     possible object is
@@ -230,7 +230,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷smsType锟斤拷锟皆碉拷值锟斤拷
+     * 设置smsType属性的值。
      * 
      * @param value
      *     allowed object is
@@ -242,7 +242,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取sendSMSTime锟斤拷锟皆碉拷值锟斤拷
+     * 获取sendSMSTime属性的值。
      * 
      * @return
      *     possible object is
@@ -254,7 +254,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷sendSMSTime锟斤拷锟皆碉拷值锟斤拷
+     * 设置sendSMSTime属性的值。
      * 
      * @param value
      *     allowed object is
@@ -266,7 +266,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取businessId锟斤拷锟皆碉拷值锟斤拷
+     * 获取businessId属性的值。
      * 
      * @return
      *     possible object is
@@ -278,7 +278,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷businessId锟斤拷锟皆碉拷值锟斤拷
+     * 设置businessId属性的值。
      * 
      * @param value
      *     allowed object is
@@ -290,7 +290,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷取rank锟斤拷锟皆碉拷值锟斤拷
+     * 获取rank属性的值。
      * 
      */
     public int getRank() {
@@ -298,7 +298,7 @@ public class SendMessageToUser {
     }
 
     /**
-     * 锟斤拷锟斤拷rank锟斤拷锟皆碉拷值锟斤拷
+     * 设置rank属性的值。
      * 
      */
     public void setRank(int value) {
