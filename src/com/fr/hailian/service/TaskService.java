@@ -204,12 +204,12 @@ public class TaskService {
 	public static String joinTaskUrl(UserModel user, String sign,String reportcontrol,String taskId,String taskImpId)
 			throws Exception {
 		String path="/rtxSecurityServlet?userId="+user.getId()+"&sign="+sign;
-		String hl_url=Constants.CTX_PATH+"/ReportServer?reportlet="+reportPath(reportcontrol)+"&op=write&__cutpage__=null&__processtaskid__="+taskImpId+"&__allprocesstaskid__="+taskId;
-		//hl_url=java.net.URLEncoder.encode(hl_url, "UTF-8");
+		/*String hl_url=Constants.CTX_PATH+"/ReportServer?reportlet="+reportPath(reportcontrol)+"&op=write&__cutpage__=null&__processtaskid__="+taskImpId+"&__allprocesstaskid__="+taskId;
 		hl_url=hl_url.replaceAll("&", "@@");
 		String url=path+"&hl_url="+hl_url;
 		url=java.net.URLEncoder.encode(url, "UTF-8");
-		return url;
+		return url;*/
+		return path;
 	}
 	/**
 	 * 
