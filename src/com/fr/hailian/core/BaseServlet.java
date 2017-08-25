@@ -6,7 +6,9 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +62,24 @@ public class BaseServlet extends HttpServlet {
         } catch (SocketException e) {
         }
         return null;
+    }
+	public static List<String> getIpAddressList() {
+		List<String> list=new ArrayList<String>();
+        try {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface ni = (NetworkInterface) networkInterfaces.nextElement();
+                Enumeration<InetAddress> nias = ni.getInetAddresses();
+                while (nias.hasMoreElements()) {
+                    InetAddress ia = (InetAddress) nias.nextElement();
+                    if (!ia.isLinkLocalAddress() && !ia.isLoopbackAddress() && ia instanceof Inet4Address) {
+                        list.add(ia.getHostAddress());
+                    }
+                }
+            }
+        } catch (SocketException e) {
+        }
+        return list;
     }
 	public static void main(String[] args) {
 		System.out.println(getIpAddress());
