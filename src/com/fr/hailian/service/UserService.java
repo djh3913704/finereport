@@ -28,6 +28,32 @@ public class UserService {
 	 * 
 	 * @time   2017年8月15日 下午1:28:12
 	 * @author zuoqb
+	 * @todo   根据工号（用户名）获取用户信息
+	 * @param  @param userId
+	 * @param  @return
+	 * @return_type   UserModel
+	 */
+	public static UserModel getUserByUserName(Object userName){
+		UserModel user=new UserModel();
+		String sql="select id,username,password,realname,email from fr_t_user where username='"+userName+"' limit 1 ";
+		try {
+			String[][] result=DataBaseToolService.getQueryResultBySql(sql);
+			 if (result.length>0){
+				 user.setId(result[0][0]);
+				 user.setUserName(result[0][1]);
+				 user.setPassword(result[0][2]);
+				 user.setRealName(result[0][3]);
+				 user.setEmail(result[0][4]);
+			 }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+	/**
+	 * 
+	 * @time   2017年8月15日 下午1:28:12
+	 * @author zuoqb
 	 * @todo   根据ID获取用户信息
 	 * @param  @param userId
 	 * @param  @return
@@ -63,7 +89,7 @@ public class UserService {
 		if(user==null){
 			return false;
 		}
-		String sql="select * from fr_t_user where username='"+user.getUserName()+"' and id='"+user.getId()+"' ";
+		String sql="select * from fr_t_user where  id='"+user.getId()+"' ";
 		
 		try {
 			return DataBaseToolService.ifExistsBySql(sql);

@@ -37,7 +37,7 @@ public class TaskService {
 	 */
 	public static JSONObject getTask(Map<String,Object> map) {
 		JSONObject result=new JSONObject();
-		UserModel user=UserService.getUserById(map.get("uid"));
+		UserModel user=UserService.getUserByUserName(map.get("uid"));
 		if(user==null){
 			result.put("result", 0);
 			result.put("memo", "用户不存在！");
