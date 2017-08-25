@@ -80,9 +80,9 @@ public class TaskService {
 			pageSize=Integer.parseInt(map.get("pageSize")+"");
 		}
 		StringBuffer sb=new StringBuffer();
-		sb.append(" select process.name as subject, sendtime,senderid as fromuser,");
+		sb.append(" select distinct process.name as subject, sendtime,senderid as fromuser,");
 		sb.append(" process.createtime as starttime,task_impl.sender as fromusername,  ");
-		sb.append("	t_department.name as fromdept,t_user.mobile as tel ,process_node.reportcontrol,process_task.id as taskId,task_impl.id as taskImpId ");
+		sb.append("	t_department.name as fromdept,t_user.mobile as tel ,'' as reportcontrol,process_task.id as taskId,task_impl.id as taskImpId ");
 		sb.append(joinTaskFromSql());
 		sb.append(taskSqlWhere(map, user));
 		sb.append(" order by createtime,sendtime  asc ");
@@ -133,7 +133,7 @@ public class TaskService {
 	 * @return_type   int
 	 */
 	public static int getAllCount(Map<String,Object> map,UserModel user){
-		String sql=" select count(1) ";
+		String sql=" select count(distinct task_impl.id) ";
 		sql+=joinTaskFromSql()+taskSqlWhere(map, user);
 		try {
 			String[][] result=DataBaseToolService.getQueryResultBySql(sql);
@@ -155,7 +155,7 @@ public class TaskService {
 	 * @return_type   String
 	 */
 	public static String taskSqlWhere(Map<String,Object> map,UserModel user){
-		String sql=" where task_impl.noderoute like '%"+user.getUserName()+"%' ";
+		String sql=" where task_impl.completestate like '%"+user.getUserName()+"%' ";
 		//请求类型	1:待办事宜；2：已办事宜
 		if("1".equals(map.get("type"))){
 			sql+=" and task_impl.state in('-1','0','3') ";
