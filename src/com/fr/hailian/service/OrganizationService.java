@@ -33,7 +33,7 @@ public class OrganizationService {
 		if(org==null){
 			return false;
 		}
-		String sql="select * from fr_t_department where id='"+org.getId()+"' and name='"+org.getName()+"' ";
+		String sql="select * from fr_t_department where id='"+org.getId()+"'";
 		try {
 			return DataBaseToolService.ifExistsBySql(sql);
 		} catch (Exception e) {
@@ -244,7 +244,7 @@ public class OrganizationService {
 			boolean update=updateUser(user);
 			System.out.println("update:"+update);
 		}*/
-		JSONObject o=OrganizationService.importOrganization("D:\\组织机构.xlsx");
+		JSONObject o=OrganizationService.importOrganization("D:\\组织机构 - 副本.xlsx");
 		System.out.println(o.toString());
 	}
 

@@ -85,7 +85,7 @@ public class UserService {
 		if(user==null){
 			return false;
 		}
-		String sql="select * from fr_t_department_post_user where userid='"+user.getId()+"' and departmentid='"+user.getOrgCode()+"' ";
+		String sql="select * from fr_t_department_post_user where userid='"+user.getId()+"'";
 		
 		try {
 			return DataBaseToolService.ifExistsBySql(sql);
