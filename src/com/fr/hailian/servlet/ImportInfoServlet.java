@@ -81,11 +81,11 @@ public class ImportInfoServlet extends BaseServlet {
 				if("0".equals(type)){
 					//导入人员
 					r=new JSONObject();
-					r=UserService.importUser(filePath);
+					r=UserService.getInstance().importUser(filePath);
 				}else if("1".equals(type)){
 					//导入机构
 					r=new JSONObject();
-					r=OrganizationService.importOrganization(filePath);
+					r=OrganizationService.getInstance().importOrganization(filePath);
 				}else{
 					r.put("fail", false);
 					r.put("msg", "type类型只能为0或1 : 0-人员    1-机构");

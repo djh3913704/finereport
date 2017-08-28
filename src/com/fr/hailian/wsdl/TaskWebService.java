@@ -32,7 +32,7 @@ public class TaskWebService {
 				result.put("result", 0);
 				result.put("memo", "请输入用户ID");
 			}else{
-				result=TaskService.getTask(map);
+				result=TaskService.getInstance().getTask(map);
 			}
 		} catch (Exception e) {
 			result.put("result", 0);

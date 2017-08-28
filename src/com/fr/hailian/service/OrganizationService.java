@@ -20,6 +20,14 @@ import com.fr.hailian.model.OrganizationModel;
  * @todo   组织机构信息维护service
  */
 public class OrganizationService {
+	private static OrganizationService instance;
+	private OrganizationService(){};
+	public static OrganizationService getInstance(){
+		if(instance==null){
+			instance=new OrganizationService();
+		}
+		return instance;
+	}
 	/**
 	 * 
 	 * @time   2017年8月14日 上午10:35:21
@@ -29,7 +37,7 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean ifExistsOrganization(OrganizationModel org){
+	public boolean ifExistsOrganization(OrganizationModel org){
 		if(org==null){
 			return false;
 		}
@@ -50,7 +58,7 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean insertOrganization(OrganizationModel org){
+	public boolean insertOrganization(OrganizationModel org){
 		  String insertsql=getInsertOrganizationSql(org);
 		  try {
 			DataBaseToolService.excuteBySql(insertsql);
@@ -69,7 +77,7 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String getInsertOrganizationSql(OrganizationModel org){
+	public String getInsertOrganizationSql(OrganizationModel org){
 		  String insertsql="insert into fr_t_department(id,pid,name, description) values ("
                   +"'"+org.getId()+"',"
                    +"'"+org.getPid()+"',"
@@ -86,7 +94,7 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean updateOrganization(OrganizationModel org){
+	public boolean updateOrganization(OrganizationModel org){
 		  String updatesql=getUpdateOrganizationSql(org);
 		  try {
 			DataBaseToolService.excuteBySql(updatesql);
@@ -105,7 +113,7 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String getUpdateOrganizationSql(OrganizationModel org){
+	public String getUpdateOrganizationSql(OrganizationModel org){
 		 String updatesql=" update  fr_t_department set  pid='"+org.getPid()+"', name='"+org.getName()+"', description='"+org.getDes()+"' ";
 		  updatesql+=" where id='"+org.getId()+"' ";
 		  return updatesql;
@@ -119,7 +127,7 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   List<UserModel>
 	 */
-	public static List<OrganizationModel> getExcel2Organization(String filePath){
+	public List<OrganizationModel> getExcel2Organization(String filePath){
 		ImportExcel ei;
 		try {
 			ei = new ImportExcel(filePath, 0);
@@ -129,7 +137,7 @@ public class OrganizationService {
 		}
 		return null;
 	}
-	public static List<OrganizationModel> getExcel2Organization(String fileName,InputStream is){
+	public List<OrganizationModel> getExcel2Organization(String fileName,InputStream is){
 		ImportExcel ei;
 		try {
 			ei = new ImportExcel(fileName,is,0, 0);
@@ -148,7 +156,7 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   List<OrganizationModel>
 	 */
-	private static List<OrganizationModel> excel2Organization(ImportExcel ei) {
+	private List<OrganizationModel> excel2Organization(ImportExcel ei) {
 		List<OrganizationModel> orgList=new ArrayList<OrganizationModel>();
 		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum()+1; i++) {
 			Row row = ei.getRow(i);
@@ -185,16 +193,16 @@ public class OrganizationService {
 	 * @param  @return
 	 * @return_type   JSONObject
 	 */
-	public static JSONObject importOrganization(String filePath){
+	public JSONObject importOrganization(String filePath){
 		List<OrganizationModel> userList=getExcel2Organization(filePath);
 		return operateDbForOrganization(userList);
 	}
 	
-	public static JSONObject importOrganization(String fileName,InputStream is){
+	public JSONObject importOrganization(String fileName,InputStream is){
 		List<OrganizationModel> userList=getExcel2Organization(fileName,is);
 		return operateDbForOrganization(userList);
 	}
-	private static JSONObject operateDbForOrganization(List<OrganizationModel> orgList) {
+	private JSONObject operateDbForOrganization(List<OrganizationModel> orgList) {
 		JSONObject o=new JSONObject();
 		if(orgList==null||orgList.size()==0){
 			o.put("fail", true);
@@ -203,8 +211,8 @@ public class OrganizationService {
 			List<String> insertList=new ArrayList<String>();
 			List<String> updateList=new ArrayList<String>();//原系统已经存在的组织机构
 			for(OrganizationModel org:orgList){
-				if(!OrganizationService.ifExistsOrganization(org)){
-					insertList.add(OrganizationService.getInsertOrganizationSql(org));
+				if(!OrganizationService.getInstance().ifExistsOrganization(org)){
+					insertList.add(OrganizationService.getInstance().getInsertOrganizationSql(org));
 				}else{
 					updateList.add(getUpdateOrganizationSql(org));
 				}
@@ -244,7 +252,7 @@ public class OrganizationService {
 			boolean update=updateUser(user);
 			System.out.println("update:"+update);
 		}*/
-		JSONObject o=OrganizationService.importOrganization("D:\\组织机构 - 副本.xlsx");
+		JSONObject o=OrganizationService.getInstance().importOrganization("D:\\组织机构 - 副本.xlsx");
 		System.out.println(o.toString());
 	}
 

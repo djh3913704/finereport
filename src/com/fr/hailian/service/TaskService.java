@@ -26,6 +26,14 @@ import com.fr.stable.StringUtils;
  * @todo   待办已办
  */
 public class TaskService {
+	private static TaskService instance;
+	private TaskService(){};
+	public static TaskService getInstance(){
+		if(instance==null){
+			instance=new TaskService();
+		}
+		return instance;
+	}
 	/**
 	 * 
 	 * @time   2017年8月17日 上午9:31:41
@@ -35,9 +43,9 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   JSONObject
 	 */
-	public static JSONObject getTask(Map<String,Object> map) {
+	public JSONObject getTask(Map<String,Object> map) {
 		JSONObject result=new JSONObject();
-		UserModel user=UserService.getUserByUserName(map.get("uid"));
+		UserModel user=UserService.getInstance().getUserByUserName(map.get("uid"));
 		if(user==null){
 			result.put("result", 0);
 			result.put("memo", "用户不存在！");
@@ -66,7 +74,7 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   List<TaskDetailModel>
 	 */
-	public static List<TaskDetailModel> getTaskDetail(Map<String,Object> map,UserModel user){
+	public List<TaskDetailModel> getTaskDetail(Map<String,Object> map,UserModel user){
 		List<TaskDetailModel> taskList=new ArrayList<TaskDetailModel>();
 		int pageSize=10;
 		int page=1;
@@ -132,7 +140,7 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   int
 	 */
-	public static int getAllCount(Map<String,Object> map,UserModel user){
+	public int getAllCount(Map<String,Object> map,UserModel user){
 		String sql=" select count(distinct task_impl.id) ";
 		sql+=joinTaskFromSql()+taskSqlWhere(map, user);
 		try {
@@ -154,7 +162,7 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String taskSqlWhere(Map<String,Object> map,UserModel user){
+	public String taskSqlWhere(Map<String,Object> map,UserModel user){
 		String sql=" where task_impl.completestate like '%"+user.getUserName()+"%' ";
 		//请求类型	1:待办事宜；2：已办事宜
 		if("1".equals(map.get("type"))){
@@ -178,7 +186,7 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String joinTaskFromSql(){
+	public String joinTaskFromSql(){
 		StringBuffer sb=new StringBuffer();
 		sb.append(" from fr_process_task_impl task_impl  ");
 		sb.append(" left join fr_report_process_task process_task on process_task.id=task_impl.taskid ");
@@ -201,7 +209,7 @@ public class TaskService {
 	 * @param  @throws Exception
 	 * @return_type   String
 	 */
-	public static String joinTaskUrl(UserModel user, String sign,String reportcontrol,String taskId,String taskImpId)
+	public String joinTaskUrl(UserModel user, String sign,String reportcontrol,String taskId,String taskImpId)
 			throws Exception {
 		String path="/rtxSecurityServlet?userId="+user.getId()+"&sign="+sign;
 		/*String hl_url=Constants.CTX_PATH+"/ReportServer?reportlet="+reportPath(reportcontrol)+"&op=write&__cutpage__=null&__processtaskid__="+taskImpId+"&__allprocesstaskid__="+taskId;
@@ -222,7 +230,7 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String joinTaskUrl(String reportcontrol,String taskId,String taskImpId) {
+	public String joinTaskUrl(String reportcontrol,String taskId,String taskImpId) {
 		//reportcontrol {"demo/DataReport/financial.cpt":{"sunlin":1}}
 		Map<String,Object> map=JsonKit.json2map(reportcontrol);
 		Iterator<String> iter = map.keySet().iterator(); 
@@ -243,7 +251,7 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String reportPath(String json){
+	public String reportPath(String json){
 		if(StringUtils.isBlank(json)){
 			return "";
 		}
@@ -265,14 +273,14 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   List<User>
 	 */
-	public static List<UserModel> getShareUser(String taskImplId){
+	public List<UserModel> getShareUser(String taskImplId){
 		//http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&Fri%20Aug%2018%202017%2014:12:41%20GMT+0800%20(%D6%D0%B9%FA%B1%EA%D7%BC%CA%B1%BC%E4)&taskId=23
 		//http://localhost:8075/WebReport/ReportServer?op=report_process&cmd=get_taskImpl&Fri Aug 18 2017 14:12:41 GMT 0800 (�й���׼ʱ��)&taskId=23
 		String taskUrl="http://"+BaseServlet.getIpAddress()+":"+Constants.CTX_PORT+Constants.CTX_PATH+"/ReportServer?op=report_process&cmd=get_taskImpl&taskId="+taskImplId;
 		return nodeInfo(taskUrl);
 	}
 	
-	private static List<UserModel>  nodeInfo(String taskUrl) {
+	private List<UserModel>  nodeInfo(String taskUrl) {
 		List<UserModel>  userList=new ArrayList<UserModel>();
 		String result=HttpClientUtil.sendGetRequest(taskUrl,null);
 		Map<String,Object> data=JsonKit.json2map(result);
@@ -288,7 +296,7 @@ public class TaskService {
 			for(String name:operatorName){
 				String userName=name.substring(name.indexOf("(")+1,name.indexOf(")"));
 				if(StringUtils.isNotBlank(userName)){
-					UserModel mUser=UserService.getExistsUser(userName);
+					UserModel mUser=UserService.getInstance().getExistsUser(userName);
 					if(mUser!=null&&StringUtils.isNotBlank(mUser.getId())){
 						userList.add(mUser);
 					}
@@ -313,7 +321,7 @@ public class TaskService {
 				String[] ids=operator.substring(operator.indexOf(":")+7).split("##");
 				try {
 					for(String id:ids){
-						UserModel user = UserService.getExistsUser(id);
+						UserModel user = UserService.getInstance().getExistsUser(id);
 						System.out.println(user);
 						userList.add(user);
 					}
@@ -333,7 +341,7 @@ public class TaskService {
 	 * @param  @param frTaskId
 	 * @return_type   void
 	 */
-	public static String getTaskImplByFrtaskId(String frTaskId){
+	public String getTaskImplByFrtaskId(String frTaskId){
 		String sql="select id from fr_process_task_impl where frtaskid='"+frTaskId+"'";
 		try {
 			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
@@ -354,7 +362,7 @@ public class TaskService {
 	 * @param  @return
 	 * @return_type   String[][]
 	 */
-	public static String[][] getTaskIdByFrtaskId(String frTaskId){
+	public String[][] getTaskIdByFrtaskId(String frTaskId){
 		String sql="select  id ,frtaskid,taskid,processid,completestate from fr_process_task_impl where frtaskid='"+frTaskId+"'";
 		try {
 			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);

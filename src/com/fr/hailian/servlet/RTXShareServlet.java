@@ -18,7 +18,6 @@ import com.fr.hailian.service.TaskService;
 import com.fr.hailian.util.DESSymmetricEncoder;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
-import com.fr.stable.Constants;
 import com.fr.web.utils.WebUtils;
 /**
  * 
@@ -73,10 +72,10 @@ public class RTXShareServlet extends BaseServlet {
 			/*String name = java.net.URLDecoder.decode(request.getParameter(Constants.FR_USERNAME),"UTF-8");
 			System.out.println("name:"+name);*/
 			if(user!=null){
-				String taskImpId=TaskService.getTaskImplByFrtaskId(frTaskId);
-				String[][] data=TaskService.getTaskIdByFrtaskId(frTaskId);
+				String taskImpId=TaskService.getInstance().getTaskImplByFrtaskId(frTaskId);
+				String[][] data=TaskService.getInstance().getTaskIdByFrtaskId(frTaskId);
 				//获取下一级审核人信息
-				List<UserModel> userList=TaskService.getShareUser(taskImpId);
+				List<UserModel> userList=TaskService.getInstance().getShareUser(taskImpId);
 				//生成url地址 发送RTX信息使用
 				List<String> successUser=new ArrayList<String>();
 				List<String> failUser=new ArrayList<String>();
@@ -84,7 +83,7 @@ public class RTXShareServlet extends BaseServlet {
 					String sign=DESSymmetricEncoder.createSign(u.getId()+"");
 					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId();
 					if("true".equals(__redirect__)){
-						String hl_url=TaskService.joinTaskUrl(data[0][4], data[0][2], taskImpId);
+						String hl_url=TaskService.getInstance().joinTaskUrl(data[0][4], data[0][2], taskImpId);
 						url+="&__redirect__="+__redirect__+"&hl_url="+hl_url;
 					}
 					System.out.println(u.getUserName());

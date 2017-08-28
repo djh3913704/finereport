@@ -24,6 +24,14 @@ import com.fr.hailian.model.UserModel;
  * @todo   用户信息维护service
  */
 public class UserService {
+	private static UserService instance;
+	private UserService(){};
+	public static UserService getInstance(){
+		if(instance==null){
+			instance=new UserService();
+		}
+		return instance;
+	}
 	/**
 	 * 
 	 * @time   2017年8月15日 下午1:28:12
@@ -33,7 +41,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   UserModel
 	 */
-	public static UserModel getUserByUserName(Object userName){
+	public UserModel getUserByUserName(Object userName){
 		UserModel user=new UserModel();
 		String sql="select id,username,password,realname,email from fr_t_user where username='"+userName+"' limit 1 ";
 		try {
@@ -59,7 +67,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   UserModel
 	 */
-	public static UserModel getUserById(Object userId){
+	public UserModel getUserById(Object userId){
 		UserModel user=new UserModel();
 		String sql="select id,username,password,realname,email from fr_t_user where id='"+userId+"' limit 1 ";
 		try {
@@ -85,7 +93,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean ifExistsUser(UserModel user){
+	public boolean ifExistsUser(UserModel user){
 		if(user==null){
 			return false;
 		}
@@ -107,7 +115,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean ifExistsDepUser(UserModel user){
+	public boolean ifExistsDepUser(UserModel user){
 		if(user==null){
 			return false;
 		}
@@ -129,7 +137,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   boolean
 	 */
-	public static boolean insertUser(UserModel user){
+	public boolean insertUser(UserModel user){
 		  String insertsql=getInsertUserSql(user);
 		  try {
 			DataBaseToolService.excuteBySql(insertsql);
@@ -148,7 +156,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String getInsertDepartmentPostUserSql(UserModel user){
+	public String getInsertDepartmentPostUserSql(UserModel user){
 		String insertsql="insert into fr_t_department_post_user(userid, departmentid, postid) values ("
                 +"'"+user.getId()+"',"
                  +"'"+user.getOrgCode()+"',"
@@ -164,7 +172,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   String
 	 */
-	public static String getInsertUserSql(UserModel user){
+	public String getInsertUserSql(UserModel user){
 		String insertsql="insert into fr_t_user(id,username, password, realname,email) values ("
                 +"'"+user.getId()+"',"
                  +"'"+user.getUserName()+"',"
@@ -174,7 +182,7 @@ public class UserService {
 		  return insertsql;
 	}
 	
-	public static boolean updateUser(UserModel user){
+	public boolean updateUser(UserModel user){
 		  String updatesql=getupdateUserSql(user);
 		  try {
 			DataBaseToolService.excuteBySql(updatesql);
@@ -184,7 +192,7 @@ public class UserService {
 		}
 		return false;
 	}
-	public static String getupdateUserSql(UserModel user){
+	public String getupdateUserSql(UserModel user){
 		 String updatesql=" update  fr_t_user set  username='"+user.getUserName()+"', password='"+user.getPassword()+"', realname='"+user.getRealName()+"', email='"+user.getEmail()+"' ";
 		  updatesql+=" where id='"+user.getId()+"' ";
 		  return updatesql;
@@ -198,7 +206,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   List<UserModel>
 	 */
-	public static List<UserModel> getExcel2User(String filePath){
+	public List<UserModel> getExcel2User(String filePath){
 		ImportExcel ei;
 		try {
 			ei = new ImportExcel(filePath, 0);
@@ -208,7 +216,7 @@ public class UserService {
 		}
 		return null;
 	}
-	public static List<UserModel> getExcel2User(String fileName,InputStream is){
+	public List<UserModel> getExcel2User(String fileName,InputStream is){
 		ImportExcel ei;
 		try {
 			ei = new ImportExcel(fileName,is,0, 0);
@@ -222,7 +230,7 @@ public class UserService {
 	 * 	可同步的数据USERID （用户ID）	PASSWORD（密码）	NAME（名字）	
 	 * ORGID（组织机构ID）	EMAIL（邮箱）	FORGNAME（组织机构名称）
 	 */
-	private static List<UserModel> excel2User(ImportExcel ei) {
+	private List<UserModel> excel2User(ImportExcel ei) {
 		List<UserModel> userList=new ArrayList<UserModel>();
 		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum()+1; i++) {
 			Row row = ei.getRow(i);
@@ -269,12 +277,12 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   JSONObject
 	 */
-	public static JSONObject importUser(String filePath){
+	public JSONObject importUser(String filePath){
 		List<UserModel> userList=getExcel2User(filePath);
 		return operateDbForUser(userList);
 	}
 	
-	public static JSONObject importUser(String fileName,InputStream is){
+	public JSONObject importUser(String fileName,InputStream is){
 		List<UserModel> userList=getExcel2User(fileName,is);
 		return operateDbForUser(userList);
 	}
@@ -287,7 +295,7 @@ public class UserService {
 	 * @param  @return
 	 * @return_type   JSONObject
 	 */
-	private static JSONObject operateDbForUser(List<UserModel> userList) {
+	private JSONObject operateDbForUser(List<UserModel> userList) {
 		JSONObject o=new JSONObject();
 		if(userList==null||userList.size()==0){
 			o.put("fail", true);
@@ -297,14 +305,14 @@ public class UserService {
 			List<String> insertUserList=new ArrayList<String>();
 			List<String> insertDepUserPostList=new ArrayList<String>();
 			for(UserModel u:userList){
-				if(!UserService.ifExistsUser(u)){
-					insertUserList.add(UserService.getInsertUserSql(u));
+				if(!UserService.getInstance().ifExistsUser(u)){
+					insertUserList.add(UserService.getInstance().getInsertUserSql(u));
 				}else{
-					updateUser.add(UserService.getupdateUserSql(u));
+					updateUser.add(UserService.getInstance().getupdateUserSql(u));
 				}
-				if(!UserService.ifExistsDepUser(u)){
+				if(!UserService.getInstance().ifExistsDepUser(u)){
 					//维护机构与用户对应关系
-					insertDepUserPostList.add(UserService.getInsertDepartmentPostUserSql(u));
+					insertDepUserPostList.add(UserService.getInstance().getInsertDepartmentPostUserSql(u));
 				}
 			}
 			try {
@@ -337,7 +345,7 @@ public class UserService {
 		}
 		return o;
 	}
-	public static UserModel  getExistsUser(String name){
+	public UserModel  getExistsUser(String name){
 		String sql="select id,username from fr_t_user where username='"+name+"' or realname='"+name+"' ";
 		
 		try {

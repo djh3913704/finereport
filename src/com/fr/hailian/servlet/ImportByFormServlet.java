@@ -83,10 +83,10 @@ public class ImportByFormServlet extends BaseServlet {
             }  
             if(excelFile!=null){
             	if("0".equals(type)){
-            		r=UserService.importUser(excelFile.getName(), excelFile.getInputStream());
+            		r=UserService.getInstance().importUser(excelFile.getName(), excelFile.getInputStream());
             	}else{
             		//导入组织
-            		r=OrganizationService.importOrganization(excelFile.getName(), excelFile.getInputStream());
+            		r=OrganizationService.getInstance().importOrganization(excelFile.getName(), excelFile.getInputStream());
             	}
             }else{
             	r.put("fail", true);
