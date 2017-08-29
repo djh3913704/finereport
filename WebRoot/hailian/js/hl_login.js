@@ -152,29 +152,7 @@ $(function () {
     /**
      *初始化logo
      */
-    var initLogoImage = function () {
-        var self = this;
-        var ran = new Date().getTime() + "" + (Math.random() * 1000);
-        FR.ajax({
-            url: FR.servletURL + "?op=fs_load&cmd=getLogoImageID&_ran=" + ran,
-            complete: function (res, status) {
-                if (status == 'success') {
-                    var logoInfo = FR.jsonDecode(res.responseText);
-                    var logoImgID = logoInfo.id;
-                    loginImgWidth = parseInt(logoInfo.width);
-                    loginImgHeight = parseInt(logoInfo.height);
-                    var url = FR.servletURL + ((logoImgID && logoImgID != 'null') ?
-                            ('?op=fr_attach&cmd=ah_image&id=' + logoImgID + '&isAdjust=true&width=72&height=72')
-                            : '?op=resource&resource=/com/fr/plugin/fresh/web/images/login/logo.png');
-                    if ($('body').length > 0) {
-                       // $("#fs-login-logo")[0].style.background = 'url(' + url + ') no-repeat 50% 0px';
-                    	 $("#fs-login-logo")[0].style.background = 'url(' +  "/WebReport/hailian/img/logo.png" + ') no-repeat 50% 0px';
-                        $("#fs-login-logo")[0].style.backgroundSize = '72px 72px';
-                    }
-                }
-            }
-        })
-    };
+    var initLogoImage = function () {};
 
     var calcBackgroundScale = function () {
         var windowWidth = document.body.clientWidth;
