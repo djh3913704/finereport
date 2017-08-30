@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import com.fr.fs.base.entity.User;
 import com.fr.fs.control.UserControl;
 import com.fr.hailian.core.BaseServlet;
+import com.fr.hailian.model.UserModel;
+import com.fr.hailian.service.UserService;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.stable.Constants;
@@ -96,10 +98,18 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 					//step1:统一身份认证userValidate 
 					Map<String,Object> userValid=PortalService.userValidate(name, password);
 					System.out.println("userValid:"+userValid);
-					if(userValid!=null&&"1".equals(userValid.get("result"))){
+					if(userValid!=null&&"1".equals(userValid.get("Result").toString())){
 						//step2:辅助决策系统权限认证
 						if(RoleUtil.judgeAuxiliaryRole(user)){
 							//step3:生成登陆凭证
+							/**
+							 * 两个系统密码或许不同 所以只要统一认证成功 本地更新密码 然后本地认证
+							 */
+							UserModel m=UserService.getInstance().getExistsUser(name);
+							m.setPassword(password);
+							UserService.getInstance().updateUser(m);
+							hrequest.setAttribute( Constants.FR_PASSWORD, m.getPassword());
+							System.out.println(m.getPassword());
 							RoleUtil.loginCMD(hrequest, response);
 							r.put("fail", false);
 							r.put("msg", "登陆成功");

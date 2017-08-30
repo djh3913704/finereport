@@ -346,7 +346,7 @@ public class UserService {
 		return o;
 	}
 	public UserModel  getExistsUser(String name){
-		String sql="select id,username from fr_t_user where username='"+name+"' or realname='"+name+"' ";
+		String sql="select id,username,password,realname,email from fr_t_user where username='"+name+"' or realname='"+name+"' ";
 		
 		try {
 			 String[][] res=DataBaseToolService.getQueryResultBySql(sql);
@@ -354,6 +354,9 @@ public class UserService {
 			 if(res.length>0){
 				 user.setId(res[0][0]);
 				 user.setUserName(res[0][1]);
+				 user.setPassword(res[0][2]);
+				 user.setRealName(res[0][3]);
+				 user.setEmail(res[0][4]);
 				 return user;
 			 }
 		} catch (Exception e) {
