@@ -159,11 +159,18 @@
 
 十 主题使用
  1 必须移除“天空主题”之后才可以使用
- 2 将项目export为jar包，名称必须为plugin-com.fr.solution.theme.sky-0.jar，将导出
+ 2 将项目中以com.fr.solution.* 开头的包（4个，同时选中 ctrl+鼠标左键）export为jar包，名称必须为plugin-com.fr.solution.theme.sky-0.jar，将导出
  的jar放到FineReport安装目录下WebReport\WEB-INF\lib
+ 
+ 上述四个包（src下面）分别是：
+com.fr.solution.theme.sky
+com.fr.solution.theme.sky.files
+com.fr.solution.theme.sky.files.fonts
+com.fr.solution.theme.sky.files.image
+ 
  3 将项目中WEB-INF下面文件夹plugin-com.fr.solution.theme.sky复制到FineReport安装包
  WebReport\WEB-INF\plugins下面
- 4 找到WebReport\WEB-INF\plugins下面的pluginconfig.xml将
+ 4 找到FineReport安装包WebReport\WEB-INF\plugins下面的pluginconfig.xml将
  <p><![CDATA[plugin-com.fr.solution.theme.sky]]></p> 复制到
  </installedPlugins>
 </PluginConfigManager>前面
