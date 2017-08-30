@@ -249,7 +249,7 @@ $(function () {
     };
     initBackgroundImage();
     var bannerType = initParams();
-    if (bannerType > 1) {
+   /* if (bannerType > 1) {
         initLogoImage();
     }
     if (bannerType < 3) {
@@ -257,7 +257,7 @@ $(function () {
     }
     if (bannerType === 3) {
         $("#fs-login-title").hide();
-    }
+    }*/
     $username.focus();
     $(window).resize(function () {
         calcBackgroundScale();
