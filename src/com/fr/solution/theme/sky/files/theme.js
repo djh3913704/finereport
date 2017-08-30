@@ -1,11 +1,7 @@
-//http://help.finereport.com/doc-view-730.html
-/**
- * zuo
- * 自定义主题
- */
 (function($,h,c){var a=$([]),e=$.resize=$.extend($.resize,{}),i,k="setTimeout",j="resize",d=j+"-special-event",b="delay",f="throttleWindow";e[b]=250;e[f]=true;$.event.special[j]={setup:function(){if(!e[f]&&this[k]){return false}var l=$(this);a=a.add(l);$.data(this,d,{w:l.width(),h:l.height()});if(a.length===1){g()}},teardown:function(){if(!e[f]&&this[k]){return false}var l=$(this);a=a.not(l);l.removeData(d);if(!a.length){clearTimeout(i)}},add:function(l){if(!e[f]&&this[k]){return false}var n;function m(s,o,p){var q=$(this),r=$.data(this,d)||{};r.w=o!==c?o:q.width();r.h=p!==c?p:q.height();n.apply(this,arguments)}if($.isFunction(l)){n=l;return m}else{n=l.handler;l.handler=m}}};function g(){i=h[k](function(){a.each(function(){var n=$(this),m=n.width(),l=n.height(),o=$.data(this,d)||{};if(m!==o.w||l!==o.h){n.trigger(j,[o.w=m,o.h=l])}});g()},e[b])}})(jQuery,this);
 
 (function ($) {
+
     $.extend(FS, {
         refreshMsgBox: function(msgs, onMsgShow){
             //console.log("[refreshMsgBox] msgs:"+msgs.length+" len:"+FS.Plugin.MessageHelper.length);
@@ -99,7 +95,7 @@
                 _initMessgeAlert();
                 _initFrameNavigationBar();
                 $('#fs-frame-body').resize(function () {
-                    FS._doResize();
+                    //FS._doResize();
                 });
             }
         },
@@ -119,34 +115,54 @@
                     $node.find('.fs-menu-icon').empty().html('<i class="icon-tree-fork"></i>');
                 }
             },
+            // onAfterInit:function(element){ // add menu collapse button
+            //     if(document.getElementById('menu-tree-extend-button')){
+            //         return;
+            //     }
+            //     var $btn = $('<div/>').prependTo($('.fs-tab-btns:first'))
+            //         .addClass('fs-tab-exd').attr('id','menu-tree-extend-button');
+            //     var $icn = $('<i class="icon-tab-exd" />').appendTo($btn);
+            //     var $wid = FS.CONSTS.Regions["west"].width();
+            //     $btn.click(function(){
+            //         $btn.toggleClass('off');
+            //         var w = $btn.hasClass('off') ? 0 : $wid;
+            //         FS.CONSTS.Regions["west"].css("width", w);
+            //         FS._doResize();
+            //     });
+            // },
             onAfterInit:function(element){ // add menu collapse button
                 var collapseBtn = $('<div id="fs-menu-collapse-btn" class="fs-menu-hide"/>')
                     .click(function () {
                         FS.CONSTS.Regions["west"].css("width", 0);
                         FS._doResize();
                         $(this).hide();
-                        $('#fs-menu-expand-btn').show();						
+                        $('#fs-menu-expend-btn').show();
                     }).appendTo(FS.CONSTS.Regions["west"]);
-                var expendBtn = $('<div id="fs-menu-expand-btn" class="fs-menu-show"/>')
+                var collapseBtn = $('<div id="fs-menu-expend-btn" class="fs-menu-show"/>')
                     .click(function () {
-                        FS.CONSTS.Regions["west"].css("width", FS.THEME.config4frame.west.width);						
+                        FS.CONSTS.Regions["west"].css("width", FS.THEME.config4frame.west.width);
                         FS._doResize();
                         $(this).hide();
-                        $('#fs-menu-collapse-btn').show();										
+                        $('#fs-menu-collapse-btn').show();
                     })
                     .appendTo(FS.CONSTS.Regions["east"]).hide();
+
                 $('iframe').attr({allowtransparency:true,frameborder:'0',border:'0',marginheight:'0',marginwidth:'0'});
             },
             onAfterNodeExpand : function(node, $node, $li){
+                //console.log("[onAfterNodeExpand]"+$node);
                 if($node){
                     $node.addClass('on');
                     $node.find('.tree-icon').html('');
+                    //console.log($node.html());
                 }
             },
             onAfterNodeCollapse : function(node, $node, $li){
+                //console.log("[onAfterNodeCollapse]"+$node);
                 if($node){
                     $node.find('.tree-icon').html('');
                     $node.removeClass('on');
+                    //console.log($node.html());
                 }
             }
         },
@@ -174,7 +190,7 @@
         config4frame: {
             resizable: false,
             north: {
-                height: 103
+                height: 135
             },
             west: {
                 width: 200
@@ -234,67 +250,57 @@
         $('#fs-frame-banner .fs-banner-title')
             .bind('mouseover',function(){$(this).toggleClass('on');})
             .bind('mouseout' ,function(){$(this).toggleClass('on');})
-		_createTopNavBarForBI();
+        _createTopNavBarForBI();
     };
-    var _createFrameNavigationButton = function($wrapper, title, iconClass, nodeId){
-        var $wrap = $('<div class="node-navi-item" />').appendTo($wrapper);		
+    var _createFrameNavigationButton = function($wrapper, title, iconClass){
+        var $wrap = $('<div class="node-navi-item" />').appendTo($wrapper);
         var $icon = $('<div/>').appendTo($wrap).addClass('node-navi-icon').addClass(iconClass);
-		if(nodeId){
-			var iconText = FS.config.folderIcons[parseInt(nodeId,10)];
-			if(iconText){	
-				$icon.removeClass(iconClass);
-				$icon.html(unescape('%u'+iconText));
-			}
-		}
         var $menu = $('<div/>').text(title).appendTo($wrap).addClass('node-navi-title');
         $menu.attr('title',title);
         return $wrap;
     };
     var _createFrameNavigationBar = function(nodes){
         var $wp = $('#fs-frame-header');
-		var $bl = $('<div id="frame-header-banner" />').appendTo($wp);
-		    $wp.children().appendTo($bl);
-		var $br = $('<div id="frame-header-navbar" />').appendTo($wp);			
-        var $ul = $('<ul class="node-navi"/>').appendTo($br);
+        var $ul = $('<ul class="node-navi"/>').appendTo($wp);
         $ul.resize(function(){
             popMenu.hide();
-			var disWidth = 0;
+            var disWidth = 0;
             var winWidth = $ul.width();
-			var morWidth = 20;
-			var hitWidth = $ul.find('li.select').width() || 0;
-			var maxWidth = winWidth - morWidth - hitWidth;
-			var hideList = [];
-			var childNodes = $ul.children();
-			childNodes.each(function(idx,el){
-				 var e = $(el);
-				 var w = e.show().width();	
-				 var m = disWidth + w;
-				 if( e.hasClass('select') || 'node-navi-btn-more'==e.attr('id') ){
-					 return;
-				 }
-				 if( m >= maxWidth ){
-					 hideList.push(idx);
-					 return;
-				 }
-				 disWidth = disWidth + w;
-				 
-			});			
-			for(var i=0;i<hideList.length;i++){
-				$(childNodes[hideList[i]]).hide();
-			}
-			if(hideList.length>0){
-				btnNode.show();
-				var specWidth = winWidth-disWidth - hitWidth;
-				btnNode.width(specWidth);
-				btnNode.find('.node-navi-item').width(specWidth);
-			} else {
-				btnNode.hide();
-			}
+            var morWidth = 20;
+            var hitWidth = $ul.find('li.select').width() || 0;
+            var maxWidth = winWidth - morWidth - hitWidth;
+            var hideList = [];
+            var childNodes = $ul.children();
+            childNodes.each(function(idx,el){
+                var e = $(el);
+                var w = e.show().width();
+                var m = disWidth + w;
+                if( e.hasClass('select') || 'node-navi-btn-more'==e.attr('id') ){
+                    return;
+                }
+                if( m >= maxWidth ){
+                    hideList.push(idx);
+                    return;
+                }
+                disWidth = disWidth + w;
+
+            });
+            for(var i=0;i<hideList.length;i++){
+                $(childNodes[hideList[i]]).hide();
+            }
+            if(hideList.length>0){
+                btnNode.show();
+                var specWidth = winWidth-disWidth - hitWidth;
+                btnNode.width(specWidth);
+                btnNode.find('.node-navi-item').width(specWidth);
+            } else {
+                btnNode.hide();
+            }
         });
 
         $.each(nodes, function (index, root) {
             var $node = $('<li class="node-navi-li"/>').appendTo($ul);
-            $menu = _createFrameNavigationButton($node, root.text, 'node-navi-icon-'+( index % 9 ), root.id);
+            $menu = _createFrameNavigationButton($node, root.text, 'node-navi-icon-'+( index % 9 ) );
             $menu.attr("data-node-id", root.id);
             $menu.attr("data-sub-menu",( root.ChildNodes && root.ChildNodes.length > 0 ) );
             $menu.click(function(){
@@ -331,6 +337,11 @@
                     });
                 }
 
+                var westWidth = FS.CONSTS.Regions["west"].width();
+                if( westWidth < FS.THEME.config4frame.west.width){
+                    $('#fs-menu-expend-btn').click();
+                }
+
             });
         });
 
@@ -343,7 +354,7 @@
             $(this).addClass("on");
             popMenu.empty();
             $ul.children("li:hidden").clone(true).show().appendTo(popMenu);
-            popMenu.height($(document).height()-103).slideDown('fast');
+            popMenu.height($(document).height()-FS.THEME.config4frame.north.height).slideDown('fast');
             $(document).bind('mouseover.nodepane', function (e) {
                 var $t = $(e.target);
                 if ($t.closest('.node-navi-li').length <= 0) {
@@ -367,6 +378,15 @@
             });
         });
         btnNode.hide();
+        $ul.resize();
+		
+		//test show or hide menu
+		var btnNode2 = $('<li class="node-navi-li"/>').appendTo($ul).attr("id","node-navi-btn-show-hide");
+        var btnMore2 = _createFrameNavigationButton(btnNode2,"",'node-navi-icon-more');
+        btnMore2.click(function(){
+			alert(this)
+        });
+       
         $ul.resize();
     };
     var _initFrameNavigationBar = function(){
@@ -438,20 +458,24 @@
                         title: BI.i18nText('BI-Data_Setting'),
                         src: FR.servletURL + '?op=fr_bi_configure&cmd=init_configure_pane'
                     });
+                    var westWidth = FS.CONSTS.Regions["west"].width();
+                    if( westWidth < FS.THEME.config4frame.west.width){
+                        $('#fs-menu-expend-btn').click();
+                    }
                 });
             }
         }catch(err){
         }
     };
-	var _createTopNavBarForBI = function(){
+    var _createTopNavBarForBI = function(){
         var isBI = typeof BI != 'undefined';
         if(!isBI){
             return;
         }
-		var navItem = $('<li class="fs-navibar-item" />').attr('id','fs-navi-fbishutcut').insertAfter($('#fs-navi-search'));
-		var parentNode = $("<ul />").appendTo(navItem);
-		_createFrameNavigationBarForBI(parentNode);
-	};
+        var navItem = $('<li class="fs-navibar-item" />').attr('id','fs-navi-fbishutcut').insertAfter($('#fs-navi-search'));
+        var parentNode = $("<ul />").appendTo(navItem);
+        _createFrameNavigationBarForBI(parentNode);
+    };
 })(jQuery);
 
 
