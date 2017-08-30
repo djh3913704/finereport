@@ -13,19 +13,18 @@
 }
 
 #fs-frame-header .node-navi .node-navi-li {
-    width:90px;
-    height:60px;
+    width:108px;
+    height:61px;
 }
 
 #fs-frame-header .node-navi {
-    position: absolute;
+    position: relative;//jhx
     top: 40px;
     left: 0;
     width: 100%;
     height: 60px;
     border-bottom: 3px solid #f2aa3b;
-    background-color: rgb(79, 115, 194);
-    background-color: rgba(255,255,255,0.15)!important;
+    background-color: #CB084D;
 }
 
 
@@ -46,10 +45,10 @@
 }
 
 .node-navi li.select {
-    background-color:#f2aa3b;
+    background-color:#004EA2;
 }
 .node-navi-item {
-    width:90px;
+    width:108px;
     height:40px;
     margin-top:10px;
     border-right: 1px solid rgb(131,156,212);
@@ -64,7 +63,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    -o-text-overflowï¼šellipsis;
+    -o-text-overflow£ºellipsis;
     padding: 0px 5px;
 }
 
@@ -72,7 +71,7 @@
     font-size: 16px;
     line-height:20px;
     display: block;
-    font-family: 'fui', 'icomoon' !important;
+    font-family: 'icomoon' !important;
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -242,7 +241,7 @@
     line-height: 30px;
 }
 #node-navi-btn-more .node-navi-combo-more li .node-navi-title{
-    color: #333333;
+    color: #333333 !important;
     display: table-cell;
     line-height: 30px;
 }
@@ -253,11 +252,9 @@
 
 #fs-navi-search.fui-bsc{
     background-color:transparent;
-    color: #ffffff !important;
 }
 
 #fs-frame-search {
-    top: 4px;
     -moz-border-radius: 15px; /* Firefox */
     -webkit-border-radius: 15px; /* Safari, Chrome */
     border-radius: 15px; /* IE-CSS3*/
@@ -321,8 +318,6 @@
     text-transform: none;
 }
 #fs-frame-navi .fs-navibar-item {
-    height:40px;
-    line-height:40px;
     padding: 0px 10px;
     margin-left: -10px;
     margin-right: 25px;
@@ -383,37 +378,38 @@
 /* --------------------- */
 
 #fs-navi-fbishutcut {
-	
+
 }
 #fs-navi-fbishutcut ul {
-	display: inline;
+    display: inline;
 }
 #fs-navi-fbishutcut li {
-	display: block;
-	float: left;
-	margin-right: 25px;
+    display: block;
+    float: left;
+    margin-right: 25px;
 }
 #fs-navi-fbishutcut .node-navi-item {
-	width: auto;
-	border: none;
-	margin: 0px;
+    width: auto;
+    border: none;
+    margin: 0px;
 }
 #fs-navi-fbishutcut .node-navi-icon {
-	display:inline-block;
-	line-height: 40px;
+    display:inline-block;
+    line-height: 60px;
+    color: #808080;
 }
 #fs-navi-fbishutcut .node-navi-title {
-	display:inline-block;
-	margin-right: -15px;
-	line-height: 29px;
+    display:inline-block;
+    margin-right: -15px;
+    color: #000000 !important;
 }
 #fs-navi-fbishutcut li.node-navi-li.fui-bsc {
-	color: #ffffff !important;
-	background-color: transparent;
+    color: #ffffff !important;
+    background-color: transparent;
 }
 #fs-navi-fbishutcut #node-navi-btn-datasetting {
-	margin-right: 0px;	
-	margin-left: 10px;
+    margin-right: 0px;
+    margin-left: 10px;
 }
 
 /* --------------------- */
@@ -428,9 +424,7 @@ i.icon-remove-favorite:before {
 }
 
 #fs-frame-header {
-    background-color: #305ab7;
-    height: 100px!important;
-    color : #ffffff!important;
+
 }
 #fs-frame-banner {
     top: 4px;
@@ -446,18 +440,21 @@ i.icon-remove-favorite:before {
     background-color: rgba(255,255,255,0.3);
 }
 #fs-frame-banner .fs-banner-title{
-    font-size:20px;
-    line-height:32px;
-    height: 32px;
+    font-size:30px;
+    line-height:64px;
+    height: 64px;
     max-width:50%;
     max-width: 500px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    -o-text-overflowï¼šellipsis;
+    -o-text-overflow£ºellipsis;
     padding: 0px 15px;
     z-index:9999;
+    font-weight: lighter;
 }
+
+
 
 /**********************/
 /* Body &Layout       */
@@ -474,15 +471,6 @@ body{
     border-left: 1px solid #DEDEDE;
 }
 
-#frame-header-banner {
-	min-height: 40px;
-	position: relative;
-}
-
-#frame-header-navbar {
-	position: static;	
-}
-
 /**********************/
 /* Tree Menu          */
 /**********************/
@@ -496,7 +484,7 @@ body{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    -o-text-overflowï¼šellipsis;
+    -o-text-overflow£ºellipsis;
 }
 #fs-frame-menu .fs-menu-item .fs-menu-icon {
     padding:0;
@@ -634,4 +622,31 @@ iframe.fs-tab-content-item  {
 .node-navi-icon-datasetting:before {
     content:'\e693';
     font-family: "icomoon","bi","fui";
+}
+
+/* -------------------------------------------- */
+/*  Override for Customer                       */
+/* -------------------------------------------- */
+
+#fs-frame-navi {
+    height: 64px;
+}
+#fs-frame-banner {
+    top: 3px;
+}
+#fs-frame-banner .fs-banner-logo {
+    width: auto;
+    height: 64px;
+}
+.node-navi-item .node-navi-title {
+    font-size: 15px;
+    line-height: 25px;
+    color: #ffffff!important;
+}
+#fs-frame-header {
+    background-color: transparent;
+    color: #000 !important;
+}
+#fs-frame-header .node-navi {
+    top : 70px;
 }
