@@ -154,6 +154,20 @@
  Constants常量
     public static final String CTX_PATH = "/WebReport";//帆软项目根目录 如果没有则为""
 	public static final String CTX_PORT = "8075";//帆软项目端口 
+	
+	
+
+十 主题使用
+ 1 必须移除“天空主题”之后才可以使用
+ 2 将项目export为jar包，名称必须为plugin-com.fr.solution.theme.sky-0.jar，将导出
+ 的jar放到FineReport安装目录下WebReport\WEB-INF\lib
+ 3 将项目中WEB-INF下面文件夹plugin-com.fr.solution.theme.sky复制到FineReport安装包
+ WebReport\WEB-INF\plugins下面
+ 4 找到WebReport\WEB-INF\plugins下面的pluginconfig.xml将
+ <p><![CDATA[plugin-com.fr.solution.theme.sky]]></p> 复制到
+ </installedPlugins>
+</PluginConfigManager>前面
+ 5重启FineReport
  
  
  项目组织结构：
