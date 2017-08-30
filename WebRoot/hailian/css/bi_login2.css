@@ -101,8 +101,8 @@ body {
     margin-left: 8%;
     margin-right: 8%;
     text-align: center;
-    font-size: 1.5em;
-    margin-top:16%;
+    font-size: 16px;
+    margin-top: 35%;
 }
 
 #fs-login-logo:hover {
@@ -162,16 +162,13 @@ body {
 
 #fs-login-content {
     position: absolute;
-    top: 25%;
+    top: 0;
     bottom: 0;
-    right: 37%;
-    left: 37%;
-    background: rgba(255,255,255,0.9);
-    filter: Alpha(opacity=90);
-    /*opacity: 0.8;*/
-    height: 60%;
-    border-radius: 10px;
-    box-shadow: 1px 5px 15px #666;
+    right: 0;
+    left: 68%;
+    background: #ffffff;
+    filter: Alpha(opacity=95);
+    opacity: 0.95;
 }
 
 #fs-login-input-area {
@@ -179,11 +176,11 @@ body {
     margin-right: 23%;
     margin-bottom: 5%;
     z-index: 1;
-    /*background: #ffffff;*/
+    background: #ffffff;
 }
 
 .confirm-area {
-    margin-top: 17%;
+    margin-top: 20%;
     margin-left: 23%;
     margin-right: 23%;
     height: 80px;
@@ -204,7 +201,6 @@ div.fs-login-input {
     padding: 0;
     color: #d8d8d8;
     border-bottom: solid 1px #d8d8d8;
-    background-color: transparent;
 }
 
 input, div.fs-login-errmask {
@@ -220,12 +216,12 @@ input, div.fs-login-errmask {
 }
 
 input {
-    /*position: relative;*/
+
+    position: relative;
     margin: 0 0 0 35px;
     padding: 0;
     outline: none;
-    background-color: transparent;
-    /*width: 253px;*/
+    width: 253px;
 }
 input:-moz-placeholder {
     font-family: "PingFang SC", "Microsoft YaHei", "Myriad Pro", "OpenSans", Verdana, sans-serif;
@@ -242,8 +238,7 @@ input:-ms-input-placeholder {
 
 
 input {
-    /*-webkit-box-shadow: 0 0 0px 1000px white inset;*/
-    background-color: transparent;
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
     color: #333;
 }
 
@@ -272,14 +267,14 @@ div.fs-login-input-password {
 
 a {
     display: block;
-    height: 30px;
+    height: 40px;
     background: #15abed;
     color: #ffffff;
     text-align: center;
-    line-height: 30px;
+    line-height: 40px;
     font-size: 14px;
     border-radius: 20px;
-    -webkit-border-radius: 14px;
+    -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
     cursor: pointer !important;
     text-decoration: none;
@@ -310,7 +305,7 @@ span.fs-login-remember-selected {
 
 #fs-setting-area, #fs-sure-area {
     position: absolute;
-    top: 35%;
+    top: 43%;
     width: 100%;
 }
 
@@ -388,11 +383,11 @@ div.fs-login-theme-trigger{
 }
 
 
+
 /*轮播图样式*/
 .carousel{
-    height: 90%;
-    width: 100%;
-}
+    height: 100%;
+    width: 100%;}
 .carousel-inner{
     height: 100%;
     width: 100%;
@@ -400,13 +395,8 @@ div.fs-login-theme-trigger{
 .item{
     width: 100%;
     height: 100%;
-
+    background-color: pink;
 }
-
-.logo{
-    padding-left: 1%;
-    width: 100%;
-    height: 10%;
-
-    /*background-color: pink;*/
+.carousel-indicators{
+    left: 35%;
 }
