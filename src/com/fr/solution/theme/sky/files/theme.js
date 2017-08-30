@@ -381,13 +381,13 @@
         $ul.resize();
 		
 		//test show or hide menu
-		var btnNode2 = $('<li class="node-navi-li"/>').appendTo($ul).attr("id","node-navi-btn-show-hide");
-        var btnMore2 = _createFrameNavigationButton(btnNode2,"",'node-navi-icon-more');
-        btnMore2.click(function(){
-			alert(this)
-        });
-       
-        $ul.resize();
+//		var btnNode2 = $('<li class="node-navi-li"/>').appendTo($ul).attr("id","node-navi-btn-show-hide");
+//        var btnMore2 = _createFrameNavigationButton(btnNode2,"",'node-navi-icon-more');
+//        btnMore2.click(function(){
+//			alert(this)
+//        });
+//       
+//        $ul.resize();
     };
     var _initFrameNavigationBar = function(){
         var nav = {
