@@ -63,7 +63,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    -o-text-overflow£ºellipsis;
+    -o-text-overflowï¿½ï¿½ellipsis;
     padding: 0px 5px;
 }
 
@@ -367,6 +367,8 @@
     right: 40px;
     color: #ffffff;
     line-height: 40px;
+    top:10px;
+    color: #007bff;
 }
 
 .fs-admin-combo, .fs-message-combo {
@@ -427,7 +429,7 @@ i.icon-remove-favorite:before {
 
 }
 #fs-frame-banner {
-    top: 4px;
+    top: 10px;
 }
 #fs-frame-banner .fs-banner-logo{
     width:32px;
@@ -448,7 +450,7 @@ i.icon-remove-favorite:before {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    -o-text-overflow£ºellipsis;
+    -o-text-overflowï¿½ï¿½ellipsis;
     padding: 0px 15px;
     z-index:9999;
     font-weight: lighter;
@@ -484,7 +486,7 @@ body{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    -o-text-overflow£ºellipsis;
+    -o-text-overflowï¿½ï¿½ellipsis;
 }
 #fs-frame-menu .fs-menu-item .fs-menu-icon {
     padding:0;
@@ -632,7 +634,7 @@ iframe.fs-tab-content-item  {
     height: 64px;
 }
 #fs-frame-banner {
-    top: 3px;
+    top: 15px;
 }
 #fs-frame-banner .fs-banner-logo {
     width: auto;
@@ -649,4 +651,35 @@ iframe.fs-tab-content-item  {
 }
 #fs-frame-header .node-navi {
     top : 70px;
+}
+.slide-top {
+	width: 50px;
+    height: 50px;
+    background-size: 30% 30%;
+    background-repeat: no-repeat;
+    background-position: 100% 70%;
+    background-image:url('${servletURL}?op=resource&resource=/com/fr/solution/theme/sky/files/image/arrow_up.png');
+}
+.slide-down {
+	width: 50px;
+    height: 50px;
+    background-size: 30% 30%;
+    background-repeat: no-repeat;
+    background-position: 100% 70%;
+    background-image:url('${servletURL}?op=resource&resource=/com/fr/solution/theme/sky/files/image/arrow_down.png');
+}
+
+#fs-frame-navi-toptwo {
+    height: 64px;
+}
+#fs-frame-navi-toptwo {
+    height: 40px;
+}
+#fs-frame-navi-toptwo {
+    position: relative;
+    float: right;
+    right: 0;
+    list-style: none;
+    height: 60px;
+    top: 65px;
 }
