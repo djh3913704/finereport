@@ -103,7 +103,6 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                 _initTopRightNavigationForMenu();
                 $('#fs-frame-body').resize(function () {
                     //FS._doResize();
-                	//_hlDoResize();
                 });
                 $("#fs-frame-navi").css({"position":"absolute","width":"14em"});
                 $("#fs-frame-reg").css({"position":"absolute","right":"15em"});
@@ -275,12 +274,10 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     		$("#fs-frame-navi-toptwo").hide();
     		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))-topHeight;
     		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
-    	/*	var bodyHeight=parseInt($("#fs-frame-body").css("top"))-topHeight;
-    		$("#fs-frame-body").css("top",bodyHeight+"px");*/
-    		FS.THEME.config4frame.north.height=60;
     		$("#slide_div_id").removeClass("slide-up").addClass("slide-down");
     		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))-topHeight)+"px");
-    		//$("#fs-frame-body").css({height:$("#fs-frame-body").css("height")+topHeight});
+    		//重置页面
+    		FS.THEME.config4frame.north.height=60;
     		_hlDoResize();
     		isShow=false;
     	}else{
@@ -291,12 +288,10 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     		$("#fs-frame-navi-toptwo").show();
     		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))+topHeight;
     		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
-    		/*var bodyHeight=parseInt($("#fs-frame-body").css("top"))+topHeight;
-    		$("#fs-frame-body").css("top",bodyHeight+"px");*/
-    		FS.THEME.config4frame.north.height=60+topHeight;
     		$("#slide_div_id").addClass("slide-up").removeClass("slide-down");
     		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))+topHeight)+"px");
-    		//$("#fs-frame-body").css({height:$("#fs-frame-body").css("height")-topHeight});
+    		//重置页面
+    		FS.THEME.config4frame.north.height=60+topHeight;
     		_hlDoResize();
     		isShow=true;
     	}
@@ -304,7 +299,6 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     	
     }
     var _hlDoResize=function(){
-    	console.log(FS.THEME.config4frame.north.height)
     	var f=FS.THEME.config4frame.north.visible?(FS.THEME.config4frame.north.height||60):0;
     	if(!isShow){
     		f=60+topHeight;
