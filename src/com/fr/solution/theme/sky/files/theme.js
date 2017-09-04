@@ -102,7 +102,8 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                 
                 _initTopRightNavigationForMenu();
                 $('#fs-frame-body').resize(function () {
-                   // FS._doResize();
+                    //FS._doResize();
+                	//_hlDoResize();
                 });
                 $("#fs-frame-navi").css({"position":"absolute","width":"14em"});
                 $("#fs-frame-reg").css({"position":"absolute","right":"15em"});
@@ -264,6 +265,64 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
             .bind('mouseout' ,function(){$(this).toggleClass('on');})
         _createTopNavBarForBI();
     };
+    /** show or hide menu**/
+    var _toggelTop=function(){
+    	if(isShow){
+    		$("#fs-frame-banner").hide();
+    		$("#fs-frame-navi").hide();
+    		$("#fs-frame-search").hide();
+    		$("#fs-frame-reg").hide();
+    		$("#fs-frame-navi-toptwo").hide();
+    		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))-topHeight;
+    		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
+    		var bodyHeight=parseInt($("#fs-frame-body").css("top"))-topHeight;
+    		$("#fs-frame-body").css("top",bodyHeight+"px");
+    		$("#slide_div_id").removeClass("slide-up").addClass("slide-down");
+    		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))-topHeight)+"px");
+    		//$("#fs-frame-body").css({height:$("#fs-frame-body").css("height")+topHeight});
+    		isShow=false;
+    	}else{
+    		$("#fs-frame-banner").show();
+    		$("#fs-frame-navi").show();
+    		$("#fs-frame-search").show();
+    		$("#fs-frame-reg").show();
+    		$("#fs-frame-navi-toptwo").show();
+    		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))+topHeight;
+    		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
+    		var bodyHeight=parseInt($("#fs-frame-body").css("top"))+topHeight;
+    		$("#fs-frame-body").css("top",bodyHeight+"px");
+    		$("#slide_div_id").addClass("slide-up").removeClass("slide-down");
+    		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))+topHeight)+"px");
+    		//$("#fs-frame-body").css({height:$("#fs-frame-body").css("height")-topHeight});
+    		isShow=true;
+    	}
+    	$("#fs-frame-search").hide();
+    }
+    var _hlDoResize=function(){
+    	var f=FS.THEME.config4frame.north.visible?(FS.THEME.config4frame.north.height||60):0;
+    	var e=FS.THEME.config4frame.south.visible?30:0;
+    	var h=document.body.clientWidth;
+	    var d=document.body.clientHeight;
+	    console.log(isShow)
+	     console.log(d-f-e+topHeight)
+	    if(isShow){
+	    	$("#fs-frame-body").css({height:d-f-e-topHeight,top:f});
+	    }else{
+	    	$("#fs-frame-body").css({height:d-f-e+topHeight,top:f});
+	    }
+	    console.log($("#fs-frame-body").css("height"))
+	   /* var c=this.$menu.width();
+	    this.$content.css({left:c,width:h-c});
+	    this.$footer.css({top:d-e});
+	    if(this.tabPane){
+	    	var g=this.tabPane.element.height()-e;
+	    	if(this.tabPane.isExpanded()){
+	    		g=0
+	    	}
+	    	this.tabPane.element.css("top",g);
+	    	this.tabPane.doResize();
+	    }*/
+    };
     /**生成上面菜单（第二行） START**/
     var _initTopRightNavigationForMenu = function(){
         $('<ul id="fs-frame-navi-toptwo" style="position: absolute; display: block;"></ul>').insertBefore($('#fs-frame-search'));
@@ -406,6 +465,9 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
         
         /**重写方法 START**/
         $("#fs-frame-header .node-navi").css("top",topHeight+"px");
+        if(!canSlideMenum){
+        	$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))-topHeight)+"px");
+        }
         if(canSlideMenum){
         	//自定义收缩
         	var btnNodeSilde = $('<li class="node-navi-li"/>').appendTo($ul).attr("id","node-navi-btn-slide").css({"position":"absolute","right":"-30px","left":"auto"});
@@ -418,33 +480,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
         /**重写方法 END**/
         $ul.resize();
     };
-    /** show or hide menu**/
-    var _toggelTop=function(){
-    	if(isShow){
-    		$("#fs-frame-banner").hide();
-    		$("#fs-frame-navi").hide();
-    		$("#fs-frame-search").hide();
-    		$("#fs-frame-reg").hide();
-    		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))-topHeight;
-    		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
-    		var bodyHeight=parseInt($("#fs-frame-body").css("top"))-topHeight;
-    		$("#fs-frame-body").css("top",bodyHeight+"px");
-    		$("#slide_div_id").removeClass("slide-up").addClass("slide-down");
-    		isShow=false;
-    	}else{
-    		$("#fs-frame-banner").show();
-    		$("#fs-frame-navi").show();
-    		$("#fs-frame-search").show();
-    		$("#fs-frame-reg").show();
-    		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))+topHeight;
-    		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
-    		var bodyHeight=parseInt($("#fs-frame-body").css("top"))+topHeight;
-    		$("#fs-frame-body").css("top",bodyHeight+"px");
-    		$("#slide_div_id").addClass("slide-up").removeClass("slide-down");
-    		isShow=true;
-    	}
-    	$("#fs-frame-search").hide();
-    }
+   
     var _initFrameNavigationBar = function(){
         var nav = {
             report:{res:[],url:FR.servletURL + "?op=fs_main&cmd=module_getrootreports",res:[]},
