@@ -272,8 +272,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     		$("#fs-frame-search").hide();
     		$("#fs-frame-reg").hide();
     		$("#fs-frame-navi-toptwo").hide();
-    		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))-topHeight;
-    		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
+    		$("#fs-frame-header .node-navi").css("top","-3px");
     		$("#slide_div_id").removeClass("slide-up").addClass("slide-down");
     		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))-topHeight)+"px");
     		//重置页面
@@ -286,8 +285,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     		$("#fs-frame-search").show();
     		$("#fs-frame-reg").show();
     		$("#fs-frame-navi-toptwo").show();
-    		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))+topHeight;
-    		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
+    		$("#fs-frame-header .node-navi").css("top",(topHeight-3)+"px");
     		$("#slide_div_id").addClass("slide-up").removeClass("slide-down");
     		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))+topHeight)+"px");
     		//重置页面
@@ -312,7 +310,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     };
     /**生成上面菜单（第二行） START**/
     var _initTopRightNavigationForMenu = function(){
-        $('<ul id="fs-frame-navi-toptwo" style="position: absolute; display: block;"></ul>').insertBefore($('#fs-frame-search'));
+        $('<ul id="fs-frame-navi-toptwo" style="position: absolute; display: block;top:'+(topHeight/2+5)+'px"></ul>').insertBefore($('#fs-frame-search'));
        var _HTML="";
         $.each(topMenuName,function(index,item){
         	_HTML+='<li style="display: inline-block;margin-right: 1em;">';
@@ -451,7 +449,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
         btnNode.hide();
         
         /**重写方法 START**/
-        $("#fs-frame-header .node-navi").css("top",topHeight+"px");
+        $("#fs-frame-header .node-navi").css("top",(topHeight-3)+"px");
         if(!canSlideMenum){
         	$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))-topHeight)+"px");
         }

@@ -14,7 +14,7 @@
 
 #fs-frame-header .node-navi .node-navi-li {
     width:108px;
-    height:61px;
+    height:60px;
 }
 
 #fs-frame-header .node-navi {
@@ -669,12 +669,6 @@ iframe.fs-tab-content-item  {
     background-image:url('${servletURL}?op=resource&resource=/com/fr/solution/theme/sky/files/image/arrow_down.png');
 }
 
-#fs-frame-navi-toptwo {
-    height: 64px;
-}
-#fs-frame-navi-toptwo {
-    height: 40px;
-}
 #fs-frame-navi-toptwo {
     position: relative;
     float: right;
