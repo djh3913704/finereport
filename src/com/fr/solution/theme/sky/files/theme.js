@@ -275,11 +275,13 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     		$("#fs-frame-navi-toptwo").hide();
     		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))-topHeight;
     		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
-    		var bodyHeight=parseInt($("#fs-frame-body").css("top"))-topHeight;
-    		$("#fs-frame-body").css("top",bodyHeight+"px");
+    	/*	var bodyHeight=parseInt($("#fs-frame-body").css("top"))-topHeight;
+    		$("#fs-frame-body").css("top",bodyHeight+"px");*/
+    		FS.THEME.config4frame.north.height=60;
     		$("#slide_div_id").removeClass("slide-up").addClass("slide-down");
     		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))-topHeight)+"px");
     		//$("#fs-frame-body").css({height:$("#fs-frame-body").css("height")+topHeight});
+    		_hlDoResize();
     		isShow=false;
     	}else{
     		$("#fs-frame-banner").show();
@@ -289,39 +291,30 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     		$("#fs-frame-navi-toptwo").show();
     		var headerHeight=parseInt($("#fs-frame-header .node-navi").css("top"))+topHeight;
     		$("#fs-frame-header .node-navi").css("top",headerHeight+"px");
-    		var bodyHeight=parseInt($("#fs-frame-body").css("top"))+topHeight;
-    		$("#fs-frame-body").css("top",bodyHeight+"px");
+    		/*var bodyHeight=parseInt($("#fs-frame-body").css("top"))+topHeight;
+    		$("#fs-frame-body").css("top",bodyHeight+"px");*/
+    		FS.THEME.config4frame.north.height=60+topHeight;
     		$("#slide_div_id").addClass("slide-up").removeClass("slide-down");
     		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))+topHeight)+"px");
     		//$("#fs-frame-body").css({height:$("#fs-frame-body").css("height")-topHeight});
+    		_hlDoResize();
     		isShow=true;
     	}
     	$("#fs-frame-search").hide();
+    	
     }
     var _hlDoResize=function(){
+    	console.log(FS.THEME.config4frame.north.height)
     	var f=FS.THEME.config4frame.north.visible?(FS.THEME.config4frame.north.height||60):0;
+    	if(!isShow){
+    		f=60+topHeight;
+    	}else{
+    		f=60;
+    	}
     	var e=FS.THEME.config4frame.south.visible?30:0;
     	var h=document.body.clientWidth;
 	    var d=document.body.clientHeight;
-	    console.log(isShow)
-	     console.log(d-f-e+topHeight)
-	    if(isShow){
-	    	$("#fs-frame-body").css({height:d-f-e-topHeight,top:f});
-	    }else{
-	    	$("#fs-frame-body").css({height:d-f-e+topHeight,top:f});
-	    }
-	    console.log($("#fs-frame-body").css("height"))
-	   /* var c=this.$menu.width();
-	    this.$content.css({left:c,width:h-c});
-	    this.$footer.css({top:d-e});
-	    if(this.tabPane){
-	    	var g=this.tabPane.element.height()-e;
-	    	if(this.tabPane.isExpanded()){
-	    		g=0
-	    	}
-	    	this.tabPane.element.css("top",g);
-	    	this.tabPane.doResize();
-	    }*/
+	     $("#fs-frame-body").css({height:d-f-e,top:f});
     };
     /**生成上面菜单（第二行） START**/
     var _initTopRightNavigationForMenu = function(){
@@ -472,7 +465,6 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
         	//自定义收缩
         	var btnNodeSilde = $('<li class="node-navi-li"/>').appendTo($ul).attr("id","node-navi-btn-slide").css({"position":"absolute","right":"-30px","left":"auto"});
         	var divSlide=$("<div class='node-navi-icon'><div class=' slide-top' id='slide_div_id'></div></div>").appendTo($("#node-navi-btn-slide"));
-        	//$("#fs-frame-body").css("top",(135+topHeight)+"px");
         	divSlide.click(function(){
         		_toggelTop();
         	});
