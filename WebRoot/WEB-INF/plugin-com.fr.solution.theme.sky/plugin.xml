@@ -2,13 +2,13 @@
     <id>com.fr.solution.theme.sky</id>
     <name><![CDATA[西北院自定义主题]]></name>
     <active>yes</active>
-    <version>1.89</version>
+    <version>1.0</version>
     <env-version>8.0</env-version>
-    <jartime>2016-08-05</jartime>
-    <vendor>steven.zhao</vendor>
+    <jartime>2017-09-01</jartime>
+    <vendor>qingbei.zuo</vendor>
     <description><![CDATA[西北院自定义主题]]></description>
     <change-notes><![CDATA[<ul>
-		<li>1自定义主题（海联）</li>
+		<li>自定义主题（海联）</li>
         </ul>
     ]]></change-notes>
     <extra-core>

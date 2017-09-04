@@ -8,7 +8,13 @@ import com.fr.stable.fun.Authorize;
 import com.fr.stable.fun.FunctionHelper;
 import com.fr.stable.fun.FunctionProcessor;
 import com.fr.stable.fun.impl.AbstractFunctionProcessor;
-
+/**
+ * 
+ * @className ThemeSky.java
+ * @time   2017年9月4日 上午11:35:49
+ * @author zuoqb
+ * @todo   TODO
+ */
 @Authorize(callSignKey="com.fr.solution.theme.sky")
 public class ThemeSky extends AbstractThemeVariousProvider
 {
@@ -22,18 +28,18 @@ public class ThemeSky extends AbstractThemeVariousProvider
 
     public String getLocaleKey()
     {
-      return "FS-THEME-SKY-TITLE";
+      return "FS-THEME-XBY-TITLE";
     }
   };
 
   public String name()
   {
-    return getText("Sky zuo");
+    return getText("XBY");
   }
 
   public String text()
   {
-    return getText("西北院自定义主题");
+    return getText("西北院主题");
   }
 
   public String coverPath()
@@ -70,8 +76,3 @@ public class ThemeSky extends AbstractThemeVariousProvider
     return "";
   }
 }
-
-/* Location:           F:\FineReport_8.0\WebReport\WEB-INF\lib\plugin-com.fr.solution.theme.sky-0.jar
- * Qualified Name:     com.fr.solution.theme.sky.ThemeSky
- * JD-Core Version:    0.6.2
- */
