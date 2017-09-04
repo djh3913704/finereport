@@ -80,7 +80,8 @@ function initHlChangePassword(oldpwdInputName,newpwdInputName){
 	            	result.fail=true;
 	          	    result.msg=signResult.msg;
 	            } else {
-                    window.location.href = signResult.msg;
+	            	parent.location.reload();
+                   // window.location.href = signResult.msg;
                 }
       	  }
         }
@@ -113,7 +114,8 @@ function initHlLogout(){
           	    result.msg=signResult.msg;
             } else {
             	var domain=FR.serverURL+FR.servletURL+'?op=fs';
-                window.location.href = domain;
+               // window.location.href = domain;
+            	parent.location.reload();
             } 
       	  }
         }
