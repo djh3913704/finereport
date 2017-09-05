@@ -21,8 +21,7 @@ public class BaseServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 8095999134950661589L;
 
-	protected void responseOutWithJson(HttpServletResponse response,
-			JSONObject responseObject) {
+	protected void responseOutWithJson(HttpServletResponse response, JSONObject responseObject) {
 		// 将实体对象转换为JSON Object转换
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json; charset=utf-8");
@@ -38,6 +37,7 @@ public class BaseServlet extends HttpServlet {
 			}
 		}
 	}
+
 	/**
 	 * 
 	 * @time   2017年8月23日 下午5:45:20
@@ -47,41 +47,39 @@ public class BaseServlet extends HttpServlet {
 	 * @return_type   String
 	 */
 	public static String getIpAddress() {
-        try {
-            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-            while (networkInterfaces.hasMoreElements()) {
-                NetworkInterface ni = (NetworkInterface) networkInterfaces.nextElement();
-                Enumeration<InetAddress> nias = ni.getInetAddresses();
-                while (nias.hasMoreElements()) {
-                    InetAddress ia = (InetAddress) nias.nextElement();
-                    if (!ia.isLinkLocalAddress() && !ia.isLoopbackAddress() && ia instanceof Inet4Address) {
-                        return ia.getHostAddress();
-                    }
-                }
-            }
-        } catch (SocketException e) {
-        }
-        return null;
-    }
+		try {
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			while (networkInterfaces.hasMoreElements()) {
+				NetworkInterface ni = (NetworkInterface) networkInterfaces.nextElement();
+				Enumeration<InetAddress> nias = ni.getInetAddresses();
+				while (nias.hasMoreElements()) {
+					InetAddress ia = (InetAddress) nias.nextElement();
+					if (!ia.isLinkLocalAddress() && !ia.isLoopbackAddress() && ia instanceof Inet4Address) {
+						return ia.getHostAddress();
+					}
+				}
+			}
+		} catch (SocketException e) {
+		}
+		return null;
+	}
+
 	public static List<String> getIpAddressList() {
-		List<String> list=new ArrayList<String>();
-        try {
-            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-            while (networkInterfaces.hasMoreElements()) {
-                NetworkInterface ni = (NetworkInterface) networkInterfaces.nextElement();
-                Enumeration<InetAddress> nias = ni.getInetAddresses();
-                while (nias.hasMoreElements()) {
-                    InetAddress ia = (InetAddress) nias.nextElement();
-                    if (!ia.isLinkLocalAddress() && !ia.isLoopbackAddress() && ia instanceof Inet4Address) {
-                        list.add(ia.getHostAddress());
-                    }
-                }
-            }
-        } catch (SocketException e) {
-        }
-        return list;
-    }
-	public static void main(String[] args) {
-		System.out.println(getIpAddress());
+		List<String> list = new ArrayList<String>();
+		try {
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			while (networkInterfaces.hasMoreElements()) {
+				NetworkInterface ni = (NetworkInterface) networkInterfaces.nextElement();
+				Enumeration<InetAddress> nias = ni.getInetAddresses();
+				while (nias.hasMoreElements()) {
+					InetAddress ia = (InetAddress) nias.nextElement();
+					if (!ia.isLinkLocalAddress() && !ia.isLoopbackAddress() && ia instanceof Inet4Address) {
+						list.add(ia.getHostAddress());
+					}
+				}
+			}
+		} catch (SocketException e) {
+		}
+		return list;
 	}
 }

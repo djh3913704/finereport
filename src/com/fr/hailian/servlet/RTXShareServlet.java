@@ -19,6 +19,7 @@ import com.fr.hailian.util.DESSymmetricEncoder;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.web.utils.WebUtils;
+
 /**
  * 
  * @className RTXShareServlet.java
@@ -46,57 +47,56 @@ public class RTXShareServlet extends BaseServlet {
 	public void destroy() {
 		super.destroy(); // Just puts "destroy" string in log
 	}
-	
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		overwriteReport(request,response);
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		overwriteReport(request, response);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		overwriteReport(request,response);
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		overwriteReport(request, response);
 	}
 
-	private void overwriteReport(HttpServletRequest request,
-			HttpServletResponse response) {
-		JSONObject r=new JSONObject();
+	private void overwriteReport(HttpServletRequest request, HttpServletResponse response) {
+		JSONObject r = new JSONObject();
 		System.out.println("RTX集成 多级上报提交分享后续处理开始...... ");
 		try {
 			//用户名
-			User user =RoleUtil.getCurrentUser(request);
-			String domain=request.getParameter("domain");
+			User user = RoleUtil.getCurrentUser(request);
+			String domain = request.getParameter("domain");
 			//帆软实际ID对应表fr_process_task_impl中frtaskid 实际值字段
-			String frTaskId=request.getParameter("taskImpId");
+			String frTaskId = request.getParameter("taskImpId");
 			String __redirect__ = WebUtils.getHTTPRequestParameter(request, ParameterConsts.__REDIRECT__);//是否直接跳转到任务详情页面 true跳转
 			//上报流程中的任务下发出来的具体任务ID  表fr_process_task_impl
 			/*String name = java.net.URLDecoder.decode(request.getParameter(Constants.FR_USERNAME),"UTF-8");
 			System.out.println("name:"+name);*/
-			if(user!=null){
-				String taskImpId=TaskService.getInstance().getTaskImplByFrtaskId(frTaskId);
-				String[][] data=TaskService.getInstance().getTaskIdByFrtaskId(frTaskId);
+			if (user != null) {
+				String taskImpId = TaskService.getInstance().getTaskImplByFrtaskId(frTaskId);
+				String[][] data = TaskService.getInstance().getTaskIdByFrtaskId(frTaskId);
 				//获取下一级审核人信息
-				List<UserModel> userList=TaskService.getInstance().getShareUser(taskImpId);
+				List<UserModel> userList = TaskService.getInstance().getShareUser(taskImpId);
 				//生成url地址 发送RTX信息使用
-				List<String> successUser=new ArrayList<String>();
-				List<String> failUser=new ArrayList<String>();
-				for(UserModel u:userList){
-					String sign=DESSymmetricEncoder.createSign(u.getId()+"");
-					String url=domain+"/rtxSecurityServlet?sign="+sign+"&userId="+u.getId();
-					if("true".equals(__redirect__)){
-						String hl_url=TaskService.getInstance().joinTaskUrl(data[0][4], data[0][2], taskImpId);
-						url+="&__redirect__="+__redirect__+"&hl_url="+hl_url;
+				List<String> successUser = new ArrayList<String>();
+				List<String> failUser = new ArrayList<String>();
+				for (UserModel u : userList) {
+					String sign = DESSymmetricEncoder.createSign(u.getId() + "");
+					String url = domain + "/rtxSecurityServlet?sign=" + sign + "&userId=" + u.getId();
+					if ("true".equals(__redirect__)) {
+						String hl_url = TaskService.getInstance().joinTaskUrl(data[0][4], data[0][2], taskImpId);
+						url += "&__redirect__=" + __redirect__ + "&hl_url=" + hl_url;
 					}
 					System.out.println(u.getUserName());
 					System.out.println(url);
-					if(PortalService.sendMessageToUser(request, com.fr.hailian.core.Constants.RTX_TITLE, com.fr.hailian.core.Constants.RTX_CONTENT, url, u.getUserName())){
+					if (PortalService.sendMessageToUser(request, com.fr.hailian.core.Constants.RTX_TITLE,
+							com.fr.hailian.core.Constants.RTX_CONTENT, url, u.getUserName())) {
 						successUser.add(u.getUserName());
-					}else{
+					} else {
 						failUser.add(u.getUserName());
-					};
+					}
+					;
 				}
 				r.put("fail", false);
-				r.put("msg", "发送RTX信息成功!"+successUser.toString());
-			}else{
+				r.put("msg", "发送RTX信息成功!" + successUser.toString());
+			} else {
 				//先登录
 				r.put("fail", true);
 				r.put("msg", "请先登录!");

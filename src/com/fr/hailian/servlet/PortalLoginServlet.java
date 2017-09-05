@@ -1,7 +1,6 @@
 package com.fr.hailian.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -57,17 +56,17 @@ public class PortalLoginServlet extends BaseServlet {
 			HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		JSONObject r=new JSONObject();
-		System.out.println("单点登录逻辑开始...... ");
+		//System.out.println("单点登录逻辑开始...... ");
 		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
 		String token=hrequest.getParameter("Token");//样例:FEEE591E3B55320B7038E74D4E4EFE86
 		String redictUrl=hrequest.getParameter("Target");//样例:F047F50A72B04A049D8436009
-		System.out.println("Token="+token+",Target="+redictUrl);
+		//System.out.println("Token="+token+",Target="+redictUrl);
 		//根据token获取用户信息
 		Map<String,Object> result = PortalService.getUserInfoByToken(token, redictUrl);
 	/*	Map<String,Object> result =new HashMap<String, Object>();
 		result.put("Result", "1");
 		result.put("Memo", "admin");*/
-		System.out.println("根据token获取用户信息返回："+result);
+		//System.out.println("根据token获取用户信息返回："+result);
 		if(result!=null&&"1".equals(result.get("Result"))){
 			String name = (String) result.get("Memo");//获取用户名，需进一步确认
 			try {
@@ -98,7 +97,7 @@ public class PortalLoginServlet extends BaseServlet {
 
 	public void init() throws ServletException {
 		// Put your code here
-		System.out.println("单点登录逻辑初始化...... ");
+		//System.out.println("单点登录逻辑初始化...... ");
 	}
 
 }

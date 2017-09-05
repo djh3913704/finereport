@@ -17,6 +17,7 @@ import com.fr.hailian.service.UserService;
 import com.fr.hailian.util.PortalService;
 import com.fr.hailian.util.RoleUtil;
 import com.fr.stable.Constants;
+
 /**
  * 
  * @className LoginServlet.java
@@ -44,51 +45,48 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 	public void destroy() {
 		super.destroy(); // Just puts "destroy" string in log
 	}
-	
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		overwriteLogin(request,response);
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		overwriteLogin(request, response);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		overwriteLogin(request,response);
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		overwriteLogin(request, response);
 	}
 
 	@SuppressWarnings("unused")
-	private void overwriteLogin(HttpServletRequest request,
-			HttpServletResponse response) {
-		JSONObject r=new JSONObject();
-		System.out.println("辅助决策登陆改造开始...... ");
-		HttpServletRequest hrequest = (HttpServletRequest)request;//web资源
-		String name="";
-		String password="";
+	private void overwriteLogin(HttpServletRequest request, HttpServletResponse response) {
+		JSONObject r = new JSONObject();
+		//System.out.println("辅助决策登陆改造开始...... ");
+		HttpServletRequest hrequest = (HttpServletRequest) request;//web资源
+		String name = "";
+		String password = "";
 		try {
-			name = java.net.URLDecoder.decode(hrequest.getParameter(Constants.FR_USERNAME),"UTF-8");
-			password=java.net.URLDecoder.decode(hrequest.getParameter(Constants.FR_PASSWORD),"UTF-8");
-			System.out.println("name:"+name+",password:"+password);
+			name = java.net.URLDecoder.decode(hrequest.getParameter(Constants.FR_USERNAME), "UTF-8");
+			password = java.net.URLDecoder.decode(hrequest.getParameter(Constants.FR_PASSWORD), "UTF-8");
+			//System.out.println("name:" + name + ",password:" + password);
 			User user = UserControl.getInstance().getByUserName(name);//获取用户对象
-			System.out.println("pwd:"+user.getPassword());
-			if(user!=null){
-				System.out.println("user:"+user);
+			//System.out.println("pwd:" + user.getPassword());
+			if (user != null) {
+				System.out.println("user:" + user);
 				//判断是否是超级管理员
-				if(RoleUtil.isSuperAdmin(user)){
+				if (RoleUtil.isSuperAdmin(user)) {
 					/**
 					 * 是超级管理员
 					 * step1:用户名 密码校验 这个在上面已经验证了
 					 * step2：生成登陆凭证
 					 */
-					User user1 = UserControl.getInstance().getUser(name,password);//获取用户对象
-					System.out.println("user1:"+user1);
-					if(user1!=null){
+					User user1 = UserControl.getInstance().getUser(name, password);//获取用户对象
+					//System.out.println("user1:" + user1);
+					if (user1 != null) {
 						RoleUtil.loginCMD(hrequest, response);
 						r.put("fail", false);
 						r.put("msg", "登陆成功");
-					}else{
+					} else {
 						r.put("fail", true);
 						r.put("msg", "密码错误!");
 					}
-				}else{
+				} else {
 					/**
 					 * 不是超级管理员
 					 * step1:统一身份认证userValidate 
@@ -96,38 +94,38 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 					 * step3:生成登陆凭证
 					 */
 					//step1:统一身份认证userValidate 
-					Map<String,Object> userValid=PortalService.userValidate(name, password);
-					System.out.println("userValid:"+userValid);
-					if(userValid!=null&&"1".equals(userValid.get("Result").toString())){
+					Map<String, Object> userValid = PortalService.userValidate(name, password);
+					//System.out.println("userValid:" + userValid);
+					if (userValid != null && "1".equals(userValid.get("Result").toString())) {
 						//step2:辅助决策系统权限认证
-						if(RoleUtil.judgeAuxiliaryRole(user)){
+						if (RoleUtil.judgeAuxiliaryRole(user)) {
 							//step3:生成登陆凭证
 							/**
 							 * 两个系统密码或许不同 所以只要统一认证成功 本地更新密码 然后本地认证
 							 */
-							UserModel m=UserService.getInstance().getExistsUser(name);
+							UserModel m = UserService.getInstance().getExistsUser(name);
 							m.setPassword(password);
 							UserService.getInstance().updateUser(m);
-							hrequest.setAttribute( Constants.FR_PASSWORD, m.getPassword());
-							System.out.println(m.getPassword());
+							hrequest.setAttribute(Constants.FR_PASSWORD, m.getPassword());
+							//System.out.println(m.getPassword());
 							RoleUtil.loginCMD(hrequest, response);
 							r.put("fail", false);
 							r.put("msg", "登陆成功");
-						}else{
+						} else {
 							r.put("fail", true);
 							r.put("msg", "该用户没有辅助决策系统权限，请联系管理员!");
 						}
-					}else{
+					} else {
 						r.put("fail", true);
 						r.put("msg", "统一身份认证验证失败!");
 					}
-					
+
 				}
-			}else{
+			} else {
 				r.put("fail", true);
 				r.put("msg", "用户名或者密码错误!");
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

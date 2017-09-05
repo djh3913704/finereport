@@ -14,6 +14,7 @@ import javax.xml.ws.Endpoint;
 import com.fr.hailian.core.BaseServlet;
 import com.fr.hailian.core.Constants;
 import com.fr.hailian.wsdl.TaskWebService;
+
 /**
  * 
  * @className FRFilter.java
@@ -27,17 +28,17 @@ public class WebServiceFilter implements Filter {
 
 	}
 
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain Chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain Chain) throws IOException,
+			ServletException {
 	}
 
 	public void init(FilterConfig arg0) throws ServletException {
-		List<String> list=BaseServlet.getIpAddressList();
-		for(String ip:list){
-			String domain="http://"+ip+":"+Constants.WebService_Port+"/Service";
+		List<String> list = BaseServlet.getIpAddressList();
+		for (String ip : list) {
+			String domain = "http://" + ip + ":" + Constants.WebService_Port + "/Service";
 			//统一待办已办接口
-			System.out.println("wsdl:"+domain);
-			Endpoint.publish(domain+"/TaskWebService",new TaskWebService());
+			System.out.println("wsdl:" + domain);
+			Endpoint.publish(domain + "/TaskWebService", new TaskWebService());
 		}
 
 	}

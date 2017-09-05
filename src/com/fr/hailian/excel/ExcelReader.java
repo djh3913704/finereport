@@ -5,8 +5,6 @@
 package com.fr.hailian.excel;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -31,7 +29,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.alibaba.fastjson.JSON;
-import com.fr.hailian.model.UserModel;
 import com.fr.stable.StringUtils;
 
 /**
@@ -92,8 +89,7 @@ public class ExcelReader<E> {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public void InitExcelReader(InputStream inputfile)
-			throws ExcelReadException {
+	public void InitExcelReader(InputStream inputfile) throws ExcelReadException {
 		if (inputfile == null) {
 			throw new ExcelReadException("文件输入流为空");
 		}
@@ -151,8 +147,7 @@ public class ExcelReader<E> {
 		/**
 		 * 判断当前行是否到当前工作表sheet的结尾
 		 */
-		if (currPosittion > sheet.getLastRowNum()
-				&& !this.excel2EntityConfig.isOnlyOneSheet()) {
+		if (currPosittion > sheet.getLastRowNum() && !this.excel2EntityConfig.isOnlyOneSheet()) {
 			/**
 			 * 当前行位置清0
 			 */
@@ -210,17 +205,17 @@ public class ExcelReader<E> {
 		List<String> line = getLine(row);
 		if (line != null && line.size() > 0) {
 			HashMap map = null;
-		/*	Model model = null;
-			Record record = null;*/
+			/*	Model model = null;
+				Record record = null;*/
 			if (entity instanceof HashMap) {
 				map = (HashMap) entity;
 			}/* else if (entity instanceof Model) {
 				model = (Model) entity;
-			} else if (entity instanceof Record) {
+				} else if (entity instanceof Record) {
 				record = (Record) entity;
-			}*/
-			int len = line.size() > this.excel2EntityConfig.getColumns().length ? this.excel2EntityConfig
-					.getColumns().length : line.size();
+				}*/
+			int len = line.size() > this.excel2EntityConfig.getColumns().length ? this.excel2EntityConfig.getColumns().length
+					: line.size();
 			boolean empty = true;
 			for (int i = 0; i < len; i++) {
 				String cellvalue = line.get(i);
@@ -233,8 +228,7 @@ public class ExcelReader<E> {
 						String[] arr = column.split("=");
 						column = arr[0];
 						String json = arr[1];
-						Map<String, Object> enums = (Map<String, Object>) JSON
-								.parse(json);
+						Map<String, Object> enums = (Map<String, Object>) JSON.parse(json);
 						String n_cellvalue = (String) enums.get(cellvalue);
 						if (StringUtils.isNotBlank(n_cellvalue)) {
 							cellvalue = n_cellvalue;
@@ -246,73 +240,48 @@ public class ExcelReader<E> {
 					}/* else if (model != null) {
 						model.put(column, cellvalue);
 						entity = (E) model;
-					} else if (record != null) {
+						} else if (record != null) {
 						record.set(column, cellvalue);
 						entity = (E) record;
-					} */else {
+						} */else {
 
 						Field[] field = entity.getClass().getDeclaredFields(); // 获取实体类的所有属性，返回Field数组
 						for (int j = 0; j < field.length; j++) { // 遍历所有属性
 							String name = field[j].getName(); // 获取属性的名字
 							name = this.A2UpperCase(name);
 							String type = field[j].getGenericType().toString(); // 获取属性的类型
-							System.out.println(name+"---"+type+"---"+column);
-							if (this.A2UpperCase(column).trim().equals(name)
-									&& cellvalue != null
+							System.out.println(name + "---" + type + "---" + column);
+							if (this.A2UpperCase(column).trim().equals(name) && cellvalue != null
 									&& cellvalue.trim().equals("") == false) {
 								try {
 									if (type.equals("class java.lang.String")) { // 如果type是类类型，则前面包含"class//
 										// "，后面跟类名
-										Method sm = entity.getClass()
-												.getDeclaredMethod(
-														"set" + name,
-														String.class);
+										Method sm = entity.getClass().getDeclaredMethod("set" + name, String.class);
 										sm.invoke(entity, cellvalue);
 									}
 									if (NumberUtils.isNumber(cellvalue)) {
 										if (type.equals("class java.lang.Integer")) {
 											Method sm = entity.getClass()
-													.getDeclaredMethod(
-															"set" + name,
-															Integer.class);
-											sm.invoke(entity,
-													Integer.parseInt(cellvalue));
+													.getDeclaredMethod("set" + name, Integer.class);
+											sm.invoke(entity, Integer.parseInt(cellvalue));
 										}
 										if (type.equals("class java.lang.Short")) {
-											Method sm = entity.getClass()
-													.getDeclaredMethod(
-															"set" + name,
-															Short.class);
-											sm.invoke(entity,
-													Short.parseShort(cellvalue));
+											Method sm = entity.getClass().getDeclaredMethod("set" + name, Short.class);
+											sm.invoke(entity, Short.parseShort(cellvalue));
 										}
 										if (type.equals("class java.lang.Double")) {
-											Method sm = entity.getClass()
-													.getDeclaredMethod(
-															"set" + name,
-															Double.class);
-											sm.invoke(entity, Double
-													.parseDouble(cellvalue));
+											Method sm = entity.getClass().getDeclaredMethod("set" + name, Double.class);
+											sm.invoke(entity, Double.parseDouble(cellvalue));
 										}
 										if (type.equals("class java.lang.Boolean")) {
 											Method sm = entity.getClass()
-													.getDeclaredMethod(
-															"set" + name,
-															Boolean.class);
-											sm.invoke(entity, Boolean
-													.parseBoolean(cellvalue));
+													.getDeclaredMethod("set" + name, Boolean.class);
+											sm.invoke(entity, Boolean.parseBoolean(cellvalue));
 										}
 									}
 									if (type.equals("class java.util.Date")) {
-										Method sm = entity.getClass()
-												.getDeclaredMethod(
-														"set" + name,
-														Date.class);
-										sm.invoke(
-												entity,
-												this.excel2EntityConfig
-														.getFormater().parse(
-																cellvalue));
+										Method sm = entity.getClass().getDeclaredMethod("set" + name, Date.class);
+										sm.invoke(entity, this.excel2EntityConfig.getFormater().parse(cellvalue));
 									}
 								} catch (SecurityException e) {
 									// TODO Auto-generated catch block
@@ -388,8 +357,7 @@ public class ExcelReader<E> {
 						if (HSSFDateUtil.isCellDateFormatted(cell)) {
 							// 如果是在Date类型，则取得该Cell的Date值
 							Date date = cell.getDateCellValue();
-							cellvalue = this.excel2EntityConfig.getFormater()
-									.format(date);
+							cellvalue = this.excel2EntityConfig.getFormater().format(date);
 							// 把Date转换成本地格式的的字符串
 							// celldatevalue = cell.getDateCellValue();
 						} else {
@@ -402,8 +370,7 @@ public class ExcelReader<E> {
 					}
 					case Cell.CELL_TYPE_STRING:
 						// /取得当前Cell的字符串
-						cellvalue = cell.getStringCellValue()
-								.replace("'", "''");
+						cellvalue = cell.getStringCellValue().replace("'", "''");
 						break;
 					case Cell.CELL_TYPE_BOOLEAN:
 						cellvalue = String.valueOf(cell.getBooleanCellValue());
@@ -495,8 +462,7 @@ public class ExcelReader<E> {
 	 * @return 首字母大写后的字符串
 	 */
 	private String A2UpperCase(String filed) {
-		return filed.substring(0, 1).toUpperCase()
-				+ filed.substring(1, filed.length());
+		return filed.substring(0, 1).toUpperCase() + filed.substring(1, filed.length());
 	}
 
 	public ExcelVersion getVersion() {
@@ -509,8 +475,8 @@ public class ExcelReader<E> {
 		this.version = version;
 	}
 
-	public static void main(String[] args) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException {
 		/*try {
 			ExcelReader<UserModel> e=new ExcelReader<UserModel>(ExcelVersion.V2007);
 			e.setEntity(new UserModel());

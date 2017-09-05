@@ -57,12 +57,12 @@ public class RTXSecurityServlet extends BaseServlet {
 	private void overwriteRTXSecurity(HttpServletRequest request,
 			HttpServletResponse response) {
 		JSONObject r=new JSONObject();
-		System.out.println(" RTX集成 当用户从RTX点击收到信息时  进行免登陆校验处理开始...... ");
+		//System.out.println(" RTX集成 当用户从RTX点击收到信息时  进行免登陆校验处理开始...... ");
 		try {
 			//用户名
 			String userId= request.getParameter("userId");
 			String sign=request.getParameter("sign");
-			System.out.println("userId="+userId+",sign="+sign);
+			//System.out.println("userId="+userId+",sign="+sign);
 			User user = null;
 			if(StringUtils.isNotBlank(userId)){
 				user=UserControl.getInstance().getUser(Long.parseLong(userId));//获取用户对象

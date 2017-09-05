@@ -27,23 +27,22 @@ import com.fr.stable.StringUtils;
  * @version 2013-03-10
  */
 public class ImportExcel {
-	
-			
+
 	/**
 	 * 工作薄对象
 	 */
 	private Workbook wb;
-	
+
 	/**
 	 * 工作表对象
 	 */
 	private Sheet sheet;
-	
+
 	/**
 	 * 标题行号
 	 */
 	private int headerNum;
-	
+
 	/**
 	 * 构造函数
 	 * @param path 导入文件，读取第一个工作表
@@ -51,11 +50,10 @@ public class ImportExcel {
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
 	 */
-	public ImportExcel(String fileName, int headerNum) 
-			throws InvalidFormatException, IOException {
+	public ImportExcel(String fileName, int headerNum) throws InvalidFormatException, IOException {
 		this(new File(fileName), headerNum);
 	}
-	
+
 	/**
 	 * 构造函数
 	 * @param path 导入文件对象，读取第一个工作表
@@ -63,8 +61,7 @@ public class ImportExcel {
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
 	 */
-	public ImportExcel(File file, int headerNum) 
-			throws InvalidFormatException, IOException {
+	public ImportExcel(File file, int headerNum) throws InvalidFormatException, IOException {
 		this(file, headerNum, 0);
 	}
 
@@ -76,11 +73,10 @@ public class ImportExcel {
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
 	 */
-	public ImportExcel(String fileName, int headerNum, int sheetIndex) 
-			throws InvalidFormatException, IOException {
+	public ImportExcel(String fileName, int headerNum, int sheetIndex) throws InvalidFormatException, IOException {
 		this(new File(fileName), headerNum, sheetIndex);
 	}
-	
+
 	/**
 	 * 构造函数
 	 * @param path 导入文件对象
@@ -89,11 +85,10 @@ public class ImportExcel {
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
 	 */
-	public ImportExcel(File file, int headerNum, int sheetIndex) 
-			throws InvalidFormatException, IOException {
+	public ImportExcel(File file, int headerNum, int sheetIndex) throws InvalidFormatException, IOException {
 		this(file.getName(), new FileInputStream(file), headerNum, sheetIndex);
 	}
-	
+
 	/**
 	 * 构造函数
 	 * @param file 导入文件对象
@@ -102,11 +97,11 @@ public class ImportExcel {
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
 	 */
-//	public ImportExcel(MultipartFile multipartFile, int headerNum, int sheetIndex) 
-//			throws InvalidFormatException, IOException {
-//		this(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), headerNum, sheetIndex);
-//	}
-	
+	//	public ImportExcel(MultipartFile multipartFile, int headerNum, int sheetIndex) 
+	//			throws InvalidFormatException, IOException {
+	//		this(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), headerNum, sheetIndex);
+	//	}
+
 	/**
 	 * 构造函数
 	 * @param file 导入文件对象
@@ -128,30 +123,30 @@ public class ImportExcel {
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
 	 */
-	public ImportExcel(String fileName, InputStream is, int headerNum, int sheetIndex) 
-			throws InvalidFormatException, IOException {
-		if (StringUtils.isBlank(fileName)){
+	public ImportExcel(String fileName, InputStream is, int headerNum, int sheetIndex) throws InvalidFormatException,
+			IOException {
+		if (StringUtils.isBlank(fileName)) {
 			throw new RuntimeException("导入文档为空!");
-		}else if(fileName.toLowerCase().endsWith("xls")){    
-			this.wb = new HSSFWorkbook(is);    
-        }else if(fileName.toLowerCase().endsWith("xlsx")){  
-        	this.wb = new XSSFWorkbook(is);
-        }else{  
-        	throw new RuntimeException("文档格式不正确!");
-        }  
-		if (this.wb.getNumberOfSheets()<sheetIndex){
+		} else if (fileName.toLowerCase().endsWith("xls")) {
+			this.wb = new HSSFWorkbook(is);
+		} else if (fileName.toLowerCase().endsWith("xlsx")) {
+			this.wb = new XSSFWorkbook(is);
+		} else {
+			throw new RuntimeException("文档格式不正确!");
+		}
+		if (this.wb.getNumberOfSheets() < sheetIndex) {
 			throw new RuntimeException("文档中没有工作表!");
 		}
 		this.sheet = this.wb.getSheetAt(sheetIndex);
 		this.headerNum = headerNum;
 	}
-	
+
 	/**
 	 * 获取行对象
 	 * @param rownum
 	 * @return
 	 */
-	public Row getRow(int rownum){
+	public Row getRow(int rownum) {
 		return this.sheet.getRow(rownum);
 	}
 
@@ -159,59 +154,58 @@ public class ImportExcel {
 	 * 获取数据行号
 	 * @return
 	 */
-	public int getDataRowNum(){
-		return headerNum+1;
+	public int getDataRowNum() {
+		return headerNum + 1;
 	}
-	
+
 	/**
 	 * 获取最后一个数据行号
 	 * @return
 	 */
-	public int getLastDataRowNum(){
-//		return this.sheet.getLastRowNum()+headerNum;
+	public int getLastDataRowNum() {
+		//		return this.sheet.getLastRowNum()+headerNum;
 		return this.sheet.getLastRowNum();
 	}
-	
+
 	/**
 	 * 获取最后一个列号
 	 * @return
 	 */
-	public int getLastCellNum(){
+	public int getLastCellNum() {
 		return this.getRow(headerNum).getLastCellNum();
 	}
-	
+
 	/**
 	 * 获取单元格值
 	 * @param row 获取的行
 	 * @param column 获取单元格列号
 	 * @return 单元格值
 	 */
-	public Object getCellValue(Row row, int column){
+	public Object getCellValue(Row row, int column) {
 		Object val = "";
-		try{
+		try {
 			Cell cell = row.getCell(column);
-			if (cell != null){
-				if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
+			if (cell != null) {
+				if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 					//去除科学计数法 和0
 					val = cell.getNumericCellValue();
 					val = getPrettyNumber(val);
-				}else if (cell.getCellType() == Cell.CELL_TYPE_STRING){
+				} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 					val = cell.getStringCellValue();
-				}else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA){
+				} else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
 					val = cell.getCellFormula();
-				}else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN){
+				} else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
 					val = cell.getBooleanCellValue();
-				}else if (cell.getCellType() == Cell.CELL_TYPE_ERROR){
+				} else if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
 					val = cell.getErrorCellValue();
 				}
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return val;
 		}
 		return val;
 	}
-	
-	
+
 	/** 
 	 * @Desc: 后去单元值
 	 * @param cell
@@ -220,41 +214,41 @@ public class ImportExcel {
 	 * @author: longjunfeng   
 	 * @date: 2016年10月11日 下午4:12:14 
 	 */
-	public static Object getCellValue(Cell cell){
+	public static Object getCellValue(Cell cell) {
 		Object val = "";
-		try{
-			if (cell != null){
-				if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
+		try {
+			if (cell != null) {
+				if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 					//去除科学计数法 和0
 					val = cell.getNumericCellValue();
 					val = getPrettyNumber(val);
-				}else if (cell.getCellType() == Cell.CELL_TYPE_STRING){
+				} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 					val = cell.getStringCellValue();
-				}else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA){
+				} else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
 					val = cell.getCellFormula();
-				}else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN){
+				} else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
 					val = cell.getBooleanCellValue();
-				}else if (cell.getCellType() == Cell.CELL_TYPE_ERROR){
+				} else if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
 					val = cell.getErrorCellValue();
 				}
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return val;
 		}
 		return val;
 	}
-	
-	public static String subZeroAndDot(String s){
-	    if(s.indexOf(".") > 0){
-	        s = s.replaceAll("0+?$", "");//去掉多余的0
-	        s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
-	    }else{
-	    	DecimalFormat df = new DecimalFormat("0");  
-			s= df.format(s);  
-	    }
-	    return s;
+
+	public static String subZeroAndDot(String s) {
+		if (s.indexOf(".") > 0) {
+			s = s.replaceAll("0+?$", "");//去掉多余的0
+			s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+		} else {
+			DecimalFormat df = new DecimalFormat("0");
+			s = df.format(s);
+		}
+		return s;
 	}
-	
+
 	/**
 	 * @desc	:获取数字,不用科学技术法标识
 	 * @author	:作者 longjunfeng E-mail:463527083@qq.com
@@ -262,15 +256,15 @@ public class ImportExcel {
 	 * @param number
 	 * @return
 	 */
-	public static String getPrettyNumber(Object number) {  
+	public static String getPrettyNumber(Object number) {
 		double number2 = Double.parseDouble(number.toString());
-		if(number2 % 1 == 0){// 是这个整数，小数点后面是0
-			return BigDecimal.valueOf(Double.parseDouble(number.toString())).stripTrailingZeros().toPlainString(); 
-		}else{//不是整数，小数点后面不是0
-			return BigDecimal.valueOf(Double.parseDouble(number.toString())).toPlainString(); 
+		if (number2 % 1 == 0) {// 是这个整数，小数点后面是0
+			return BigDecimal.valueOf(Double.parseDouble(number.toString())).stripTrailingZeros().toPlainString();
+		} else {//不是整数，小数点后面不是0
+			return BigDecimal.valueOf(Double.parseDouble(number.toString())).toPlainString();
 		}
-	    
-	}  
+
+	}
 
 	/** 
 	 * @Desc: 判断一行是否为空
@@ -280,34 +274,34 @@ public class ImportExcel {
 	 * @author: longjunfeng   
 	 * @date: 2016年10月11日 下午4:09:42 
 	 */
-	public static boolean isEmptyRow(Row row){
+	public static boolean isEmptyRow(Row row) {
 		Iterator<Cell> cells = row.cellIterator();
-		boolean isEmty=true;
+		boolean isEmty = true;
 		for (Cell cell : row) {
 			Object obj = getCellValue(cell);
-			if(obj!=null&&obj!=""){
-				isEmty=false;
+			if (obj != null && obj != "") {
+				isEmty = false;
 				break;
 			}
 		}
 		return isEmty;
 	}
-	
-//	/**
-//	 * 导入测试
-//	 */
+
+	//	/**
+	//	 * 导入测试
+	//	 */
 	public static void main(String[] args) throws Throwable {
 		ImportExcel ei = new ImportExcel("D:\\test.xlsx", 0);
-		
+
 		for (int i = ei.getDataRowNum(); i < ei.getLastDataRowNum(); i++) {
 			Row row = ei.getRow(i);
 			for (int j = 0; j < ei.getLastCellNum(); j++) {
 				Object val = ei.getCellValue(row, j);
-				System.out.print(val+", ");
+				System.out.print(val + ", ");
 			}
 			System.out.print("\n");
 		}
-		
+
 	}
 
 }

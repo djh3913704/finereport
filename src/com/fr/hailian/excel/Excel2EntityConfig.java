@@ -26,8 +26,7 @@ public class Excel2EntityConfig {
 	 */
 	private String[] columns;
 
-	private SimpleDateFormat formater = new SimpleDateFormat(
-			"yyyy-MM-dd HH：mm：ss ");
+	private SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH：mm：ss ");
 
 	private int currPosittion = 0;
 
