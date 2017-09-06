@@ -1,6 +1,6 @@
 (function($,h,c){var a=$([]),e=$.resize=$.extend($.resize,{}),i,k="setTimeout",j="resize",d=j+"-special-event",b="delay",f="throttleWindow";e[b]=250;e[f]=true;$.event.special[j]={setup:function(){if(!e[f]&&this[k]){return false}var l=$(this);a=a.add(l);$.data(this,d,{w:l.width(),h:l.height()});if(a.length===1){g()}},teardown:function(){if(!e[f]&&this[k]){return false}var l=$(this);a=a.not(l);l.removeData(d);if(!a.length){clearTimeout(i)}},add:function(l){if(!e[f]&&this[k]){return false}var n;function m(s,o,p){var q=$(this),r=$.data(this,d)||{};r.w=o!==c?o:q.width();r.h=p!==c?p:q.height();n.apply(this,arguments)}if($.isFunction(l)){n=l;return m}else{n=l.handler;l.handler=m}}};function g(){i=h[k](function(){a.each(function(){var n=$(this),m=n.width(),l=n.height(),o=$.data(this,d)||{};if(m!==o.w||l!==o.h){n.trigger(j,[o.w=m,o.h=l])}});g()},e[b])}})(jQuery,this);
 var canSlideMenum=true;//能否进行菜单收缩  默认true  可以收起展开
-var topHeight=120;//顶部菜单高度 
+var topHeight=100;//顶部菜单高度 
 var topMenuName=["设计资源","经营合同","企业档案","多媒体共享","原生成管理"];//顶部菜单名称
 var topMenuHref=["http://www.baidu.com","http://www.baidu.com",
                  "http://www.baidu.com","http://www.baidu.com","http://www.baidu.com"];//顶部菜单跳转链接
@@ -100,13 +100,13 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                 _initMessgeAlert();
                 _initFrameNavigationBar();
                 
-                _initTopRightNavigationForMenu();
+               // _initTopRightNavigationForMenu();
                 $('#fs-frame-body').resize(function () {
                     //FS._doResize();
                 });
-                $("#fs-frame-navi").css({"position":"absolute","width":"14em"});
+                $("#fs-frame-navi").css({"position":"absolute","width":"35em"});
                 $("#fs-frame-reg").css({"position":"absolute","right":"15em"});
-                $("#fs-frame-search").css({"position":"absolute","right":"9em"});
+                $("#fs-frame-search").css({"position":"absolute","right":"25em"});
             }
         },
         config4MenuTree: {
