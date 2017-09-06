@@ -34,7 +34,7 @@ public class ThemeSky extends AbstractThemeVariousProvider
 
   public String name()
   {
-    return getText("XBY");
+    return getText("Sky zuo");
   }
 
   public String text()
