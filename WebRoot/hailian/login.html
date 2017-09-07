@@ -49,6 +49,14 @@
      dynamicLoading.js(domain+"/hailian/js/bootstrap.min.js");
      dynamicLoading.js(domain+"/hailian/js/hl_login.js");
      
+     document.onreadystatechange = subSomething;//当页面加载状态改变的时候执行这个方法. 
+     function subSomething() { 
+     if(document.readyState == "complete") //当页面加载状态 
+	     var html='<span style=" display: inline-block; position: relative;top: 0.1em;left: .2em;';
+	     html+='width: 1em; height: 1em;background-image: url('+domain+'/hailian/img/jiantou.png);';
+	     html+='background-size: contain; background-repeat: no-repeat;"></span>';
+	     $("#fs-login-btn").append(html);
+     } 
 </script>
 </head>
 <body>
@@ -98,7 +106,8 @@
             </div>
         </div>
         <div id="fs-login-confirm-area" class="confirm-area">
-            <a tabindex="3" href="#" id="fs-login-btn" expired="true"></a>
+            <a tabindex="3" href="#" id="fs-login-btn" expired="true">
+            </a>
             <div class="fs-login-check">
                 <span class="fs-login-remember"></span>
             </div>
