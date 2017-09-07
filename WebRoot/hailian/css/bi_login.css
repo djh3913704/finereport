@@ -98,11 +98,13 @@ body {
 }
 
 #fs-login-title {
-    margin-left: 8%;
+    margin-left: 10%;
     margin-right: 8%;
-    text-align: center;
+    text-align: left;
     font-size: 1.5em;
-    margin-top:16%;
+    margin-top:12%;
+    color: white;
+
 }
 
 #fs-login-logo:hover {
@@ -162,31 +164,32 @@ body {
 
 #fs-login-content {
     position: absolute;
-    top: 25%;
+    top: 33%;
     bottom: 0;
-    right: 37%;
-    left: 37%;
-    background: rgba(255,255,255,0.9);
-    filter: Alpha(opacity=90);
+    right: 40%;
+    left: 40%;
+    background: rgba(255,255,255,0.3);
+    filter: Alpha(opacity=30);
     /*opacity: 0.8;*/
-    height: 60%;
-    border-radius: 10px;
-    box-shadow: 1px 5px 15px #666;
+    height: 35%;
+    /*border-radius: 10px;*/
+    /*box-shadow: 1px 5px 15px #666;*/
 }
 
 #fs-login-input-area {
-    margin-left: 23%;
-    margin-right: 23%;
+    margin-left: 10%;
+    margin-right: 10%;
     margin-bottom: 5%;
     z-index: 1;
     /*background: #ffffff;*/
 }
 
 .confirm-area {
-    margin-top: 17%;
-    margin-left: 23%;
-    margin-right: 23%;
-    height: 80px;
+    margin-top: 8%;
+    margin-left: 10%;
+    margin-right: 10%;
+    /*height: 80px;*/
+    color: white;
 }
 
 /*.fs-login-img-word {*/
@@ -200,7 +203,7 @@ body {
 
 div.fs-login-input {
     position: relative;
-    margin: 0 0 24px 0;
+    margin: 0 0 15px 0;
     padding: 0;
     color: #d8d8d8;
     border-bottom: solid 1px #d8d8d8;
@@ -221,7 +224,7 @@ input, div.fs-login-errmask {
 
 input {
     /*position: relative;*/
-    margin: 0 0 0 35px;
+    margin: 0 0 0 25px;
     padding: 0;
     outline: none;
     background-color: transparent;
@@ -261,40 +264,39 @@ div.fs-login-errmask {
 }
 
 div.fs-login-input-username {
-    background: url('/hailian/img/username.png') no-repeat 0px 5px;
+    background: url(../img/username.png) no-repeat 5px 5px;
     background-size: 16px 16px;
+    background-color: white;
 }
 
 div.fs-login-input-password {
-    background: url('/hailian/img/password.png') no-repeat 0px 5px;
+    background: url('../img/password.png') no-repeat 5px 5px;
     background-size: 16px 16px;
+    background-color: white;
 }
 
 a {
-    display: block;
-    height: 30px;
-    background: #15abed;
+    background: #30a565;
     color: #ffffff;
     text-align: center;
-    line-height: 30px;
-    font-size: 14px;
-    border-radius: 20px;
-    -webkit-border-radius: 14px;
+    padding: 0.3em 1.2em;
     -moz-border-radius: 20px;
     cursor: pointer !important;
     text-decoration: none;
     outline: none;
+    float: right;
 }
 a:hover{
     text-decoration: none;
 }
 div.fs-login-check {
-    height: 14px;
-    line-height: 14px;
+    display: inline;
+    height: 25px;
+    line-height: 25px;
     font-size: 12px;
-    color: #aaaaa9;
+    color: white;
     margin-top: 15px;
-    background: url('/hailian/img/checkbox.png') no-repeat;
+    background: url('../img/checkbox.png') no-repeat;
     background-size: 14px 14px;
 }
 
@@ -310,7 +312,7 @@ span.fs-login-remember-selected {
 
 #fs-setting-area, #fs-sure-area {
     position: absolute;
-    top: 35%;
+    top: 31%;
     width: 100%;
 }
 
@@ -386,11 +388,16 @@ select.fs-login-select {
 div.fs-login-theme-trigger{
     float: right;
 }
-
+.logo{
+    position: absolute;
+    top: 18%;
+    left: 35%;
+    z-index: 999;
+}
 
 /*轮播图样式*/
 .carousel{
-    height: 90%;
+    height: 100%;
     width: 100%;
 }
 .carousel-inner{
@@ -403,10 +410,3 @@ div.fs-login-theme-trigger{
 
 }
 
-.logo{
-    padding-left: 1%;
-    width: 100%;
-    height: 10%;
-
-    /*background-color: pink;*/
-}
