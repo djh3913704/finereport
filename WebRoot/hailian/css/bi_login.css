@@ -390,8 +390,9 @@ div.fs-login-theme-trigger{
 }
 .logo{
     position: absolute;
-    top: 18%;
+    top: 19%;
     left: 35%;
+    height: 7em;
     z-index: 999;
 }
 
