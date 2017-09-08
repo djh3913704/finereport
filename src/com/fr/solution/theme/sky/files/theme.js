@@ -104,7 +104,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                 $('#fs-frame-body').resize(function () {
                     //FS._doResize();
                 });
-                $("#fs-frame-navi").css({"position":"absolute","width":"35em","top":"20px"});
+                $("#fs-frame-navi").css({"position":"absolute","width":"35em","top":"13px"});
                 $("#fs-frame-reg").css({"position":"absolute","right":"15em"});
                 $("#fs-frame-search").css({"position":"absolute","right":"25em","top":"35px"});
                // _hlDoResize();
