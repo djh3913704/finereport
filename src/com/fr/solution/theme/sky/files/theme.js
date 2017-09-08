@@ -104,9 +104,10 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                 $('#fs-frame-body').resize(function () {
                     //FS._doResize();
                 });
-                $("#fs-frame-navi").css({"position":"absolute","width":"35em"});
+                $("#fs-frame-navi").css({"position":"absolute","width":"35em","top":"20px"});
                 $("#fs-frame-reg").css({"position":"absolute","right":"15em"});
-                $("#fs-frame-search").css({"position":"absolute","right":"25em"});
+                $("#fs-frame-search").css({"position":"absolute","right":"25em","top":"35px"});
+                _hlDoResize();
             }
         },
         config4MenuTree: {
@@ -285,7 +286,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     		$("#fs-frame-search").show();
     		$("#fs-frame-reg").show();
     		$("#fs-frame-navi-toptwo").show();
-    		$("#fs-frame-header .node-navi").css("top",(topHeight-3)+"px");
+    		$("#fs-frame-header .node-navi").css("top",(topHeight-23)+"px");
     		$("#slide_div_id").addClass("slide-up").removeClass("slide-down");
     		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))+topHeight)+"px");
     		//重置页面
@@ -299,7 +300,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     var _hlDoResize=function(){
     	var f=FS.THEME.config4frame.north.visible?(FS.THEME.config4frame.north.height||60):0;
     	if(!isShow){
-    		f=60+topHeight;
+    		f=60+topHeight-20;
     	}else{
     		f=60;
     	}
@@ -449,7 +450,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
         btnNode.hide();
         
         /**重写方法 START**/
-        $("#fs-frame-header .node-navi").css("top",(topHeight-3)+"px");
+        $("#fs-frame-header .node-navi").css("top",(topHeight-23)+"px");
         if(!canSlideMenum){
         	$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))-topHeight)+"px");
         }
