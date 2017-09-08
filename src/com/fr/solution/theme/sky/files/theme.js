@@ -107,7 +107,9 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                 $("#fs-frame-navi").css({"position":"absolute","width":"35em","top":"20px"});
                 $("#fs-frame-reg").css({"position":"absolute","right":"15em"});
                 $("#fs-frame-search").css({"position":"absolute","right":"25em","top":"35px"});
-                _hlDoResize();
+               // _hlDoResize();
+                isShow=false;
+                _toggelTop();
             }
         },
         config4MenuTree: {
@@ -288,9 +290,9 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     		$("#fs-frame-navi-toptwo").show();
     		$("#fs-frame-header .node-navi").css("top",(topHeight-23)+"px");
     		$("#slide_div_id").addClass("slide-up").removeClass("slide-down");
-    		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))+topHeight)+"px");
+    		$("#fs-frame-header").css("height",(parseInt($("#fs-frame-header").css("height"))+topHeight-20)+"px");
     		//重置页面
-    		FS.THEME.config4frame.north.height=60+topHeight;
+    		FS.THEME.config4frame.north.height=60+topHeight-20;
     		_hlDoResize();
     		isShow=true;
     	}
@@ -307,6 +309,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     	var e=FS.THEME.config4frame.south.visible?30:0;
     	var h=document.body.clientWidth;
 	    var d=document.body.clientHeight;
+	    console.log(f)
 	     $("#fs-frame-body").css({height:d-f-e,top:f});
     };
     /**生成上面菜单（第二行） START**/
