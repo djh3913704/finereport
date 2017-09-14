@@ -124,6 +124,7 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                 $node.find('.icon-menu-b').removeClass('fui-fhc');
                 var hasChildren = node.hasChildren && node.ChildNodes && node.ChildNodes.length>0;
                 $node.attr('data-has-children',hasChildren);
+                $node.find('span').not(".fs-menu-icon").not(".menutree-text").css("font-size","15px");
                 if(hasChildren){
                     $node.find('.fs-menu-icon').empty().html('<i class="icon-tree-fork"></i>');
                 }
