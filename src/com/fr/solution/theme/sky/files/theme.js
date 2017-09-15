@@ -110,6 +110,16 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                // _hlDoResize();
                 isShow=false;
                 _toggelTop();
+                var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        	    var isOpera = userAgent.indexOf("Opera") > -1;
+        	    if (isOpera) { //  //判断是否Opera浏览器
+        	    }else if (userAgent.indexOf("Firefox") > -1) {  //判断是否Firefox浏览器
+        	    }else if (userAgent.indexOf("Chrome") > -1){   //判断是否"Chrome浏览器
+        	    }else  if (userAgent.indexOf("Safari") > -1) {    //判断是否Safari浏览器
+        	    }else { //其他 ie    // if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+        			//$("#reportFrame",parent.document).css("height","99.5%");
+        			$("html",parent.document).css("height","99.5%");
+        	    }
             }
         },
         config4MenuTree: {
@@ -310,7 +320,6 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
     	var e=FS.THEME.config4frame.south.visible?30:0;
     	var h=document.body.clientWidth;
 	    var d=document.body.clientHeight;
-	    console.log(f)
 	     $("#fs-frame-body").css({height:d-f-e,top:f});
     };
     /**生成上面菜单（第二行） START**/

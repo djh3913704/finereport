@@ -120,8 +120,7 @@
 $(function(){
 	var browser=myBrowser();
 	if(browser=="IE"){
-		$("#reportFrame",parent.document).parent("body").css("padding","0");
-		$("#reportFrame",parent.document).css("height","99.5%");
+		$("body",parent.document).css({"overflow-y":"hidden","padding":"0"});
 	}
 });
 function myBrowser(){
