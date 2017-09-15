@@ -116,3 +116,27 @@
 </div>
 </body>
 </html>
+<script>
+$(function(){
+	var browser=myBrowser();
+	if(browser=="IE"){
+		$("#reportFrame",parent.document).parent("body").css("padding","0");
+		$("#reportFrame",parent.document).css("height","99.5%");
+	}
+});
+function myBrowser(){
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+    var isOpera = userAgent.indexOf("Opera") > -1;
+    if (isOpera) { //  //判断是否Opera浏览器
+        return "Opera"
+    }else if (userAgent.indexOf("Firefox") > -1) {  //判断是否Firefox浏览器
+        return "FF";
+    }else if (userAgent.indexOf("Chrome") > -1){   //判断是否"Chrome浏览器
+        return "Chrome";
+    }else  if (userAgent.indexOf("Safari") > -1) {    //判断是否Safari浏览器
+        return "Safari";
+    }else { //其他 ie    // if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+        return "IE";
+    }
+}
+</script>
