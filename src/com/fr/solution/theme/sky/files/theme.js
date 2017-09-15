@@ -104,20 +104,30 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
                 $('#fs-frame-body').resize(function () {
                     //FS._doResize();
                 });
+              /*  $('#fs-frame-menu').resize(function () {
+                	var leftWidth=$("#fs-frame-menu").css("width");
+                	console.log(leftWidth)
+                	 if(isIE()) {
+                		 $.each($(".fr-titlelayout"),function(index,item){
+                			 if($(item).attr("widgetname")=="REPORT0"){
+                				 if(leftWidth!=0){
+                					 $(item).css("width",parseFloat($(item).css("width"))-230);
+                				 }
+                			 }
+                		 });
+                		 if(leftWidth!=0){
+                			 $("#REPORT0 table").css("width",parseFloat($(item).css("width"))-230);
+                		 }
+                		 
+             	    }
+                });*/
                 $("#fs-frame-navi").css({"position":"absolute","width":"35em","top":"13px"});
                 $("#fs-frame-reg").css({"position":"absolute","right":"15em"});
                 $("#fs-frame-search").css({"position":"absolute","right":"25em","top":"35px"});
                // _hlDoResize();
                 isShow=false;
                 _toggelTop();
-                var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-        	    var isOpera = userAgent.indexOf("Opera") > -1;
-        	    if (isOpera) { //  //判断是否Opera浏览器
-        	    }else if (userAgent.indexOf("Firefox") > -1) {  //判断是否Firefox浏览器
-        	    }else if (userAgent.indexOf("Chrome") > -1){   //判断是否"Chrome浏览器
-        	    }else  if (userAgent.indexOf("Safari") > -1) {    //判断是否Safari浏览器
-        	    }else { //其他 ie    // if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
-        			//$("#reportFrame",parent.document).css("height","99.5%");
+                if(isIE()) {
         			$("html",parent.document).css("height","99.5%");
         	    }
             }
@@ -221,6 +231,21 @@ var isShow=true;//伸缩菜单展开状态  true表示展开
             }
         }
     });
+    var isIE=function(){
+   	 var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+	    var isOpera = userAgent.indexOf("Opera") > -1;
+	    if (isOpera) { //  //判断是否Opera浏览器
+	    	return false;
+	    }else if (userAgent.indexOf("Firefox") > -1) {  //判断是否Firefox浏览器
+	    	return false;
+	    }else if (userAgent.indexOf("Chrome") > -1){   //判断是否"Chrome浏览器
+	    	return false;
+	    }else  if (userAgent.indexOf("Safari") > -1) {    //判断是否Safari浏览器
+	    	return false;
+	    }else { //其他 ie    // if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+			return true;
+	    }
+   }
     var _createItem = function (node, $pane, $node) {
         return $('<a href="#"/>').text(node.text)
             .click(function () {
