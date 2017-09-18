@@ -675,3 +675,6 @@ iframe.fs-tab-content-item  {
     height: 60px;
     top: 65px;
 }
+ul .menutree-text{
+	font-size:13px;
+}
