@@ -39,7 +39,7 @@ public class ThemeSky extends AbstractThemeVariousProvider
 
   public String text()
   {
-    return getText("西北院主题");
+    return getText("清算所主题");
   }
 
   public String coverPath()
@@ -52,12 +52,12 @@ public class ThemeSky extends AbstractThemeVariousProvider
     FunctionProcessor localFunctionProcessor = ExtraClassManager.getInstance().getFunctionProcessor();
     if (localFunctionProcessor != null)
       localFunctionProcessor.recordFunction(ONEFUNCTION);
-    return getFilePath("/files/theme.js");
+    return getFilePath("/files/theme_qss.js");
   }
 
   public String stylePath()
   {
-    return getFilePath("/files/style.css");
+    return getFilePath("/files/style_qss.css");
   }
 
   private String getFilePath(String paramString)
