@@ -35,20 +35,10 @@
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 	
-	<!-- WebService注入类 -->
-	<filter>
-		<filter-name>WebServiceFilter</filter-name>
-		<filter-class>com.fr.hailian.filter.WebServiceFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>WebServiceFilter</filter-name>
-		<url-pattern>/webservice</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-	</filter-mapping>
 
 	<!-- 定义servlet -->
 
-	<!-- 辅助决策登陆改造 -->
+	<!-- 登陆改造 -->
 	<servlet>
 		<servlet-name>AuxiliaryRoleLogin</servlet-name>
 		<servlet-class>com.fr.hailian.servlet.AuxiliaryRoleLoginServlet</servlet-class>
@@ -56,79 +46,6 @@
 	<servlet-mapping>
 		<servlet-name>AuxiliaryRoleLogin</servlet-name>
 		<url-pattern>/auxiliaryRoleLogin</url-pattern>
-	</servlet-mapping>
-
-
-	<!-- 单点登录逻辑改造 -->
-	<servlet>
-		<servlet-name>PortalLoginServlet</servlet-name>
-		<servlet-class>com.fr.hailian.servlet.PortalLoginServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>PortalLoginServlet</servlet-name>
-		<url-pattern>/portalLoginServlet</url-pattern>
-	</servlet-mapping>
-	
-	<!-- RTX改造 -->
-	<servlet>
-		<servlet-name>RTXShareServlet</servlet-name>
-		<servlet-class>com.fr.hailian.servlet.RTXShareServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>RTXShareServlet</servlet-name>
-		<url-pattern>/rtxShareServlet</url-pattern>
-	</servlet-mapping>
-	
-	<!-- RTX集成 当用户从RTX点击收到信息时  进行免登陆校验 -->
-	<servlet>
-		<servlet-name>RTXSecurityServlet</servlet-name>
-		<servlet-class>com.fr.hailian.servlet.RTXSecurityServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>RTXSecurityServlet</servlet-name>
-		<url-pattern>/rtxSecurityServlet</url-pattern>
-	</servlet-mapping>
-	
-	
-	<!-- 修改密码 -->
-	<servlet>
-		<servlet-name>ChangePwdServlet</servlet-name>
-		<servlet-class>com.fr.hailian.servlet.ChangePwdServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ChangePwdServlet</servlet-name>
-		<url-pattern>/changePwdServlet</url-pattern>
-	</servlet-mapping>
-	
-	<!--注销 -->
-	<servlet>
-		<servlet-name>LogoutServlet</servlet-name>
-		<servlet-class>com.fr.hailian.servlet.LogoutServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>LogoutServlet</servlet-name>
-		<url-pattern>/logoutServlet</url-pattern>
-	</servlet-mapping>
-	
-	
-	<!--导入人员 机构信息 -->
-	<servlet>
-		<servlet-name>ImportInfoServlet</servlet-name>
-		<servlet-class>com.fr.hailian.servlet.ImportInfoServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ImportInfoServlet</servlet-name>
-		<url-pattern>/importInfoServlet</url-pattern>
-	</servlet-mapping>
-	
-	<!-- 通过form表单导入信息 -->
-	<servlet>
-		<servlet-name>ImportByFormServlet</servlet-name>
-		<servlet-class>com.fr.hailian.servlet.ImportByFormServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ImportByFormServlet</servlet-name>
-		<url-pattern>/importByFormServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>
