@@ -14,12 +14,15 @@ import com.fr.cluster.stable.ClusterState;
 import com.fr.file.BaseClusterHelper;
 import com.fr.file.ClusterConfigManager;
 import com.fr.file.ClusterService;
+import com.fr.fs.base.entity.User;
 import com.fr.fs.base.entity.UserInfo;
+import com.fr.fs.control.UserControl;
 import com.fr.fs.web.AuthenticationHelper;
 import com.fr.fs.web.FSConstants;
 import com.fr.fs.web.service.FSLoadLoginAction;
 import com.fr.general.ComparatorUtils;
 import com.fr.general.web.ParameterConsts;
+import com.fr.hailian.util.RoleUtil;
 import com.fr.json.JSONException;
 import com.fr.json.JSONObject;
 import com.fr.stable.Constants;
@@ -52,20 +55,20 @@ public class HlLoadLoginAction extends FSLoadLoginAction {
 		HttpSession session = req.getSession(true);
 		boolean isTemplate = ComparatorUtils.equals(true, session.getAttribute("isTemplate"));
 		PrintWriter writer = createWriter(res);
-		//System.out.println("actionCMD");
+		System.out.println("actionCMD");
 		if (dealLoginInfo(req, res, username, password, isTemplate)) {
 			UserInfo ui = new UserInfo(username, password, Boolean.valueOf(remember));
 			ui.dealBrowserCookies(res, session);
 			Object oo = session.getAttribute(isTemplate ? Constants.PF.TEMPLATE_ORIGINAL_URL : Constants.ORIGINAL_URL);
 			//wei : 跨域的时候如果返回相对路径，就又跳到跨域前的url+op=fs了。
 			String url = (oo == null) ? getRenderedUrl() : oo.toString() + "&_=" + System.currentTimeMillis();
-			if (StringUtils.isNotBlank(req.getParameter("hl_url"))) {
+		/*	if (StringUtils.isNotBlank(req.getParameter("hl_url"))) {
 				url = req.getParameter("hl_url");
 				//url=java.net.URLDecoder.decode(url, "UTF-8");
 				url = url.replaceAll("@@", "&");
-			}
+			}*/
 			addServerID(session);
-			//System.out.println("url:" + url);
+			System.out.println("url:" + url);
 			signOnSuccess(req, res, writer, url);
 		} else {
 			signOnFailure(req, writer);
@@ -93,12 +96,19 @@ public class HlLoadLoginAction extends FSLoadLoginAction {
 	}
 
 	protected void signOnSuccess(HttpServletRequest req, HttpServletResponse res, PrintWriter writer, String url)
-			throws IOException, JSONException {
-		if ("true".equals(WebUtils.getHTTPRequestParameter(req, ParameterConsts.__REDIRECT__))) {
+			throws IOException, Exception {
+		String username = WebUtils.getHTTPRequestParameter(req, Constants.FR_USERNAME);
+		User user = UserControl.getInstance().getByUserName(username);
+		if (RoleUtil.isSuperAdmin(user)){
+			writer.print(JSONObject.create().put("fail", false).put("msg", "登陆成功"));
+		}else{
+			writer.print(JSONObject.create().put("fail", false).put("msg", "不是超级管理员"));
+		}
+		/*if ("true".equals(WebUtils.getHTTPRequestParameter(req, ParameterConsts.__REDIRECT__))) {
 			res.sendRedirect(url);
 		} else {
 			writer.print(JSONObject.create().put("url", url).put("fail", false));
-		}
+		}*/
 	}
 
 	protected void signOnFailure(HttpServletRequest req, PrintWriter writer) throws JSONException {

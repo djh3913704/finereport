@@ -67,31 +67,30 @@ public class AuxiliaryRoleLoginServlet extends BaseServlet {
 			//System.out.println("pwd:" + user.getPassword());
 			if (user != null) {
 				System.out.println("user:" + user);
-				//判断是否是超级管理员
-				if (RoleUtil.isSuperAdmin(user)) {
-					/**
-					 * 是超级管理员
-					 * step1:用户名 密码校验 这个在上面已经验证了
-					 * step2：生成登陆凭证
-					 */
-					User user1 = UserControl.getInstance().getUser(name, password);//获取用户对象
-					System.out.println("user1:" + user1);
-					if (user1 != null) {
-						//RoleUtil.loginCMD(hrequest, response);
-						r.put("fail", false);
-						r.put("msg", "登陆成功");
-					} else {
-						r.put("fail", true);
-						r.put("msg", "密码错误!");
-					}
-				} else {
-					/**
-					 * 不是超级管理员
-					 */
+				User user1 = UserControl.getInstance().getUser(name, password);//获取用户对象
+				if(user1==null){
 					r.put("fail", true);
-					r.put("msg", "不是超级管理员");
+					r.put("msg", "用户名或者密码错误!");
+				}else{
+					//判断是否是超级管理员
+					if (RoleUtil.isSuperAdmin(user)) {
+						/**
+						 * 是超级管理员
+						 */
+						RoleUtil.loginCMD(hrequest, response);
+						/*r.put("fail", false);
+						r.put("msg", "登陆成功");*/
+					} else {
+						/**
+						 * 不是超级管理员
+						 */
+						RoleUtil.loginCMD(hrequest, response);
+						/*r.put("fail", false);
+						r.put("msg", "不是超级管理员");*/
 
+					}
 				}
+				
 			} else {
 				r.put("fail", true);
 				r.put("msg", "用户名或者密码错误!");
